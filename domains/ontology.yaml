@@ -1,0 +1,69 @@
+id: source-code
+name: Source Code Knowledge
+description: Knowledge categories for AI agents working in a codebase.
+topics:
+  architecture:
+    description: Structural facts — what lives where, how it connects
+    children:
+      flows:
+        description: Request/data flow paths
+      integrations:
+        description: External services, libraries, MCP servers
+      modules:
+        description: Package/module purpose and boundaries
+  conventions:
+    description: How we do things here — idioms, patterns, style
+    children:
+      errors:
+        description: Wrapping, surfacing, fallbacks
+      git:
+        description: Commit messages, branch model, PR norms
+      logging:
+        description: Library, levels, structured fields
+      naming:
+        description: File, type, function naming patterns
+      testing:
+        description: Mocks, fixtures, structure
+  decisions:
+    description: Design choices with rationale
+    children:
+      accepted:
+        description: Decisions in force
+      rejected:
+        description: Alternatives considered and rejected
+      superseded:
+        description: Previously accepted, now replaced
+  gotchas:
+    description: Sharp edges and surprises
+    children:
+      libraries:
+        description: Third-party library quirks
+      runtime:
+        description: Language/runtime traps
+      tools:
+        description: Build, test, dev-tool gotchas
+  incidents:
+    description: Past bugs and their fixes (regression-test anchored)
+    children:
+      bugs:
+        description: Bugs that landed
+      near-misses:
+        description: Caught before merging
+  invariants:
+    description: Load-bearing rules that must never be violated
+    children:
+      architecture:
+        description: Layering, dependency, ownership constraints
+      concurrency:
+        description: Thread, lock, ordering rules
+      data:
+        description: Invariants on data models, schemas, indexes
+      protocol:
+        description: API contracts, wire-format guarantees
+  meta:
+    description: Knowledge about the knowledge
+    children:
+      ontology:
+        description: Notes about how this ontology is used
+      reasoning:
+        description: Methodology facts from knomit_review/hypothesize
