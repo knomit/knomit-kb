@@ -4,7 +4,7 @@ domain: [store, schema, git]
 confidence: 0.95
 sources: 0
 entities: [commit_log, branch_commits]
-refs: ['src://knomit/.claude/plans/2026-04-07-knomit-invariant-test-suite-design.md@0938d83']
+refs: ['src://knomit/.claude/plans/2026-04-07-knomit-invariant-test-suite-design.md@0938d83', kb/invariants/store/two-table-commit-index/07d4fede.md]
 ---
 # Commit indexing uses TWO tables: commit_log (branch-agnostic) + branch_commits (many-to-many)
 
