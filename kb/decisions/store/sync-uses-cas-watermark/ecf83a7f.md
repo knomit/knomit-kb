@@ -1,7 +1,7 @@
 ---
 type: principle
 domain: [store, sync, concurrency]
-confidence: 0.9
+confidence: 0.7
 sources: 0
 entities: [last_commit, casLastCommit, meta table, BEGIN IMMEDIATE, _busy_timeout, lockBranch]
 refs: ['src://knomit/.claude/plans/2026-03-30-context-tx-concurrency-design.md@0938d83']
