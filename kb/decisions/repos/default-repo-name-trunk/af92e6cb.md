@@ -3,7 +3,7 @@ type: observation
 domain: [repos, config, naming]
 confidence: 0.95
 sources: 0
-entities: [config.DefaultRepoName, internal/config/config.go, internal/repos/manager.go, cmd/init.go, cmd/reset.go, cmd/verify.go, tools/bridge/main.go, internal/store/service.go]
+entities: [config.DefaultRepoName, internal/config/config.go, internal/repos/manager.go, cmd/reset.go, cmd/verify.go, tools/bridge/main.go, internal/store/service.go]
 refs: ['src://knomit/internal/config/config.go@841c68e', 'src://knomit/internal/repos/manager.go@841c68e', 'src://knomit/tools/bridge/claude/helpers.go@841c68e', 'src://knomit/internal/store/service.go@841c68e']
 ---
 # Default repo/KB renamed knomit→trunk; only the repo name, not the MCP server name or git identity
