@@ -4,7 +4,7 @@ domain: []
 confidence: 0.95
 sources: 0
 entities: [internal/metrics, metrics.Default, metricsMiddleware, knomit_http_requests_total, knomit_cypher_retry_total, knomit_embed_inference_seconds, store.withCypherRetry, Embedder.embedBatch]
-refs: ['src://knomit/internal/metrics/metrics.go@5987e9b', 'src://knomit/internal/web/observability.go@5987e9b', 'src://knomit/internal/store/cypher_retry.go@5987e9b', 'src://knomit/internal/embeddings/inference_metrics.go@5987e9b', 'https://github.com/p8a/knomit/pull/107']
+refs: ['src://knomit/internal/metrics/metrics.go@5987e9b', 'src://knomit/internal/web/observability.go@5987e9b', 'src://knomit/internal/store/cypher_retry.go@5987e9b', 'src://knomit/internal/embeddings/inference_metrics.go@5987e9b', 'https://github.com/knomit/knomit/pull/107']
 ---
 # Metrics live in a leaf internal/metrics with a process-global Default; cypher-retry is the SQLite contention proxy (not sqlite_busy)
 
