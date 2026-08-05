@@ -1,3 +1,3 @@
-# Knowledge Base
+# Knomit Knowledge Base
 
-Root manifest.
+Facts, principles, gotchas, invariants, etc about knomit's project and source code
