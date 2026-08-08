@@ -5,7 +5,7 @@ domain: [repos, store, index]
 confidence: 0.95
 sources: 0
 entities: [repoBuilder.setupIndex, repoBuilder.rehydrateUpstreamMain, dropUnresolvableBranches, healIndexBranches, healBranch, InitFromRemote, IndexManager.SyncLocked, upstreamMain]
-refs: ['src://7b4887ce51d9/internal/repos/builder.go@8e74d19ee33323520d2cdf8cad19d692c3b81878:11a43fa3674c05bf22f1ff1a6ed8c0c42fc1a701', 'src://7b4887ce51d9/internal/repos/manager.go@8e74d19ee33323520d2cdf8cad19d692c3b81878:c2eb59ee6da84ec24a5cbf76dcadaf7b0e58f2ea', 'kb://3ec012f5b4d2/kb/architecture/store/graph-schema-version/028172a8.md', 'kb://3ec012f5b4d2/kb/invariants/store/index/branch-locking/f4911495.md', 'kb://3ec012f5b4d2/kb/invariants/repos/clone-persists-resolved-upstream/ca2246c6.md', 'https://github.com/knomit/knomit/pull/82', 'https://github.com/knomit/knomit/pull/73']
+refs: ['src://7b4887ce51d9/internal/repos/builder.go@8e74d19ee33323520d2cdf8cad19d692c3b81878:11a43fa3674c05bf22f1ff1a6ed8c0c42fc1a701', 'src://7b4887ce51d9/internal/repos/manager.go@8e74d19ee33323520d2cdf8cad19d692c3b81878:e53bdbad5a8b76aed42b342b4ad8c7eb2b9df276', 'kb://3ec012f5b4d2/kb/architecture/store/graph-schema-version/028172a8.md', 'kb://3ec012f5b4d2/kb/invariants/store/index/branch-locking/f4911495.md', 'kb://3ec012f5b4d2/kb/invariants/repos/clone-persists-resolved-upstream/ca2246c6.md', 'https://github.com/knomit/knomit/pull/82', 'https://github.com/knomit/knomit/pull/73']
 ---
 # setupIndex MUST heal BOTH agentBranch AND upstreamMain for a repo with a stored origin — cfg.Git.Origin is gone, and a ref that does not resolve is skipped
 
