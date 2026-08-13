@@ -4,7 +4,7 @@ domain: [okf, export, architecture, cli]
 confidence: 0.95
 sources: 1
 entities: [tools/okf, internal/okfsource, internal/okf, knomit-okf, EnsureOKF, MapperVersion]
-refs: ['src://knomit/tools/okf/main.go', 'src://knomit/internal/okfsource/source.go', 'https://github.com/knomit/knomit/pull/41']
+refs: ['src://7b4887ce51d9/tools/okf/main.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:a54ced3cdc4c281cbe1ca92330700639ff280d97', 'src://7b4887ce51d9/internal/okf/source/source.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:59f3ccf26464f5c77ea32edd81a0e83d537707af', 'https://github.com/knomit/knomit/pull/41']
 ---
 # OKF export is a standalone knomit-okf CLI, not a server feature — no generated refs, no cache, no server state
 
