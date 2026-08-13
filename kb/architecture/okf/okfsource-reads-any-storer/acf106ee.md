@@ -4,7 +4,7 @@ domain: [okf, store, architecture, git]
 confidence: 0.95
 sources: 1
 entities: [internal/okfsource, okfsource.Load, okfsource.Snapshot, internal/store/okf.go, internal/okf]
-refs: ['src://knomit/internal/okfsource/source.go', 'src://knomit/internal/okfsource/history.go']
+refs: ['src://7b4887ce51d9/internal/okf/source/source.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:59f3ccf26464f5c77ea32edd81a0e83d537707af', 'src://7b4887ce51d9/internal/okf/source/history.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:b9f5d1851d2470f1a75dc48bbbf68363c036bc89']
 ---
 # internal/okfsource reads a KB through a go-git storer ONLY — no SQL — so the exporter runs against a plain git clone
 
