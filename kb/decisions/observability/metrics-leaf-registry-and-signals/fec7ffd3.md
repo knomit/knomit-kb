@@ -4,7 +4,7 @@ domain: []
 confidence: 0.95
 sources: 0
 entities: [internal/metrics, metrics.Default, metricsMiddleware, knomit_http_requests_total, knomit_embed_inference_seconds, Embedder.embedBatch, observeEmbedInference]
-refs: ['src://knomit/internal/metrics/metrics.go@d960e325', 'src://knomit/internal/web/observability.go@d960e325', 'src://knomit/internal/embeddings/inference_metrics.go@d960e325', 'https://github.com/knomit/knomit/pull/107', 'https://github.com/knomit/knomit/pull/28']
+refs: ['src://7b4887ce51d9/internal/obs/metrics/metrics.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:95db976a8f1ec50c0bb02e899f10b706404421e9', 'src://7b4887ce51d9/internal/web/observability.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:dbcd19839f9ec60db400f7558241f2981f34e2b9', 'src://7b4887ce51d9/internal/embeddings/inference_metrics.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:786fda460cf724827150f831a2c9764dbf813457', 'https://github.com/knomit/knomit/pull/107', 'https://github.com/knomit/knomit/pull/28']
 ---
 # Metrics live in a leaf internal/metrics with a process-global Default; there is currently NO SQLite contention signal
 

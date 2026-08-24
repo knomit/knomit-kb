@@ -5,7 +5,7 @@ domain: [repos, lifecycle, bootstrap, invariant]
 confidence: 0.95
 sources: 1
 entities: [Manager.Start, Manager.openOne, Manager.Create, Manager.Archive, repoBuilder.openGit, config.GitConfig, internal/repos/manager.go, internal/repos/lifecycle.go]
-refs: ['src://7b4887ce51d9/internal/repos/manager.go@0df3b891b86627bcce901c448974ad9cc99deb10:06cf7eeab4383ed0c642ce38e3b8b887040c2f2a', 'src://7b4887ce51d9/internal/repos/builder.go@0df3b891b86627bcce901c448974ad9cc99deb10:a10b69cbf5d20057fbef3be5fafc42bade0fe9c0', 'src://7b4887ce51d9/internal/repos/lifecycle.go@0df3b891b86627bcce901c448974ad9cc99deb10:2edd77e3d3ff69c910e3439472b42c16ba6a940b', 'src://7b4887ce51d9/internal/config/config.go@0df3b891b86627bcce901c448974ad9cc99deb10:bb9c9026a0068dca14e6752429fcaeaf24450ff2']
+refs: ['kb://3ec012f5b4d2/kb/invariants/repos/remote/local-origin-gate/426d64a7.md', 'src://7b4887ce51d9/internal/repos/manager.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:826fe133412fddb6a7d08810922fc60bd55fb205', 'src://7b4887ce51d9/internal/repos/builder.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:18a0cc46be27a0ca611bebdf50558dcbc802ae8a', 'src://7b4887ce51d9/internal/repos/lifecycle.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:1d23011f07edfc6ae9fea777ccbf4297df366f2e', 'src://7b4887ce51d9/internal/config/config.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:a9a2b21791d3abc28d2044a3b5ac70175158cdb7']
 ---
 # knomit has NO default repo — Manager.Start opens what is on disk and CREATES nothing; zero repos is a valid steady state
 
