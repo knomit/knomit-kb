@@ -4,6 +4,7 @@ domain: [store, sqlite, embeddings]
 confidence: 0.9
 sources: 1
 entities: [titleKNNOverfetch, TopTitleNeighbours, fact_titles_vec, facts_vec, RelevantMethodologyForFact, graphBuildSimilarityEdges]
+motifs: [limit-applied-before-filter]
 refs: ['src://7b4887ce51d9/internal/store/abstraction.go@b57785357448cbbca9b3b43607fe33987f5522f2:d6720b7410d42f2f17dfefbaba68a7a140dd8293', 'https://github.com/knomit/knomit/pull/99']
 ---
 # vec0 applies its `k` window BEFORE any WHERE clause — a KNN asking for exactly k and then filtering comes back short, or empty on a repo carrying many superseded revisions
