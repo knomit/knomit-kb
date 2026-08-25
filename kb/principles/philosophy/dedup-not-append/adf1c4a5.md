@@ -5,6 +5,7 @@ domain: [global]
 confidence: 1
 sources: 0
 entities: [designer]
+motifs: [idempotent-absorption]
 refs: []
 ---
 # Learning the same thing twice subsumes; it never duplicates
