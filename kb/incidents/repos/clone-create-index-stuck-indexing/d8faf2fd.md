@@ -4,6 +4,7 @@ domain: []
 confidence: 0.95
 sources: 2
 entities: [Manager.Create, Manager.openOne, repoBuilder.build, repoBuilder.startSync, RepoInstance.ActivateSync, RepoInstance.shutdown, Manager.Close, SwapStore, indexCtx, indexWg, healIndexBranches]
+motifs: [transient-state-becomes-permanent]
 refs: ['src://knomit/internal/repos/manager.go@21be1b8', 'src://knomit/internal/repos/builder.go@21be1b8', 'src://knomit/internal/repos/instance.go@21be1b8', 'src://knomit/internal/repos/lifecycle.go@21be1b8', 'src://knomit/internal/repos/swapstore.go@21be1b8', 'src://knomit/internal/repos/lifecycle_test.go@21be1b8', 'kb://3ec012f5b4d2/kb/decisions/repos/index-heal-separate-lifecycle/3b30bdb6.md']
 ---
 # Runtime clone-create left the search index pinned at 'indexing' forever; ActivateSync killed the background heal
