@@ -5,6 +5,7 @@ domain: [web, api, lens, collections]
 confidence: 0.95
 sources: 1
 entities: [internal/web/handlers_lenses_read.go, internal/web/handlers_facts_collection.go, internal/store/search_query.go, RecentFacts, maxLensRecencyDepth, maxLensSearchCandidates, lensFanoutDepth, TestLensFanoutDepth_OverflowingOffsetStillClamps]
+motifs: [measures-work-not-outcome]
 refs: ['src://7b4887ce51d9/internal/web/handlers_lenses_read.go@a11f174ecd6ce171baeb046372151d7c77b3e141:0cc988a4d6ced809be08ff38638f2139e54e235d', 'src://7b4887ce51d9/internal/web/handlers_lenses_read_test.go@a11f174ecd6ce171baeb046372151d7c77b3e141:306819fc323c08d21ecc296d2c49fefa9cf34f45', 'src://7b4887ce51d9/internal/store/search_query.go@a11f174ecd6ce171baeb046372151d7c77b3e141:0c7b62cb06d9b027a1decccb55f5410a85b2a333', 'src://7b4887ce51d9/internal/web/handlers_facts_collection.go@a11f174ecd6ce171baeb046372151d7c77b3e141:fae1a2e17de23552606aed1b282f4cc4610381b6']
 ---
 # A collection's `total` answers how many rows MATCH, never how many were fetched — bounding transfer must never bound the count
