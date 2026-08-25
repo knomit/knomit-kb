@@ -4,6 +4,7 @@ domain: [store, repos, migrations, control-db, tooling]
 confidence: 0.9
 sources: 2
 entities: [migrate.ControlBaselineSQL, applyControlDB, TestControlHasExactlyOneMigration, migrate.Control, schema_migrations, controlUp, knomit migrate-registry, planLenses, detectLegacyControlDB]
+motifs: [false-universal-default]
 refs: ['src://7b4887ce51d9/internal/store/migrate/migrate.go@a6463a71', 'src://7b4887ce51d9/internal/store/migrate/control_test.go@a6463a71', 'src://7b4887ce51d9/cmd/migrate_registry.go@a6463a71', 'kb://3ec012f5b4d2/kb/decisions/repos/control-db/ddl-in-tx-not-migrator/5e08abca.md', 'kb://3ec012f5b4d2/kb/gotchas/repos/control-db/stamped-legacy-home/99478d8e.md', 'src://7b4887ce51d9/cmd/migrate_registry.go@1a2d1fa1', 'src://7b4887ce51d9/internal/store/migrate/migrate.go@1a2d1fa1', 'kb://3ec012f5b4d2/kb/decisions/repos/control-db/migrate-registry-schema-then-rows/c301b088.md', 'kb://3ec012f5b4d2/kb/invariants/repos/control-db/migrator-ordering/52a6318e.md']
 ---
 # ControlBaselineSQL returns migration 000001 ONLY — adding a control 000002 without changing migrate-registry silently strands homes at the v1 lens shape
