@@ -4,6 +4,7 @@ domain: [build, tooling, cross-platform]
 confidence: 0.95
 sources: 0
 entities: [tools/fetchlibs, ortSpec, tokenizersSpec, ortVersion, tokenizersVersion, Makefile, tools/calibrate]
+motifs: [parallel-implementations-diverge]
 refs: ['src://knomit/tools/fetchlibs/spec.go@d960e325', 'src://knomit/tools/fetchlibs/main.go@d960e325', 'src://knomit/Makefile@d960e325', 'https://github.com/knomit/knomit/pull/28']
 ---
 # Native-lib downloads unified into one cross-platform Go tool (tools/fetchlibs), not three bash/Makefile fetchers
