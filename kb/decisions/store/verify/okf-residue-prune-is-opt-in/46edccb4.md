@@ -4,6 +4,7 @@ domain: [store, verify, okf, cli, migration]
 confidence: 0.95
 sources: 1
 entities: [knomit verify, --prune-generated-refs, refs/heads/okf, 'okf:marker', TestVerify_NoGeneratedRefs, repoBuilder.build]
+motifs: [destruction-as-side-effect]
 refs: ['src://7b4887ce51d9/internal/store/verify.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:03906d93d12af90dc6c822afe05032fc1d97f46c', 'src://7b4887ce51d9/cmd/verify.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:550fa8dc5108a55034cb49530de0fea0748671a7', 'kb://3ec012f5b4d2/kb/invariants/okf/source-refs-stay-local/9ba717ca.md']
 ---
 # Legacy okf/* refs are pruned by an explicit verify flag, not silently at repo open — detection stays read-only
