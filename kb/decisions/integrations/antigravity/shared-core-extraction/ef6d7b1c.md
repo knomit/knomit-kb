@@ -4,6 +4,7 @@ domain: [integrations, antigravity, claude-code, bridge, refactoring]
 confidence: 0.95
 sources: 1
 entities: [tools/bridge/knomitapi, tools/bridge/skills, knomitapi.SessionContext, skills.FS, claude/hook_session_start_test.go, ServerKey]
+motifs: [parallel-implementations-diverge]
 refs: ['src://7b4887ce51d9/tools/bridge/knomitapi/session.go@687fb378dcb0e064498cd24b0e0baa3786567a34:0e324542cb97fd96693ebfe1fd7a2a2f3c0614cd', 'src://7b4887ce51d9/tools/bridge/skills/skills.go@687fb378dcb0e064498cd24b0e0baa3786567a34:042e87f88792371db0e308c66331311d7a55f923']
 ---
 # The second agent host was built by EXTRACTING a shared core from the shipped Claude Code host, not by duplicating it — with a zero-diff test as the blast-radius gate
