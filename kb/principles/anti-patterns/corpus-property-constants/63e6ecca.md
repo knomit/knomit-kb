@@ -5,6 +5,7 @@ domain: [global]
 confidence: 1
 sources: 1
 entities: [designer]
+motifs: [false-universal-default]
 refs: ['src://7b4887ce51d9/internal/synthesize/restatement_conformance_test.go@b57785357448cbbca9b3b43607fe33987f5522f2:d4c7a130afdec96271ebb6928b000728cd6cfce3', 'src://7b4887ce51d9/internal/fact/motif.go@b57785357448cbbca9b3b43607fe33987f5522f2:5a4d3a0af836755797d4ec47246c5a134d90f9c9', 'src://7b4887ce51d9/internal/synthesize/bridge_motif.go@b57785357448cbbca9b3b43607fe33987f5522f2:00b1660acdcc260232c3b99141b8fb01f23b48e1', 'src://7b4887ce51d9/internal/synthesize/motif_disjoint.go@b57785357448cbbca9b3b43607fe33987f5522f2:25a32229b858d819fcfa40c1ad08bd8b1da3b594', 'kb://3ec012f5b4d2/kb/decisions/synthesize/motif/per-corpus-activation/389e94d1.md', 'kb://3ec012f5b4d2/kb/decisions/synthesize/motif/df-graded-disjointness-gate/5a51f321.md', 'kb://3ec012f5b4d2/kb/decisions/synthesize/consolidation-scope-fix/467f51b7.md', 'https://github.com/knomit/knomit/pull/99']
 ---
 # Constants encoding a CORPUS PROPERTY are forbidden as fixed values — derive them from the repo's own distributions or do not have them
