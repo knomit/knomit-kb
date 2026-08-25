@@ -5,6 +5,7 @@ domain: [integrations, hooks, bridge, invariant]
 confidence: 0.95
 sources: 2
 entities: [hookPreInvocation, invocationNum, conversationId, markerPath, preInvocationInput, tools/bridge/antigravity/hook_pre_invocation.go]
+motifs: [absence-encodes-value]
 refs: ['src://7b4887ce51d9/tools/bridge/antigravity/hook_pre_invocation.go@687fb378dcb0e064498cd24b0e0baa3786567a34:23720a6705776978d33509ef6d6cc5f635cf7b72']
 ---
 # A once-per-session hook guard must fail CLOSED on a missing field — decode the gating field as a pointer, because Go's zero value silently means "yes, fire"
