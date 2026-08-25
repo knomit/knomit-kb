@@ -4,6 +4,7 @@ domain: [web, store, ui, progress]
 confidence: 0.9
 sources: 0
 entities: [progressThrottle, rebuildEmbeddings, RebuildProgress, handleStartRebuild, handleApply]
+motifs: [periodic-gate-never-fires]
 refs: ['src://knomit/internal/web/progress_throttle.go', 'https://github.com/knomit/knomit/pull/82']
 ---
 # Rebuild progress: forward every batch via a time throttle, never a batch-misaligned modulo gate
