@@ -4,6 +4,7 @@ domain: [synthesize, concurrency]
 confidence: 0.95
 sources: 0
 entities: [Pipeline.StartSession, Pipeline.ContinueSessionForItem, Pipeline.handlePhase, Pipeline.completeSession, Deps, Strategy, sess.Branch, ri.AgentBranch, store.PipelineSession]
+motifs: [out-of-band-state]
 refs: ['src://knomit/internal/synthesize/pipeline.go@6356eab8', 'src://knomit/internal/synthesize/strategy.go@6356eab8', 'src://knomit/internal/synthesize/hypothesize_strategy.go@6356eab8', kb/decisions/synthesize/one-engine-two-drivers/19c69b3f.md]
 ---
 # sess.Branch is captured once at StartSession; downstream engine code NEVER reads ri.AgentBranch()
