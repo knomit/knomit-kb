@@ -4,6 +4,7 @@ domain: [synthesize, prune, restatement]
 confidence: 0.9
 sources: 1
 entities: [restatement_verdicts, MergeEntry, RetractEntry, probeAllowed]
+motifs: [signal-cannot-distinguish-cases]
 refs: ['src://7b4887ce51d9/internal/store/migrate/repo/000018_abstraction_axis.up.sql@b57785357448cbbca9b3b43607fe33987f5522f2:91f2d8db2ac8f8c4fe810ec006da0485fa62bcc2', 'src://7b4887ce51d9/internal/synthesize/restatement.go@b57785357448cbbca9b3b43607fe33987f5522f2:431b3d5e94e95c731f4874514b657d00f8868c0c', 'https://github.com/knomit/knomit/pull/99']
 ---
 # A restatement verdict counts as RESOLVED, not merged — a judge that retracts the redundant half has done the work the mechanism exists to buy
