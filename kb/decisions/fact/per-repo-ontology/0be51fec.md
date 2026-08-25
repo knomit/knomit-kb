@@ -4,6 +4,7 @@ domain: [fact, ontology, repos]
 confidence: 0.85
 sources: 0
 entities: [repoBuilder.loadOntology, RepoInstance.Ontology, domains/ontology.yaml, fact.DefaultOntology, RepoInstance.ontology, internal/repos/builder.go, internal/repos/manager.go]
+motifs: [false-universal-default]
 refs: ['src://knomit/.claude/plans/2026-04-01-per-repo-ontology.md@0938d83', kb/decisions/fact/per-repo-ontology/cd123bf0.md]
 ---
 # Each repo loads its own domains/ontology.yaml at open time; Manager has NO shared ontology
