@@ -4,6 +4,7 @@ domain: [claude-code, hooks]
 confidence: 0.85
 sources: 2
 entities: [SessionStart, PostToolUse, PreCompact, Stop, UserPromptSubmit, hookSpecificOutput.additionalContext, hookSessionStart, hookPreCompact, newCustomInstructions, tools/bridge/claude/hook_session_start.go]
+motifs: [false-universal-default]
 refs: ['src://knomit/.claude/plans/2026-05-20-knomit-cc-memory-integration-design.md@0938d83', 'src://7b4887ce51d9/tools/bridge/claude/hook_session_start.go@9702a2832f22d45b6be003aee929746c43a0787a:0dd7f9cc6765f24ce837929cd764d6f11f8bd660#L20-L22', 'src://7b4887ce51d9/tools/bridge/claude/helpers.go@9702a2832f22d45b6be003aee929746c43a0787a:9448f5c376df25abcc4666dea27ef0bb6285a856#L217-L272', 'kb://3ec012f5b4d2/kb/gotchas/claude-code/hooks/additional-context-union/eb35b8d9.md', 'https://github.com/knomit/knomit/pull/76']
 ---
 # CC SessionStart auto-wraps plain stdout as a system reminder — but "every OTHER hook injects via JSON" is FALSE: PreCompact must also emit plain text, and each event routes stdout somewhere different
