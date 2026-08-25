@@ -4,6 +4,7 @@ domain: [store, git, commits]
 confidence: 0.95
 sources: 0
 entities: [notifyCommit, AppendCommitLog, im.Sync, writeFile, deleteFile, batchWrite, mergeIntoBranch, reconcileAgentMerge]
+motifs: [bypass-defeats-guarantee]
 refs: ['src://knomit/internal/store/branch_commit.go@307b67d', 'src://knomit/internal/store/fact_write.go@307b67d', 'src://knomit/internal/store/branch_merge.go@307b67d']
 ---
 # Every branch-ref mutation MUST call repoHandler.notifyCommit while holding the branch lock
