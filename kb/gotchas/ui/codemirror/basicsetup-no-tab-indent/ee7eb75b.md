@@ -4,6 +4,7 @@ domain: [ui, web, desktop, accessibility]
 confidence: 0.9
 sources: 2
 entities: [basicSetup, defaultKeymap, indentWithTab, toggleTabFocusMode, EditorView.contentDOM, OntologyEditor, web/src/OntologyEditor.tsx, '@codemirror/commands']
+motifs: [name-implies-absent-capability]
 refs: ['src://7b4887ce51d9/web/src/wizardState.ts@cc5752af8d0cfe94c788ed7a099090e2bd9a354d:fdebe067487bd12a64e62c8df20d6c7a80b9befc', 'src://7b4887ce51d9/web/src/OntologyEditor.tsx@24853d4622e68c9b1035f2b298e870e0dd258d60:82e9201b07787641a93f55580076b9cbdb83bb81', 'kb://3ec012f5b4d2/kb/gotchas/web/editors/codemirror/b64862a6.md']
 ---
 # CodeMirror's basicSetup does NOT bind Tab to indent — ship it as-is and Tab still moves focus, which is the exact complaint that made a plain textarea unacceptable
