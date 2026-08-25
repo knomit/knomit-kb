@@ -4,6 +4,7 @@ domain: [synthesize, discovery, corpora]
 confidence: 0.9
 sources: 1
 entities: [domain tags, subject-disjointness, agentic-engineering]
+motifs: [signal-cannot-distinguish-cases]
 refs: ['kb://3ec012f5b4d2/kb/meta/research/motif-blueprint/0322276a.md']
 ---
 # Umbrella tags (df > ~20% of corpus) silently zero out any pairwise disjointness gate — exclude them from the gate, not from the data
