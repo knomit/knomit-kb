@@ -4,6 +4,7 @@ domain: [synthesize, store, seeding]
 confidence: 0.9
 sources: 0
 entities: [Strategy.AcceptSeed, Strategy.SeedQuery, factFromSearchResult, fact.DefaultKind, ParseFact, Pipeline.dirtyFacts]
+motifs: [parallel-implementations-diverge]
 refs: ['src://knomit/internal/synthesize/pipeline.go@6356eab8', 'src://knomit/internal/synthesize/strategy.go@6356eab8', kb/decisions/architecture/synthesize/scope-filter/72ee2c9a.md, kb/conventions/synthesize/dirty-facts-excludes-pragmatic/8b26a25d.md]
 ---
 # AcceptSeed runs on BOTH scan paths, so a raw empty Kind from Search would silently make the seed pool depend on watermark state

@@ -5,6 +5,7 @@ domain: [repos, testing, remote, ci]
 confidence: 0.95
 sources: 0
 entities: [Storyboard, config.LocalOriginRoot, validateLocalOrigin, test/testenv/storyboard.go, initDefaultGit, test/storytests, KNOMIT_LOCAL_ORIGIN_ROOT, BareRemoteHTTP]
+motifs: [failure-presents-as-success]
 refs: ['src://knomit/internal/testenv/storyboard.go@0e01c71', 'src://knomit/internal/repos/origin.go@0e01c71', kb/invariants/repos/remote/local-origin-gate/426d64a7.md, 'src://knomit/test/testenv/storyboard.go']
 ---
 # Storyboard file:// remote storytests were silently dead behind the local-origin gate (LocalOriginRoot unset); CI never ran them

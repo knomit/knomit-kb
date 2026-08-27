@@ -4,6 +4,7 @@ domain: [build, release, tooling, changelog]
 confidence: 0.9
 sources: 1
 entities: [tools/relnotes/changes.go, renderChanges, RenderChanges, RenderForDistill, Changes.Direct, TestCollectSeparatesDirectCommitsFromPRCommits, -bodies-out, Collect]
+motifs: [intent-misread-as-defect]
 refs: ['src://7b4887ce51d9/tools/relnotes/changes.go@c49944d61f8708462d3e69aa55c2a5ce42e27af5:01098631ed19899fa7064e784ed342d22e6aa3de#L118-L159', 'src://7b4887ce51d9/tools/relnotes/changes_test.go@c49944d61f8708462d3e69aa55c2a5ce42e27af5:bfea66d8c033e8d0994597a931ee83b627758b92', 'https://github.com/knomit/knomit/pull/69', 'kb://3ec012f5b4d2/kb/decisions/build/release/relnotes-gemini-over-free-ci-inference/521a78c0.md']
 ---
 # A missing `### Direct commits` section in relnotes output is CORRECT, not a bug — and `RenderChanges` must never grow bodies

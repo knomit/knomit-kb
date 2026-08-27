@@ -4,6 +4,7 @@ domain: [store, sync, concurrency]
 confidence: 0.9
 sources: 0
 entities: [last_commit, casLastCommit, meta table, BEGIN IMMEDIATE, _busy_timeout, lockBranch]
+motifs: [check-then-act-race]
 refs: ['src://knomit/.claude/plans/2026-03-30-context-tx-concurrency-design.md@0938d83', 'src://knomit/internal/store/branch.go@77f70cf', 'src://knomit/internal/store/service.go@9fb679c']
 ---
 # Sync uses CAS on last_commit watermark; per-branch Sync mutex removed

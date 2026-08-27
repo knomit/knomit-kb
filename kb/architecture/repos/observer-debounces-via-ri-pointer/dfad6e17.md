@@ -4,6 +4,7 @@ domain: [repos, store, observer]
 confidence: 0.95
 sources: 0
 entities: [observe.New, ri.onCommit, obs.Notify, broadcastStatus]
+motifs: [handle-outlives-target]
 refs: ['src://knomit/internal/repos/builder.go@307b67d']
 ---
 # Commit observer debounces 1s; callback re-reads ri.svc under RLock so it follows SwapStore

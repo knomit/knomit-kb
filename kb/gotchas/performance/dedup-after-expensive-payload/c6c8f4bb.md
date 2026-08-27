@@ -5,6 +5,7 @@ domain: [store-git, commit_log, performance, api-design, go-git]
 confidence: 0.9
 sources: 1
 entities: [CommitLogSync, CommitLogPayload, populateCommitLog, AppendCommitLog, changedFilesInCommit, object.DiffTree, branch_commits, OpenRepo, rebuildCommitLog, merkletrie, cache.ObjectLRU]
+motifs: [precondition-checked-too-late]
 refs: ['src://7b4887ce51d9/internal/store/git/commitlog.go@c2a8d4f8944ce82e1514dba1876c81685d3aed23:6017e766238feb036e615f5bcc843fb386cbf708', 'src://7b4887ce51d9/internal/store/branch_commit_log.go@c2a8d4f8944ce82e1514dba1876c81685d3aed23:35058616ff8891c23dad520de7e9bf0dce352893', 'src://7b4887ce51d9/internal/store/commitlog_lazy_payload_test.go@c2a8d4f8944ce82e1514dba1876c81685d3aed23:26f0fff29e52bc6aaa16ecb7939202e4fe03fd51', 'https://github.com/knomit/knomit/pull/71', 'kb://3ec012f5b4d2/kb/invariants/store-git/commitlog-sync-walks-dag-not-shortcircuit/0705d245.md', 'kb://3ec012f5b4d2/kb/invariants/store/three-table-commit-index/0d26d859.md']
 ---
 # A dedup check cannot save you if the payload is computed BEFORE the check runs — when an iterator returns (key, payload) together, the payload is paid unconditionally

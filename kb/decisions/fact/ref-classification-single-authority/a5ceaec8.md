@@ -4,6 +4,7 @@ domain: [fact, refs, store, mcp, web]
 confidence: 0.95
 sources: 1
 entities: [fact.ClassifyRef, fact.Ref, fact.RefKind, internal/fact/ref.go, internal/store/search_index.go, internal/mcp/explain.go, web/src/FactBody.tsx, internal/federate/federate.go, federate.ParseQualifiedPath]
+motifs: [parallel-implementations-diverge]
 refs: ['src://knomit/internal/store/search_index.go@4154e92c8ff333435fd00c442489e855e4c3331e', 'src://knomit/internal/mcp/explain.go@4154e92c8ff333435fd00c442489e855e4c3331e', 'src://knomit/web/src/FactBody.tsx@4154e92c8ff333435fd00c442489e855e4c3331e', 'src://knomit/internal/federate/federate.go@4154e92c8ff333435fd00c442489e855e4c3331e', 'src://knomit/web/src/useTimeTravel.ts@4154e92c8ff333435fd00c442489e855e4c3331e', kb/principles/philosophy/historical-not-current/6c745bf4.md, kb/decisions/lens/qualified-path-repo-identity/10a3bcc0.md, kb/invariants/store/refs-to-derived-from-edges/eb438c74.md]
 ---
 # One ref classifier in internal/fact returns KIND only — resolution status is commit-dependent and never server-computed

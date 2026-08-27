@@ -4,6 +4,7 @@ domain: [synthesize, store, concurrency, idempotency]
 confidence: 0.95
 sources: 0
 entities: [AnswerPipelineWorkItem, NextPipelineWorkItem, Pipeline.ContinueSessionForItem, Strategy.Decode, Strategy.Apply, normalizeFactPath, pipeline_work_items]
+motifs: [check-then-act-race]
 refs: ['src://knomit/internal/store/pipeline_index.go@d960e325', 'src://knomit/internal/synthesize/pipeline.go@d960e325', 'src://knomit/internal/synthesize/review_claim_test.go@d960e325', kb/architecture/store/pipeline-session-phase-cas/30657f2b.md, kb/decisions/synthesize/one-engine-two-drivers/19c69b3f.md]
 ---
 # Pipeline work items are claimed by CAS, and the response is validated BEFORE the claim — never apply before claiming
