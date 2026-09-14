@@ -5,7 +5,7 @@ confidence: 0.9
 sources: 1
 entities: [store.SearchResult, SearchOptions.MinSimilarity, params.Thresholds, factQuery.Search, internal/store/search_query.go]
 motifs: [same-name-different-scale]
-refs: ['src://7b4887ce51d9/internal/store/search_query.go@920978789f251c550d62f292b9878125b90027d3:8be8e6b74702c0a4e607c7fc62339c6256c7d8cf', 'https://github.com/knomit/knomit/pull/187']
+refs: ['src://7b4887ce51d9/internal/store/search_query.go@920978789f251c550d62f292b9878125b90027d3:8be8e6b74702c0a4e607c7fc62339c6256c7d8cf', 'kb://3ec012f5b4d2/kb/decisions/mcp/learn/same-subject-refusal/f77be375.md', 'kb://3ec012f5b4d2/kb/decisions/mcp/learn/same-subject-band-endpoints/0c5a0529.md', 'https://github.com/knomit/knomit/pull/187']
 ---
 # store.SearchResult.Score is cosine*100 on the vector path and a literal 100 on the text-less path — comparing it against a params.Thresholds value silently does nothing
 
