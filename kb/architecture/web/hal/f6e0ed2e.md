@@ -1,0 +1,23 @@
+---
+type: synthesis
+domain: [web, hal, rest, routing, architecture]
+confidence: 0.9
+sources: 1
+evidence_weight: 0.7872340425531915
+entities: [hal.EncodeBranch, hal.DecodeBranch, BranchMiddleware, BranchFromContext, hal.URLBuilder, hal.Anchor, FactView, BuildFactView, APIBase, NewAPIRouter, internal/web/hal]
+motifs: [shared-path-prevents-divergence, bypass-defeats-guarantee]
+refs: ['kb://3ec012f5b4d2/kb/architecture/web/branch-middleware-decodes-once/7c10c81a.md', 'kb://3ec012f5b4d2/kb/architecture/web/url-builder-and-anchor/c4397077.md', 'kb://3ec012f5b4d2/kb/architecture/web/factview-single-serializer/118016cb.md', 'kb://3ec012f5b4d2/kb/architecture/web/hal-package-primitives-only/3209b8a9.md', 'kb://3ec012f5b4d2/kb/architecture/web/api-base-and-router-shape/de601f8a.md', 'kb://3ec012f5b4d2/kb/decisions/web/rest-hateoas-redesign/4c5f558b.md', 'kb://3ec012f5b4d2/kb/conventions/design/81aa3330.md']
+---
+# The HAL surface holds its cross-cutting properties by construction, one seam each: branch names are encoded in exactly one place and decoded in exactly one place, every outbound href passes through one anchor-carrying builder, one FactView serializes HEAD and commit-anchored views, and the hal package stays primitives-only — a handler that builds a URL or decodes a branch by hand has stepped off the seam and lost the guarantee
+
+Each property that every response on the surface must share is enforced by routing every producer of that property through one seam, so the property holds by construction and a producer can only violate it by visibly bypassing the seam rather than by forgetting a rule.
+
+The seams and the property each carries:
+- BRANCH-NAME ENCODING: the '/'→':' substitution happens in exactly ONE place, `hal.EncodeBranch` via `URLBuilder.Branch`; the reverse ':'→'/' happens in exactly ONE place, `BranchMiddleware`, which percent-unescapes the chi `{branch}` param, calls `hal.DecodeBranch`, and stashes the canonical name under a private context key. `BranchFromContext` PANICS if the middleware did not run — a programming error, not a runtime one — so every route using `{branch}` must be registered with `r.With(BranchMiddleware)`, attached at the route-group level rather than the router root so `/repos` and its verbs need no branch decoding. Downstream handlers never see the URL form.
+- COMMIT ANCHOR PROPAGATION: all outbound URLs go through `hal.URLBuilder` + `hal.Anchor{Branch, Commit}`; an empty Commit means HEAD, a set Commit means a pinned snapshot, and the builder inserts or omits the `/commits/{sha}/` segment itself, which is what makes 'rewind and walk' work — outgoing links preserve the anchor. Building hrefs with string formatting inside a handler is the anti-pattern. One deliberate exception: `FactCommits` STRIPS the pin, because a fact's commit log is always branch-anchored, never commit-pinned.
+- RESPONSE SHAPE: ONE `FactView` struct and ONE `BuildFactView` serialize both HEAD-anchored and commit-anchored fact responses; only the link set differs by anchor (`snapshot` on HEAD views is the sole way to obtain a stable URL from a live view; `live` and `commit` appear only on anchored views). Every response is `application/hal+json` with a mandatory `_links.self`, 404/405 emit problem+json so the error shape matches the rest of the surface, `APIBase` is the single prefix constant, and the URLBuilder is constructed once in `NewAPIRouter` and handed to every handler.
+- LAYERING: `internal/web/hal` is primitives-only (Link, LinkMap, CollectionView, Problem, the Write* helpers, Anchor, URLBuilder, Encode/DecodeBranch) with NO knowledge of facts, branches or stores; domain views live in `internal/web` and USE the primitives. Importing store or fact into hal is the anti-pattern — the package stays reusable, mockable, and cycle-free.
+
+The design principles these seams serve: URIs mirror storage (a fact's canonical URI is its git path under a branch or commit), the anchor lives in the URI, clients navigate by following links rather than string-building, async actions are resources (POST to create, GET to poll, DELETE to cancel — no one-off action endpoints), the server owns identity, and scope lives in the path rather than query params.
+
+WHAT THIS DOES NOT MEAN: it does not make every similar-looking helper the seam — `FactCommits` deliberately drops the anchor, and the lens surface's flat envelopes are a documented, separate convention. Nor does it say the seams remove the need for tests: a route registered without the middleware fails loudly by panic, but a handler that formats its own href fails silently, which is exactly why the anti-pattern is named.
