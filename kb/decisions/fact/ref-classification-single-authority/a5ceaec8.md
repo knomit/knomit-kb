@@ -1,11 +1,12 @@
 ---
 type: observation
-domain: [fact, refs, store, mcp, web]
+domain: [fact, refs, store, mcp, web, graph, architecture]
 confidence: 0.95
-sources: 1
-entities: [fact.ClassifyRef, fact.Ref, fact.RefKind, internal/fact/ref.go, internal/store/search_index.go, internal/mcp/explain.go, web/src/FactBody.tsx, internal/federate/federate.go, federate.ParseQualifiedPath]
-motifs: [parallel-implementations-diverge]
-refs: ['src://knomit/internal/store/search_index.go@4154e92c8ff333435fd00c442489e855e4c3331e', 'src://knomit/internal/mcp/explain.go@4154e92c8ff333435fd00c442489e855e4c3331e', 'src://knomit/web/src/FactBody.tsx@4154e92c8ff333435fd00c442489e855e4c3331e', 'src://knomit/internal/federate/federate.go@4154e92c8ff333435fd00c442489e855e4c3331e', 'src://knomit/web/src/useTimeTravel.ts@4154e92c8ff333435fd00c442489e855e4c3331e', kb/principles/philosophy/historical-not-current/6c745bf4.md, kb/decisions/lens/qualified-path-repo-identity/10a3bcc0.md, kb/invariants/store/refs-to-derived-from-edges/eb438c74.md]
+sources: 2
+evidence_weight: 0.6551724137931034
+entities: [fact.ClassifyRef, fact.Ref, fact.RefKind, internal/fact/ref.go, internal/store/search_index.go, internal/mcp/explain.go, web/src/FactBody.tsx, internal/federate/federate.go, federate.ParseQualifiedPath, internal/refs, internal/fact, DERIVED_FROM, graphAddDerivedFromAtCommitTx, graphInsertEdgeReturningID, TestFactStaysPure, useTimeTravel.ts]
+motifs: [parallel-implementations-diverge, point-in-time-resolution]
+refs: ['src://knomit/internal/store/search_index.go@4154e92c8ff333435fd00c442489e855e4c3331e', 'src://knomit/internal/mcp/explain.go@4154e92c8ff333435fd00c442489e855e4c3331e', 'src://knomit/web/src/FactBody.tsx@4154e92c8ff333435fd00c442489e855e4c3331e', 'src://knomit/internal/federate/federate.go@4154e92c8ff333435fd00c442489e855e4c3331e', 'src://knomit/web/src/useTimeTravel.ts@4154e92c8ff333435fd00c442489e855e4c3331e', 'kb://3ec012f5b4d2/kb/principles/philosophy/historical-not-current/6c745bf4.md', 'kb://3ec012f5b4d2/kb/decisions/lens/qualified-path-repo-identity/10a3bcc0.md', 'kb://3ec012f5b4d2/kb/invariants/store/refs-to-derived-from-edges/eb438c74.md', 'kb://3ec012f5b4d2/kb/decisions/fact/ref-classification-single-authority/a5ceaec8.md', 'kb://3ec012f5b4d2/kb/decisions/architecture/internal-package-layout/refs-owns-resolution-not-classification/bfe6bf16.md', 'kb://3ec012f5b4d2/kb/decisions/store/derived-from-time-aware-edges/a5222e48.md', 'kb://3ec012f5b4d2/kb/architecture/refs/958e8c0a.md']
 ---
 # One ref classifier in internal/fact returns KIND only — resolution status is commit-dependent and never server-computed
 

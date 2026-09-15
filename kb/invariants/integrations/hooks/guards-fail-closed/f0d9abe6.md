@@ -3,10 +3,11 @@ kind: pragmatic
 type: policy
 domain: [integrations, hooks, bridge, invariant]
 confidence: 0.95
-sources: 2
+sources: 3
+evidence_weight: 0.6491228070175439
 entities: [hookPreInvocation, invocationNum, conversationId, markerPath, preInvocationInput, tools/bridge/antigravity/hook_pre_invocation.go]
 motifs: [absence-encodes-value]
-refs: ['src://7b4887ce51d9/tools/bridge/antigravity/hook_pre_invocation.go@687fb378dcb0e064498cd24b0e0baa3786567a34:23720a6705776978d33509ef6d6cc5f635cf7b72']
+refs: ['src://7b4887ce51d9/tools/bridge/antigravity/hook_pre_invocation.go@687fb378dcb0e064498cd24b0e0baa3786567a34:23720a6705776978d33509ef6d6cc5f635cf7b72', 'kb://3ec012f5b4d2/kb/decisions/embeddings/params-holds-every-model-geometry/321e8453.md', 'kb://3ec012f5b4d2/kb/gotchas/store/testing/searchoptions-zero-limit/71123f5f.md']
 ---
 # A once-per-session hook guard must fail CLOSED on a missing field — decode the gating field as a pointer, because Go's zero value silently means "yes, fire"
 
