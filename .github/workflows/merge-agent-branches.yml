@@ -1,0 +1,108 @@
+# Merge every push to an agent/* branch into main with a merge commit.
+#
+# This is the consensus step of knomit's branch model: each agent writes only
+# its own branch, and main is reached by merge. The knomit server on each
+# machine does the other half: it merges main back into its agent branch
+# (fast-forward when the branch is already an ancestor of main, one local-wins
+# merge commit when the two diverged) and force-pushes the result.
+#
+# main's ruleset requires every change to arrive through a pull request, with
+# no bypass, so this workflow does not push main itself. It opens (or reuses)
+# a PR from the agent branch and merges it with the merge method, which is the
+# same "Merge pull request #N from knomit/agent/..." commit the manual flow
+# produced.
+#
+# Conflicts are NOT resolved here. An unmergeable PR fails this job and stays
+# open; the next sync on the agent's machine merges main into the agent branch
+# with its local-wins strategy and pushes, which re-runs this workflow on a
+# branch that now merges cleanly. Resolving here instead would pick a winner
+# GitHub cannot justify.
+name: Merge agent branches into main
+
+on:
+  push:
+    branches:
+      - "agent/**"
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "agent/* branch to merge into main now"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+# One merge at a time. Two agent branches pushing together must land one after
+# the other, each onto the main the previous one produced; cancelling a queued
+# run would drop a merge, so never cancel.
+concurrency:
+  group: merge-agent-branches-into-main
+  cancel-in-progress: false
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      BRANCH: ${{ inputs.branch || github.ref_name }}
+    steps:
+      - name: Merge ${{ inputs.branch || github.ref_name }} into main
+        run: |
+          set -euo pipefail
+          case "$BRANCH" in
+            agent/*) ;;
+            *) echo "::error::$BRANCH is not an agent/* branch"; exit 1 ;;
+          esac
+
+          # The branch's current tip, so the log names what was merged even
+          # though the branch is force-pushed by its owner.
+          TIP=$(gh api "repos/$GH_REPO/branches/$BRANCH" --jq .commit.sha)
+          SHORT=${TIP:0:12}
+
+          # main...TIP: commits and files on the branch that main lacks.
+          read -r AHEAD FILES < <(gh api "repos/$GH_REPO/compare/main...$TIP" \
+            --jq '"\(.ahead_by) \(.files | length)"')
+          if [ "$AHEAD" = 0 ]; then
+            echo "$BRANCH@$SHORT is already in main; nothing to do."
+            exit 0
+          fi
+          # A branch that only absorbed main has commits main lacks (its merge
+          # commit) but no file changes; a PR for it would be empty noise.
+          if [ "$FILES" = 0 ]; then
+            echo "$BRANCH@$SHORT changes no files relative to main; nothing to merge."
+            exit 0
+          fi
+
+          PR=$(gh pr list --base main --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
+          if [ -z "$PR" ]; then
+            URL=$(gh pr create --base main --head "$BRANCH" \
+              --title "Merge $BRANCH into main" \
+              --body "Opened by the merge-agent-branches workflow for $BRANCH@$SHORT. Merged automatically when it merges cleanly; left open on a conflict until the agent's next sync resolves it.")
+            PR=${URL##*/}
+            echo "Opened PR #$PR for $BRANCH@$SHORT."
+          else
+            echo "Reusing open PR #$PR for $BRANCH."
+          fi
+
+          # GitHub computes mergeability asynchronously after a PR is opened or
+          # its head moves; give it a few tries before calling it a conflict.
+          for attempt in 1 2 3 4 5; do
+            STATE=$(gh pr view "$PR" --json mergeable --jq .mergeable)
+            case "$STATE" in
+              MERGEABLE)
+                gh pr merge "$PR" --merge
+                echo "Merged $BRANCH@$SHORT into main via PR #$PR."
+                exit 0 ;;
+              CONFLICTING)
+                echo "::error::PR #$PR ($BRANCH@$SHORT) conflicts with main; left open." \
+                     "The agent's next sync merges main into $BRANCH (local wins) and pushes; this workflow then retries."
+                exit 1 ;;
+              *)
+                echo "mergeability not computed yet ($STATE), attempt $attempt"; sleep 5 ;;
+            esac
+          done
+          echo "::error::GitHub did not report mergeability for PR #$PR in time; left open, will retry on the next push."
+          exit 1
