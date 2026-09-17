@@ -1,0 +1,22 @@
+---
+kind: pragmatic
+type: heuristic
+domain: [testing, build, environment, review]
+confidence: 0.85
+sources: 2
+entities: [go test, -timeout, -p 1, -parallel 2, vitest, --maxWorkers, App.sse.test.tsx, npm run lint, -tags desktop, internal/web, internal/repos, internal/mcp]
+motifs: [watchdog-reads-wrong-metric]
+refs: ['https://github.com/knomit/knomit/pull/209']
+---
+# 
+
+On the shared dev box, run Go test suites ONE PACKAGE AT A TIME, in the FOREGROUND, with `-timeout 2400s -p 1 -parallel 2`; run vitest with `--maxWorkers=2` whenever a Go suite is also running. Observed by the worker and reviewer sessions on 2026-09-15 and 2026-09-16 (PR #209); numbers drift as dev moves, so re-measure before relying on them.
+
+- internal/web takes 430–620 s serial and exceeds the default 10-minute go test timeout; internal/repos alone (~490–570 s) also exceeds the 600 s DEFAULT. Serial merged-tree times on 2026-09-16: mcp ~181–326 s, repos and web each ~490–510 s.
+- The timeout only holds when suites run SERIALLY. Two Go suites in parallel stretched internal/web to 1199.4 s against a 1200 s limit and then past it, and pushed internal/repos past 600 s — both looked like failures and were pure timeouts.
+- BACKGROUND `go test` batches were OOM-killed four times in a row on FREE memory (~2 GB) while AVAILABLE stayed above 11 GB: the build cache inflates page cache and the watchdog reads free, not available. Foreground runs survive. If a package still dies, split it by test-name prefix (`-run '^Test[A-M]'` …) and verify the chunks partition `go test -list 'Test.*'`.
+- One vitest test fails on clean dev since at least d3a005be: `App.sse.test.tsx` "after a resubscribe the new stream drives the app and the old one is dead". Pre-existing; do not count it against a PR and do not fix it as a ride-along.
+- `npm run lint` in web/ reports 94 problems at that baseline. Check parity by the (file, rule) multiset, not the total, so a rule swap cannot pass as parity.
+- The desktop build tag (`-tags desktop`) does not compile locally (gtk4 / webkitgtk-6.0 missing); CI's dedicated macOS `desktop` job compiles and tests it, so desktop-tagged files are compiler-verified in CI only.
+
+Consequence: put the flags and the known failure in every worker and reviewer brief. Misreading to avoid: a timeout or an OOM kill under these conditions is an ENVIRONMENT result, not evidence the PR broke a test.
