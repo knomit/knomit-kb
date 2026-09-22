@@ -5,7 +5,7 @@ confidence: 0.9
 sources: 1
 entities: [pki.Dial, pki.ErrRefusedByPeer, peerAccepted, tls.Dialer, net.OpError, remote error, F10, F13]
 motifs: [one-sided-success, late-arriving-refusal]
-refs: ['src://7b4887ce51d9/internal/pki/client.go@4b523a15c602c173f58465a909c5c19708cbb9c8:28e6de344dc536ce082528e5ddd04104c005f9d8', 'src://7b4887ce51d9/internal/pki/client_test.go@4b523a15c602c173f58465a909c5c19708cbb9c8:b56fcd41ab5553e5e0d7dfbe295e400f68a1b849', 'https://www.rfc-editor.org/rfc/rfc8446#section-4.4.2', 'kb://3ec012f5b4d2/kb/invariants/pki/no-insecure-skip-without-verifyconnection/a3e656d7.md']
+refs: ['src://7b4887ce51d9/internal/pki/client.go@91c89e078ec9c9537aee8ef97a4f6d376579a47f:28e6de344dc536ce082528e5ddd04104c005f9d8', 'src://7b4887ce51d9/internal/pki/client_test.go@91c89e078ec9c9537aee8ef97a4f6d376579a47f:b56fcd41ab5553e5e0d7dfbe295e400f68a1b849', 'https://www.rfc-editor.org/rfc/rfc8446#section-4.4.2', 'kb://3ec012f5b4d2/kb/invariants/pki/no-insecure-skip-without-verifyconnection/a3e656d7.md']
 ---
 # In TLS 1.3 a client's handshake COMPLETES before the server has judged the client certificate, so a successful tls.Dial proves only that WE accepted the peer — pki.Dial therefore completes one HTTP exchange and maps a remote alert to ErrRefusedByPeer
 
