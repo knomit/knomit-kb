@@ -17,7 +17,7 @@ Authoritative sets: EpistemicTypes map[Type]bool and PragmaticTypes map[Type]boo
 
 ## Adding a new Type: the full checklist
 
-An earlier revision of this fact said that after the Go helpers "nothing else needs editing", because the consumers it knew about all derive their lists. That was wrong, and F01 proved it: two hand-maintained tables in the web UI have no derivation and no test, so a new type reached the Go enum, the MCP schema and the spec while the UI still could not draw it.
+An earlier revision of this fact said that after the Go helpers "nothing else needs editing", because the consumers it knew about all derive their lists. That was wrong, and F01 proved it: two hand-maintained tables in the web UI have no derivation, so a new type reached the Go enum, the MCP schema and the spec while the UI still could not draw it.
 
 DERIVED — no edit needed, verified at a7bed673:
 - internal/mcp/instructions.go renders both type lists via instructionTypeLines(fact.All*Types(), ...).
@@ -25,12 +25,22 @@ DERIVED — no edit needed, verified at a7bed673:
 
 MUST BE EDITED BY HAND:
 1. The EpistemicTypes or PragmaticTypes map AND the matching AllXxxTypes() helper (internal/fact).
-2. internal/mcp/factschema.go — a factTypeDocs entry (gloss + aside). Enforced: TestFactSchema_DescriptionsAreComplete fails without it.
-3. web/src/utils.ts — a `typeStyles` entry (color, bg, label, icon). The palette test requires the new colour to sit ≥ 60 weighted-RGB from EVERY existing type colour, and rejects 4- or 8-digit hex.
+2. internal/mcp/factschema.go — a factTypeDocs entry (gloss + aside).
+3. web/src/utils.ts — a `typeStyles` entry (color, bg, label, icon). The new colour must sit ≥ 60 weighted-RGB from EVERY existing type colour, and 4- or 8-digit hex is rejected.
 4. web/src/icons.tsx — an SVG component plus a `case` in the TypeIcon dispatcher, or the type silently renders as UnknownIcon.
 5. spec/mbekg.md — the epistemic or pragmatic type table (§2.4).
+6. web/src/utils.test.ts — the hand-written type list in the matching per-kind entry test (see below).
 
-TESTS THAT HOLD YOU TO IT: TestAll{Epistemic,Pragmatic}Types_MatchesSet (map/slice agreement — a disagreement ships a tool-schema enum rejecting a type the server accepts), TestFactSchema_DescriptionsAreComplete (item 2), and in web/src/utils.test.ts the per-kind entry tests plus the palette distance test (item 3). Item 4 has NO test; check it by eye.
+## Which of those a test will actually catch
+
+This distinction matters more than the checklist, because a hand-list that looks like a guard is worse than no guard.
+
+- CATCHES A MISSING TYPE ON ITS OWN: TestAll{Epistemic,Pragmatic}Types_MatchesSet, which compares map against slice (a disagreement ships a tool-schema enum rejecting a type the server accepts); and TestFactSchema_DescriptionsAreComplete, which fails until item 2 exists. Between them, items 1 and 2 are enforced.
+- DOES NOT: the per-kind entry tests in web/src/utils.test.ts ('has entries for all 10 epistemic types', 'has entries for all 3 pragmatic types'). Both iterate a HARD-CODED `expectedTypes` array, so a fourth pragmatic type is simply not looked at until someone extends the list. That is item 6, and it is maintenance, not protection.
+- PARTIALLY: the palette-distance test iterates Object.entries(typeStyles), so it covers a new entry automatically — but only once the entry exists. It fires when a colour is too close or malformed, never when the type is absent.
+- NOT AT ALL: item 4, the TypeIcon dispatcher. web/src/icons.test.tsx does not touch TypeIcon. Check it by eye.
+
+So items 3, 4 and 5 have no test that fails when you forget them. That is the hole F01 fell into.
 
 Do NOT trust the leaf COUNT in this title as a constant to code against; it has moved twice (12 → 13). Derive it from the helpers.
 
