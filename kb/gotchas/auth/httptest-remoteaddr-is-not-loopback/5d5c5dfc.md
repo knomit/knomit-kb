@@ -5,7 +5,7 @@ confidence: 0.95
 sources: 1
 entities: [httptest.NewRequest, RemoteAddr, isLoopback, fromLoopback, withoutAuthForTests, authDisabled, writeGate, AuthMiddleware, mcpRoutePattern, APIBase, NewAPIRouter]
 motifs: [test-default-diverges, tempting-fix-widens-boundary]
-refs: ['src://7b4887ce51d9/internal/web/auth_middleware.go@e4158f1fd9fc4e2fee5a3b2bf44ed358511adb43:8dc48207941b3ccbcadccb284305e61238fcf387', 'src://7b4887ce51d9/internal/web/auth_testaddr_test.go@e4158f1fd9fc4e2fee5a3b2bf44ed358511adb43:f9a0305371aaf6c4642423931603979829d7551a', 'src://7b4887ce51d9/internal/web/auth_disable_test.go@e4158f1fd9fc4e2fee5a3b2bf44ed358511adb43:dfb3bd798e7fd45cf73745c5183f7ac0920c52f6', 'src://7b4887ce51d9/internal/web/readonly.go@e4158f1fd9fc4e2fee5a3b2bf44ed358511adb43:db1c242d3824cd1767059cd3b68514ff4f1e210c']
+refs: ['src://7b4887ce51d9/internal/web/auth_middleware.go@cec7c5c10b4a752dadbb34a45cb749427923ba8d:8dc48207941b3ccbcadccb284305e61238fcf387', 'src://7b4887ce51d9/internal/web/auth_testaddr_test.go@cec7c5c10b4a752dadbb34a45cb749427923ba8d:f9a0305371aaf6c4642423931603979829d7551a', 'src://7b4887ce51d9/internal/web/auth_disable_test.go@cec7c5c10b4a752dadbb34a45cb749427923ba8d:dfb3bd798e7fd45cf73745c5183f7ac0920c52f6', 'src://7b4887ce51d9/internal/web/readonly.go@cec7c5c10b4a752dadbb34a45cb749427923ba8d:db1c242d3824cd1767059cd3b68514ff4f1e210c', 'https://github.com/knomit/knomit/pull/243']
 ---
 # httptest.NewRequest's RemoteAddr is 192.0.2.1:1234 — documentation space, NOT loopback — so a mutating request built with it carries no principal and the write gate refuses it
 
