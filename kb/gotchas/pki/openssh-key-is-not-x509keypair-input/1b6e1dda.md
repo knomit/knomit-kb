@@ -5,7 +5,7 @@ confidence: 0.9
 sources: 1
 entities: [~/.knomit/id_ed25519, pki.LoadSigner, pki.PKCS8, tls.X509KeyPair, tls.Certificate.PrivateKey, ssh.ParseRawPrivateKey, go-git ClientKey, transportWithClientCert]
 motifs: [format-mismatch-at-boundary, second-copy-of-secret]
-refs: ['src://7b4887ce51d9/internal/pki/key.go@681fef9b82a681de6f87cc27d882101354243095:752474cad79a97f9e6827fd9f9887d9b09127ab0', 'src://7b4887ce51d9/internal/pki/server.go@681fef9b82a681de6f87cc27d882101354243095:d73dab715fc55f17fbe013571ffc146bd06f5387', 'https://github.com/go-git/go-git/blob/v5.19.2/plumbing/transport/http/common.go#L228', 'kb://3ec012f5b4d2/kb/invariants/pki/fingerprint-is-ssh-wire/1a663278.md']
+refs: ['src://7b4887ce51d9/internal/pki/key.go@91c89e078ec9c9537aee8ef97a4f6d376579a47f:752474cad79a97f9e6827fd9f9887d9b09127ab0', 'src://7b4887ce51d9/internal/pki/server.go@91c89e078ec9c9537aee8ef97a4f6d376579a47f:ae787dce2411756e7b89d0fedd6651afe1b2aaa3', 'https://github.com/go-git/go-git/blob/v5.19.2/plumbing/transport/http/common.go#L228', 'kb://3ec012f5b4d2/kb/invariants/pki/fingerprint-is-ssh-wire/1a663278.md']
 ---
 # The instance key is OpenSSH PEM ("OPENSSH PRIVATE KEY"), which tls.X509KeyPair — and therefore go-git's ClientCert/ClientKey options — cannot parse; knomit loads it into an in-memory crypto.Signer and never writes a second copy in PKCS#8
 
