@@ -6,7 +6,7 @@ confidence: 0.9
 sources: 1
 entities: [Ontology.IsSubsetOf, Ontology.SubsetDivergence, nodeIsSubsetOf, repoBuilder.loadOntology, EmbeddedPresetByID, internal/repos/builder.go, internal/fact/ontology.go, TestLoadOntology_AttributesSurviveBoot]
 motifs: [consumer-defines-check]
-refs: ['src://7b4887ce51d9/internal/repos/builder.go@49a7ac736baa1e28db30d76650e1dca725c99290:61abb3d315be765bc6717cd800ee27c0ab8fd20d', 'src://7b4887ce51d9/internal/fact/ontology.go@49a7ac736baa1e28db30d76650e1dca725c99290:c053731a101467d6d4549f6330ce5b16c6220893', 'https://github.com/knomit/knomit/pull/255']
+refs: ['src://7b4887ce51d9/internal/repos/builder.go@331305497a626c1ae5f9f76e744716e888e7e268:61abb3d315be765bc6717cd800ee27c0ab8fd20d', 'src://7b4887ce51d9/internal/fact/ontology.go@331305497a626c1ae5f9f76e744716e888e7e268:c053731a101467d6d4549f6330ce5b16c6220893', 'src://7b4887ce51d9/spec/mbekg.md@331305497a626c1ae5f9f76e744716e888e7e268:bb669b04dcdd6215474f8936a32b3b734f574d1a', 'https://github.com/knomit/knomit/pull/255']
 ---
 # IsSubsetOf treats ontology attributes as DIVERGENCE, because the boot refresh overwrites any subset with the preset — a flagged preset repo keeps its file and forgoes auto-upgrade
 
