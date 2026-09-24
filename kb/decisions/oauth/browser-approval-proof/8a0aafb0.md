@@ -5,7 +5,7 @@ confidence: 0.85
 sources: 1
 entities: [web.browserProof, web.ownHost, web.KnomitClientHeader, X-Knomit-Client, Sec-Fetch-Site, Origin, http.LocalAddrContextKey, corsMiddleware, 'wails://localhost', '[auth].loopback_default', '[auth].require', auth.Admin]
 motifs: [csrf-by-reachability, dormant-permission-goes-live]
-refs: ['src://7b4887ce51d9/internal/web/oauth_pending_api.go@d297a6b01bd1544c4e6dba4054f57a027f21d719:f662765ac5fe23e368201f60a6798663fed99687', 'src://7b4887ce51d9/internal/web/oauth_browser_gate_test.go@d297a6b01bd1544c4e6dba4054f57a027f21d719:3c6254a1f8eeceded17b2da77c968b191c270bd2', 'src://7b4887ce51d9/internal/web/cors.go@d297a6b01bd1544c4e6dba4054f57a027f21d719:152ebaed28cb8b4f3d67ec360a314c12c5354f81', 'kb://3ec012f5b4d2/kb/invariants/oauth/approval-local-principals-only/6d4a8514.md']
+refs: ['src://7b4887ce51d9/internal/web/oauth_pending_api.go@52176c9f3207df73a085430915d46f9b8f731c29:f662765ac5fe23e368201f60a6798663fed99687', 'src://7b4887ce51d9/internal/web/oauth_browser_gate_test.go@52176c9f3207df73a085430915d46f9b8f731c29:3c6254a1f8eeceded17b2da77c968b191c270bd2', 'src://7b4887ce51d9/internal/web/cors.go@52176c9f3207df73a085430915d46f9b8f731c29:152ebaed28cb8b4f3d67ec360a314c12c5354f81', 'kb://3ec012f5b4d2/kb/invariants/oauth/approval-local-principals-only/6d4a8514.md', 'https://github.com/knomit/knomit/pull/283']
 ---
 # The web UI approves OAuth requests with a same-origin PROOF, not a token or cookie: Host a loopback spelling with the arrival port, X-Knomit-Client: web, Sec-Fetch-Site same-origin or absent, Origin exactly http://<Host> (required on mutations), JSON Content-Type on mutations — and it makes loopback-anonymous `admin` live for the first time
 
