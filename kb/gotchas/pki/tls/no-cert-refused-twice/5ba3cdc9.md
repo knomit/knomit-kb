@@ -5,7 +5,7 @@ confidence: 0.95
 sources: 1
 entities: [pki.reloader.configFor, snapshot.check, tls.RequireAnyClientCert, tls.RequestClientCert, VerifyConnection, TestBootServer_TLSRefusesNoClientCert, AuthMiddleware]
 motifs: [layered-check-masks-sabotage, sabotage-must-cross-layers]
-refs: ['src://7b4887ce51d9/internal/pki/server.go@243e0a5cf8ab321b0b10d0968e946343dd7d1517:0e8d8f9046bbf7a74b8707eb26a5493e25f0ef17', 'src://7b4887ce51d9/tools/desktop/boot_tls_test.go@243e0a5cf8ab321b0b10d0968e946343dd7d1517:27fdfd961a79551845339a436ea067f00c55ebb2', 'kb://3ec012f5b4d2/kb/gotchas/pki/require-any-client-cert-is-stronger/de5b6d33.md']
+refs: ['src://7b4887ce51d9/internal/pki/server.go@bc5c43cd317a48ffb7337f22329f2020d5502542:0e8d8f9046bbf7a74b8707eb26a5493e25f0ef17', 'src://7b4887ce51d9/tools/desktop/boot_tls_test.go@bc5c43cd317a48ffb7337f22329f2020d5502542:40ff28ab2b3d932db2c7822f18b558bdac4be42f', 'kb://3ec012f5b4d2/kb/gotchas/pki/require-any-client-cert-is-stronger/de5b6d33.md', 'https://github.com/knomit/knomit/pull/290']
 ---
 # The mTLS listener refuses a certificate-less client at the TLS layer TWICE — ClientAuth RequireAnyClientCert AND snapshot.check's 'peer presented no certificate' — so a sabotage that weakens only one of them changes nothing observable
 
