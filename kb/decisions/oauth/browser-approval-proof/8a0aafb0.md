@@ -5,7 +5,7 @@ confidence: 0.85
 sources: 1
 entities: [web.browserProof, web.ownHost, web.KnomitClientHeader, X-Knomit-Client, Sec-Fetch-Site, Origin, http.LocalAddrContextKey, corsMiddleware, 'wails://localhost', '[auth].loopback_default', '[auth].require', auth.Admin]
 motifs: [csrf-by-reachability, dormant-permission-goes-live]
-refs: ['src://7b4887ce51d9/internal/web/oauth_pending_api.go@52176c9f3207df73a085430915d46f9b8f731c29:f662765ac5fe23e368201f60a6798663fed99687', 'src://7b4887ce51d9/internal/web/oauth_browser_gate_test.go@52176c9f3207df73a085430915d46f9b8f731c29:3c6254a1f8eeceded17b2da77c968b191c270bd2', 'src://7b4887ce51d9/internal/web/cors.go@52176c9f3207df73a085430915d46f9b8f731c29:152ebaed28cb8b4f3d67ec360a314c12c5354f81', 'kb://3ec012f5b4d2/kb/invariants/oauth/approval-local-principals-only/6d4a8514.md', 'https://github.com/knomit/knomit/pull/283']
+refs: ['src://7b4887ce51d9/internal/web/oauth_pending_api.go@52176c9f3207df73a085430915d46f9b8f731c29:f662765ac5fe23e368201f60a6798663fed99687', 'src://7b4887ce51d9/internal/web/oauth_browser_gate_test.go@52176c9f3207df73a085430915d46f9b8f731c29:3c6254a1f8eeceded17b2da77c968b191c270bd2', 'src://7b4887ce51d9/internal/web/cors.go@52176c9f3207df73a085430915d46f9b8f731c29:152ebaed28cb8b4f3d67ec360a314c12c5354f81', 'kb://3ec012f5b4d2/kb/invariants/oauth/approval-local-principals-only/6d4a8514.md', 'https://github.com/knomit/knomit/pull/283', 'src://7b4887ce51d9/internal/web/oauth_browser_gate_test.go@1af30efe57be4a58fadbf129f473e83b505672f3:0a8e58e6ffa76a202917653d1659eaec5c47cbf9', 'kb://3ec012f5b4d2/kb/invariants/auth/loopback-anonymous-host/4d629192.md', 'https://github.com/knomit/knomit/issues/281', 'https://github.com/knomit/knomit/pull/289']
 ---
 # The web UI approves OAuth requests with a same-origin PROOF, not a token or cookie: Host a loopback spelling with the arrival port, X-Knomit-Client: web, Sec-Fetch-Site same-origin or absent, Origin exactly http://<Host> (required on mutations), JSON Content-Type on mutations — and it makes loopback-anonymous `admin` live for the first time
 
@@ -22,7 +22,7 @@ Mutations (approve/deny) must also carry:
 Each failure is a 403 whose text names the missing proof.
 
 WHY EACH PART:
-- **Host check.** This is the DNS-rebinding defence: a rebound page is same-origin with ITSELF, its Origin matches its own Host, and only the Host names the attacker.
+- **Host check.** This was the DNS-rebinding defence when 3b shipped: a rebound page is same-origin with ITSELF, its Origin matches its own Host, and only the Host names the attacker. Since #281 it is the SECOND line. AuthMiddleware refuses a loopback peer whose Host is a foreign DNS name with 421, before any principal exists (kb/invariants/auth/loopback-anonymous-host), so such a request never reaches this gate. This gate still refuses, with 403, the Host classes that check admits: other loopback IP literals such as 127.0.0.2, a port other than the arrival port, and a Host with no port on a listener that is not on 80. Keep both. They ask different questions: 'may this request be the local user' versus 'is this the page this listener served'.
 - **GET needs no Origin.** Browsers omit Origin on same-origin GET/HEAD. Requiring it would refuse the panel's own list call (reviewer B2).
 - **JSON type on mutations.** An HTML form can send only urlencoded, multipart or text/plain, and never a custom header.
 - **No CSRF token.** There is no ambient credential to ride: no cookie, no session. The only ambient authority is being on loopback, and the Host/Origin/header proof is exactly the evidence that the caller is the page this listener served.
@@ -35,6 +35,7 @@ CONSEQUENCE TO KNOW (reviewer S7):
 - Before 3b, auth.Admin was checked nowhere in production code, so 'loopback-anonymous holds admin' was inert.
 - Now any local process of ANY OS user can send these headers with curl. It can approve a pending OAuth request and so turn a local foothold into a remote bearer token. Before 3b, only the socket's owner could.
 - The mitigations are operator config: `[auth] loopback_default` without `admin`, or `require = true`. Either removes the browser path entirely: TestBrowserGate_AnonymousWithoutAdminRefused.
-- A DNS-rebound page reaching every OTHER plain-listener route as loopback-anonymous is a pre-existing, wider gap. It was filed as an issue by the master. 3b adds Host validation to the approval endpoints only.
+- A DNS-rebound page reaching every OTHER plain-listener route as loopback-anonymous was the wider gap filed as #281. It is closed by the AuthMiddleware Host check.
+- Five TestBrowserGate_EachMissingProofRefuses rows (rebinding, rebinding GET, 127.0.0.1.nip.io, localhost., sub.localhost) now expect 421 from that earlier check, and still assert that the request stays undecided.
 
 MISREADING TO AVOID: the proof is not authentication. It says 'a browser page this listener served is asking'; it says nothing about which human. It is the anonymous principal's admin that authorises.
