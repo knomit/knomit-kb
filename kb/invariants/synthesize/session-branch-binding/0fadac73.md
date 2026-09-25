@@ -5,7 +5,7 @@ confidence: 0.95
 sources: 0
 entities: [Pipeline.opener, Pipeline.StartSession, Pipeline.StartOrResumeSession, Pipeline.ContinueSessionForItem, Pipeline.handlePhase, Pipeline.completeSession, Deps, Strategy, sess.Branch, ri.AgentBranch, store.PipelineSession]
 motifs: [out-of-band-state]
-refs: ['src://knomit/internal/synthesize/pipeline.go@6356eab8', 'src://knomit/internal/synthesize/strategy.go@6356eab8', 'src://knomit/internal/synthesize/hypothesize_strategy.go@6356eab8', 'kb://3ec012f5b4d2/kb/decisions/synthesize/one-engine-two-drivers/19c69b3f.md', 'kb://3ec012f5b4d2/kb/decisions/mcp/review/start-resumes-live-session/e4f26b91.md']
+refs: ['src://7b4887ce51d9/internal/synthesize/pipeline.go@6d912194ff82aa94b28cdb216e9f750edfada8d6:451a628a325e7edb70b75feb6e515b50298dc7a3#L186-L192', 'src://7b4887ce51d9/internal/synthesize/strategy.go@6d912194ff82aa94b28cdb216e9f750edfada8d6:dcd234b748995034eaf281c233a0cb284ad8fe52', 'src://7b4887ce51d9/internal/synthesize/hypothesize_strategy.go@6d912194ff82aa94b28cdb216e9f750edfada8d6:1f3cb74f109fafcd81c0e85d6501798f4a7c5546', 'kb://3ec012f5b4d2/kb/decisions/synthesize/one-engine-two-drivers/19c69b3f.md', 'kb://3ec012f5b4d2/kb/decisions/mcp/review/start-resumes-live-session/e4f26b91.md']
 ---
 # sess.Branch is captured once, when a session is created (Pipeline.opener); downstream engine code NEVER reads ri.AgentBranch()
 
