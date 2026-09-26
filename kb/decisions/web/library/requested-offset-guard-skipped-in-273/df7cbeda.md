@@ -5,7 +5,7 @@ confidence: 0.95
 sources: 1
 entities: [web/src/Library.tsx, loadMoreRef, loadingRef, lensLoadingRef, lensGenRef, recentGenRef, useLayoutEffect, requested-offset guard, paging snapshot]
 motifs: [state-split-across-phases, defence-in-depth-cost]
-refs: ['kb://3ec012f5b4d2/kb/gotchas/web/testing/library-loadmore-ref-passive-mirror/a965b6f6.md', 'src://7b4887ce51d9/web/src/Library.tsx@ec38e06d0c068538f2b52f3f82a61b11d9c9b6eb:a3b08cb6d4e9105dd712b3b03a9f236ca7e7b22a', 'src://7b4887ce51d9/web/src/Library.tsx@4b8962b8b342b8d97e2ac2c387d9965ad780ebd8:18bb8ccfaab1b7b4e3a919cc08e811ca15c17008#L417-L438', 'https://github.com/knomit/knomit/pull/273', 'https://github.com/knomit/knomit/issues/270', 'https://github.com/knomit/knomit/issues/275', 'https://github.com/knomit/knomit/pull/306']
+refs: ['kb://3ec012f5b4d2/kb/gotchas/web/testing/library-loadmore-ref-passive-mirror/a965b6f6.md', 'src://7b4887ce51d9/web/src/Library.tsx@ec38e06d0c068538f2b52f3f82a61b11d9c9b6eb:a3b08cb6d4e9105dd712b3b03a9f236ca7e7b22a', 'src://7b4887ce51d9/web/src/Library.tsx@e4175f7b8c9015b1dbdc3f30e5bb1737da7d69e1:18bb8ccfaab1b7b4e3a919cc08e811ca15c17008#L417-L438', 'https://github.com/knomit/knomit/pull/273', 'https://github.com/knomit/knomit/issues/270', 'https://github.com/knomit/knomit/issues/275', 'https://github.com/knomit/knomit/pull/306']
 ---
 # PR #273 fixes Library's duplicate page fetch at its cause (layout-effect loadMoreRef, synchronous loadingRef) and deliberately does NOT add a requested-offset guard; a real hardening belongs to a single paging snapshot
 
