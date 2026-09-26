@@ -1,0 +1,19 @@
+---
+kind: pragmatic
+type: policy
+domain: [store, signing, verify, testing]
+confidence: 0.95
+sources: 1
+entities: [ErrNoSigner, repoHandler.commitSigner, storeCommit, SetTestFallbackSigner, testing.Testing, internal/testsupport/testsigner, Manager.Signer, store.Replay, initialize flow, TestFallbackSignerOnlyReferencedFromTests, nosignertest]
+motifs: [fail-closed-default, bypass-defeats-guarantee]
+refs: ['src://7b4887ce51d9/internal/store/sign.go@d48eff7a7b382707b43ba71deff491b84d3df6fa:8eb3a75739a7c1c3254b8ac8dfe9b54393a6118f', 'src://7b4887ce51d9/internal/store/fact_write.go@d48eff7a7b382707b43ba71deff491b84d3df6fa:f426bd234d6005b058ff87e3916ca003cde58720', 'src://7b4887ce51d9/internal/repos/lifecycle.go@d48eff7a7b382707b43ba71deff491b84d3df6fa:d17653aac8d9fb373a8a2e307edf18cf26291a4a', 'src://7b4887ce51d9/internal/web/handlers_origin_session.go@d48eff7a7b382707b43ba71deff491b84d3df6fa:915df4aa81e0084908dba82309e82e866decb4d8', 'src://7b4887ce51d9/test/archtest/test_signer_isolation_test.go@d48eff7a7b382707b43ba71deff491b84d3df6fa:167938a286038a4c7975f1ab2880ba4766924f3e', 'src://7b4887ce51d9/internal/testsupport/testsigner/testsigner.go@d48eff7a7b382707b43ba71deff491b84d3df6fa:18ac56ac99df19356d2f0405a2d74d184ca23467', 'src://7b4887ce51d9/internal/repos/lifecycle_initialize_test.go@d48eff7a7b382707b43ba71deff491b84d3df6fa:3073e63ac28ae3f6cc80d9e7318bd51fa9a989ce', 'src://7b4887ce51d9/internal/web/origin_session_signing_test.go@d48eff7a7b382707b43ba71deff491b84d3df6fa:d2d81f3aee28a3566401cd0d5fa26e75118e48fb', 'kb://3ec012f5b4d2/kb/decisions/git/commit-signing-always-on/44df6285.md']
+---
+# A Service with no commit signer REFUSES authored writes (store.ErrNoSigner), checked before any object is written; init commits stay unsigned by design; test binaries use a fallback signer that production can never reach
+
+RULE: every AUTHORED commit (WriteFact, DeleteFact, BatchWriteFacts, merge commits incl. experiment commit and reconcile, rebase replay) resolves its signer through `repoHandler.commitSigner()` BEFORE writing any blob or tree: the Service's signer, else the test fallback (test binaries only), else `ErrNoSigner`. A refused write leaves the object store untouched. Before F09 PR 2 a nil signer was a silent no-op and three live paths pushed unsigned commits as the agent branch: the initialize flow's ontology commit (lifecycle.go, now `svc.SetSigner(m.deps.Signer)`), and the origin wizard's clone store, into which `store.Replay` writes every local fact on the disjoint-history path (now `remoteSvc.SetSigner(rm.Signer())` in handleTestConnectivity, where that store is created). Under F09 a verifying peer refuses unsigned commits, so producing one is a defect.
+
+EXCEPTION BY DESIGN: the init commits of a new repository (README, ontology in repo.go InitRepo/initFromEmptyRemote) are written by the plumbing layer with an explicit nil signer and stay unsigned. They precede any agent-branch work and lie below every F09 anchor, so no verifier walks them.
+
+TEST FALLBACK: `store.SetTestFallbackSigner` is honoured only when `testing.Testing()` is true and panics otherwise; eight test packages install a fixed key from TestMain via internal/testsupport/testsigner. Guards: archtest TestFallbackSignerOnlyReferencedFromTests (no non-test file names the hook or the package) and the package is on the forbidden-in-shipped-binaries list. internal/store/nosignertest has NO TestMain and shows production behaviour.
+
+CONSEQUENCE FOR NEW CODE: a new place that opens its own Service and writes through it MUST SetSigner (the Manager exposes Signer()); otherwise it fails with ErrNoSigner at its first write in production. A test for such a path must give the instance a NAMED key (testsigner.Named) and assert the pushed commit's SSHSIG key equals it (testsigner.CommitSignerKey): with the fallback installed, a missing SetSigner still signs, just with the wrong key.
