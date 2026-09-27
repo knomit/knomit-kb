@@ -5,7 +5,7 @@ confidence: 0.9
 sources: 1
 entities: [TestControl_UpMigrationsAreIdempotentDDL, migrate.Control, upWithRecovery, recoverDirty, forcePastCommittedBody, alreadyApplied]
 motifs: [replayability-constrains-schema, rationale-outlives-its-cause]
-refs: ['src://7b4887ce51d9/internal/store/migrate/control_test.go@49e396887c1888e3c538969847219bc20fa5e9eb:eec52544d282c98c825bb076afbedbd099d9b410#L44-L72', 'src://7b4887ce51d9/internal/store/migrate/migrate.go@49e396887c1888e3c538969847219bc20fa5e9eb:782b1259087d987dfb9b86d3f1de8f4162ef8d99#L69-L235', 'kb://3ec012f5b4d2/kb/architecture/store/migrations/ec215752.md', 'kb://3ec012f5b4d2/kb/decisions/store/migrate/control-chain-replayable/b0d77bc9.md', 'kb://3ec012f5b4d2/kb/conventions/store/migrations/idempotent-up-bodies/037ee64d.md', 'https://github.com/knomit/knomit/issues/326']
+refs: ['src://7b4887ce51d9/internal/store/migrate/control_test.go@1cc5413c593830e521cbd7cb44bf38473c51a003:eec52544d282c98c825bb076afbedbd099d9b410#L44-L72', 'src://7b4887ce51d9/internal/store/migrate/migrate.go@1cc5413c593830e521cbd7cb44bf38473c51a003:782b1259087d987dfb9b86d3f1de8f4162ef8d99#L59-L230', 'kb://3ec012f5b4d2/kb/conventions/store/migrations/idempotent-up-bodies/037ee64d.md', 'https://github.com/knomit/knomit/issues/326']
 ---
 # control.db up-migrations must be CREATE ... IF NOT EXISTS only because recovery re-runs a body, and the fallback that tolerates a non-idempotent body recognises just two errors
 
