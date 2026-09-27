@@ -4,7 +4,7 @@ domain: [verify, fleet, security]
 confidence: 0.95
 sources: 1
 entities: [fleet repository, member record, verify_signatures, verify_signers, F19 certificates, CRL, knomit-cert header]
-refs: ['kb://3ec012f5b4d2/kb/decisions/fleet/member-record/e328b6ea.md', 'kb://3ec012f5b4d2/kb/invariants/store/verify/acceptance-gate/74a27150.md', 'kb://3ec012f5b4d2/kb/decisions/fact/ontology/root-attributes/90268b66.md', 'https://github.com/knomit/knomit/pull/334']
+refs: ['kb://3ec012f5b4d2/kb/decisions/fleet/member-record/e328b6ea.md', 'kb://3ec012f5b4d2/kb/invariants/store/verify/acceptance-gate/74a27150.md', 'kb://3ec012f5b4d2/kb/decisions/fact/ontology/root-attributes/90268b66.md', 'kb://3ec012f5b4d2/kb/decisions/fleet/registration-model/bcbf76e4.md', 'https://github.com/knomit/knomit/pull/334']
 ---
 # Who may sign a KB's commits is decided ONLY by a fleet repository's member records; no key list, certificate, CRL or root key lives in any KB or commit
 
