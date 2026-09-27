@@ -5,7 +5,7 @@ domain: [verify, store, sync, fleet]
 confidence: 0.9
 sources: 1
 entities: [reconcileMain, reconcileMainTo, verify_walk.go, walkHistory, verify_context, 000028_drop_verify_context]
-refs: ['src://7b4887ce51d9/internal/store/remote_reconcile.go@3ea98902989f72e43d1eafb3eb742a1a1899bf0f:f17d5ff159390ddbb86ebd82b41734bc37f36f49', 'src://7b4887ce51d9/internal/store/verify_walk.go@3ea98902989f72e43d1eafb3eb742a1a1899bf0f:66c2a386bd442305d9eed3bc76079b145688547f', 'src://7b4887ce51d9/internal/store/migrate/repo/000028_drop_verify_context.up.sql@3ea98902989f72e43d1eafb3eb742a1a1899bf0f:8c580fb7b2ff564aa2d6fb9bfd1fdc01261730a8']
+refs: ['src://7b4887ce51d9/internal/store/remote_reconcile.go@7550aef5d96a8d873f36c8b3a3d781446edbe8a2:f17d5ff159390ddbb86ebd82b41734bc37f36f49', 'src://7b4887ce51d9/internal/store/verify_walk.go@7550aef5d96a8d873f36c8b3a3d781446edbe8a2:be472191b2f1457165543872b6d040e681b4d7b5', 'src://7b4887ce51d9/internal/store/migrate/repo/000028_drop_verify_context.up.sql@7550aef5d96a8d873f36c8b3a3d781446edbe8a2:8c580fb7b2ff564aa2d6fb9bfd1fdc01261730a8']
 ---
 # F09 verifies a change once, at the gate that advances a KB's main; no instance re-verifies history on fetch, clone, reconcile or merge (the fold, anchor and verify_context are gone)
 
