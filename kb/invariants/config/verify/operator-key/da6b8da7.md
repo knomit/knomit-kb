@@ -6,7 +6,7 @@ confidence: 0.9
 sources: 1
 entities: [VerifyConfig.OperatorKey, KNOMIT_VERIFY_OPERATOR_KEY, store.NewStaticRoot, repos.Deps.VerifyRoot, Manager.RootOfTrust, Service.SetRootOfTrust]
 motifs: [fail-closed-default, no-implicit-authority]
-refs: ['src://7b4887ce51d9/internal/app/app.go@023ac43d295fa3338ecbd4a72ddcf624e18e119e:0805863d7f3628ef325a08c3ece70b36349bff75', 'src://7b4887ce51d9/internal/config/config.go@023ac43d295fa3338ecbd4a72ddcf624e18e119e:319054900051d2dc19649f448b8307767e0e52f3', 'src://7b4887ce51d9/internal/store/verify_fold.go@023ac43d295fa3338ecbd4a72ddcf624e18e119e:8687e784f78514aba7a7195b677bcc068f7c2fd0', 'src://7b4887ce51d9/internal/store/verify_first_contact_test.go@023ac43d295fa3338ecbd4a72ddcf624e18e119e:06d8c1769804507553bbd3897043c87c8c8128b5']
+refs: ['src://7b4887ce51d9/internal/app/app.go@fa932c1154b16d56c412d3350ccb1757934e2979:0805863d7f3628ef325a08c3ece70b36349bff75', 'src://7b4887ce51d9/internal/config/config.go@fa932c1154b16d56c412d3350ccb1757934e2979:319054900051d2dc19649f448b8307767e0e52f3', 'src://7b4887ce51d9/internal/store/verify_fold.go@fa932c1154b16d56c412d3350ccb1757934e2979:db4cda0929e53c762bbd725414802f1f51c1a69d', 'src://7b4887ce51d9/internal/store/verify_first_contact_test.go@fa932c1154b16d56c412d3350ccb1757934e2979:4de9e3f5a1700791d8529eacce18031e2e7ee6ce', 'https://github.com/knomit/knomit/pull/319']
 ---
 # [verify].operator_key is F09's root of trust: an ssh-ed25519 line parsed at boot (malformed fails boot), empty = unrooted = closed before any enable, and it NEVER defaults to the instance's own key
 
