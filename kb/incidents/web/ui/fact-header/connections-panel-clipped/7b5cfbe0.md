@@ -5,7 +5,7 @@ confidence: 0.95
 sources: 1
 entities: [ConnectionsPanel, ConnectionsCell, RightPanel, edgesGroup, web/src/ConnectionsPanel.tsx, web/src/ConnectionsPanel.test.tsx]
 motifs: [anchor-outlives-its-layout, test-pins-the-bug]
-refs: ['src://7b4887ce51d9/web/src/ConnectionsPanel.tsx@5efbff1a0e94ee43db17dfa66a309f30f6d56c52:8234d8dc2d46129046b2bf07756531c130ba6cb3#L77-L90', 'src://7b4887ce51d9/web/src/ConnectionsPanel.test.tsx@5efbff1a0e94ee43db17dfa66a309f30f6d56c52:225dc1b486c2a10bb6dfb2c3a7d1c93c21a26d86#L72-L84', 'src://7b4887ce51d9/web/src/MotifPanel.test.tsx@5efbff1a0e94ee43db17dfa66a309f30f6d56c52:03dfbec7da8110c05eb99c854818fda062f7c5e9#L42-L52', 'kb://3ec012f5b4d2/kb/decisions/ui/motif/edges-row-header/28608045.md', 'https://github.com/knomit/knomit/pull/323', 'https://github.com/knomit/knomit/pull/177']
+refs: ['src://7b4887ce51d9/web/src/ConnectionsPanel.tsx@2ed1de3515f70cd5bc58f480bec4fd226bc2bffe:d072a46af18277e3331fc9798271a8566a804dfc#L76-L90', 'src://7b4887ce51d9/web/src/ConnectionsPanel.test.tsx@2ed1de3515f70cd5bc58f480bec4fd226bc2bffe:225dc1b486c2a10bb6dfb2c3a7d1c93c21a26d86#L72-L84', 'src://7b4887ce51d9/web/src/MotifPanel.test.tsx@2ed1de3515f70cd5bc58f480bec4fd226bc2bffe:03dfbec7da8110c05eb99c854818fda062f7c5e9#L42-L52', 'kb://3ec012f5b4d2/kb/decisions/ui/motif/edges-row-header/28608045.md', 'https://github.com/knomit/knomit/pull/323', 'https://github.com/knomit/knomit/pull/177']
 ---
 # The 'cites'/'cited by' panel was clipped at the fact pane's left edge because its right:0 anchor outlived the move of its cells from the header's right end to the start of the edges row
 
