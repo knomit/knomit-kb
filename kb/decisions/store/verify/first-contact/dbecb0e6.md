@@ -6,7 +6,7 @@ confidence: 0.9
 sources: 1
 entities: [checkOwnLineage, ForeignLineageError, Service.SetOwnKeys, Service.FleetKeysOf, Manager.ownFleetKeys, InitFromRemote, verify_accepted]
 motifs: [decide-before-ref-moves, input-attacker-cannot-choose]
-refs: ['src://7b4887ce51d9/internal/store/verify_e4.go@d4205ad457f087b8a714c17f4745a5f7bea3675c:a5ab11d06981e40523657d23951fcde83fe9073a', 'src://7b4887ce51d9/internal/store/fleet_read.go@d4205ad457f087b8a714c17f4745a5f7bea3675c:407da5166db3fdb171b24c713812bb9810e0bec0']
+refs: ['src://7b4887ce51d9/internal/store/verify_e4.go@7550aef5d96a8d873f36c8b3a3d781446edbe8a2:a5ab11d06981e40523657d23951fcde83fe9073a', 'src://7b4887ce51d9/internal/store/fleet_read.go@7550aef5d96a8d873f36c8b3a3d781446edbe8a2:407da5166db3fdb171b24c713812bb9810e0bec0']
 ---
 # F09 first contact sets refs at origin's tips (no fold, since PR 5); E4 still adopts origin's copy of the own agent branch only if every commit beyond origin's main is signed by an own key (current key, plus every key the own fleet member record has held) or accepted, and otherwise FAILS the create, never starting a fresh lineage
 
