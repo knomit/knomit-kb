@@ -6,7 +6,7 @@ confidence: 0.9
 sources: 1
 entities: [Ontology.SubsetDivergence, DivergenceTriggers, nodeIsSubsetOf, triggersSubset, refreshDivergence, serializeNode, internal/fact/ontology.go]
 motifs: [consumer-defines-check]
-refs: ['src://7b4887ce51d9/internal/fact/ontology.go@21eb775ef7016db14d18ebd8c8f801fce7029def:6771fe9863bc0eba78edb37e05a1a8709bd81865', 'src://7b4887ce51d9/internal/repos/builder.go@21eb775ef7016db14d18ebd8c8f801fce7029def:5ee412f9e9110526fd73d775b3618e9c8dc79b34', 'kb://3ec012f5b4d2/kb/decisions/fact/ontology/attributes-block-preset-refresh/17bba4fd.md', 'kb://3ec012f5b4d2/kb/invariants/repos/ontology/refresh-preserves-root-attributes/77ad0332.md']
+refs: ['src://7b4887ce51d9/internal/fact/ontology.go@47cfef6c8f030088722fda917b5f43bcdcfb4f15:6771fe9863bc0eba78edb37e05a1a8709bd81865', 'src://7b4887ce51d9/internal/repos/builder.go@47cfef6c8f030088722fda917b5f43bcdcfb4f15:5ee412f9e9110526fd73d775b3618e9c8dc79b34', 'kb://3ec012f5b4d2/kb/decisions/fact/ontology/attributes-block-preset-refresh/17bba4fd.md', 'kb://3ec012f5b4d2/kb/invariants/repos/ontology/refresh-preserves-root-attributes/77ad0332.md', 'https://github.com/knomit/knomit/pull/332']
 ---
 # Triggers are preset-refresh DIVERGENCE (reason "triggers"): a stored node whose triggers the preset does not carry identically keeps its file and forgoes auto-upgrade; presets carry none today
 
