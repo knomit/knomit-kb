@@ -6,7 +6,7 @@ confidence: 0.9
 sources: 1
 entities: [InitFromRemote, InitSubscription, CloneFrom, checkOwnLineage, ErrForeignLineage, BranchACreateReads, initClone]
 motifs: [decide-before-ref-moves, input-attacker-cannot-choose]
-refs: ['src://7b4887ce51d9/internal/store/repo.go@39c41339c06f81533f4420ade598a11c4bfb2bd8:e5be8796bfc6b8af7ac11a179eccb90ac41f1d0b', 'src://7b4887ce51d9/internal/store/verify_e4.go@39c41339c06f81533f4420ade598a11c4bfb2bd8:8a3d074cd876294eda0f9a30b09313b685983cbf', 'src://7b4887ce51d9/internal/store/verify_first_contact_test.go@39c41339c06f81533f4420ade598a11c4bfb2bd8:4de9e3f5a1700791d8529eacce18031e2e7ee6ce', 'kb://3ec012f5b4d2/kb/invariants/store/verify/anchor/9cc970dd.md']
+refs: ['src://7b4887ce51d9/internal/store/repo.go@fa932c1154b16d56c412d3350ccb1757934e2979:0c7a45c0c2878431c01baefb03211ff51b29ec06', 'src://7b4887ce51d9/internal/store/verify_e4.go@fa932c1154b16d56c412d3350ccb1757934e2979:428e6d032e0ca7bf1829ba6bc01d7cf781289a68', 'src://7b4887ce51d9/internal/store/verify_first_contact_test.go@fa932c1154b16d56c412d3350ccb1757934e2979:4de9e3f5a1700791d8529eacce18031e2e7ee6ce', 'kb://3ec012f5b4d2/kb/invariants/store/verify/anchor/9cc970dd.md', 'https://github.com/knomit/knomit/pull/319']
 ---
 # F09 first contact (InitFromRemote, InitSubscription, CloneFrom) folds from the root BEFORE setting any local ref; E4 adopts origin's copy of the own agent branch only if every commit beyond the verified upstream is signed by the own key (or accepted), and otherwise FAILS the create — it never starts a fresh lineage
 
