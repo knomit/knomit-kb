@@ -4,7 +4,7 @@ domain: [fleet, repos, web, cli]
 confidence: 0.95
 sources: 1
 entities: [/api/v1/fleet, knomit fleet, Fleet tab, control.db, fleet ontology preset, knomit.toml]
-refs: ['kb://3ec012f5b4d2/kb/architecture/fleet/registration/05e5af16.md', 'kb://3ec012f5b4d2/kb/decisions/fleet/member-record/e328b6ea.md', 'kb://3ec012f5b4d2/kb/decisions/verify/forge-ci/fda838bb.md', 'https://github.com/knomit/knomit/pull/334']
+refs: ['kb://3ec012f5b4d2/kb/architecture/fleet/registration/05e5af16.md', 'kb://3ec012f5b4d2/kb/decisions/fleet/member-record/e328b6ea.md', 'kb://3ec012f5b4d2/kb/decisions/verify/forge-ci/fda838bb.md', 'kb://3ec012f5b4d2/kb/decisions/fleet/durable-unregistration/adb65151.md', 'kb://3ec012f5b4d2/kb/decisions/fleet/source-of-truth/6ddfdd1a.md', 'https://github.com/knomit/knomit/pull/334']
 ---
 # Fleet membership is instance state: registered through the running server's REST API (CLI is a thin client), accepted by a human merging the agent branch into the fleet's main, tracked in control.db, and the fleet repo is recognised by its ontology preset alone
 
