@@ -6,7 +6,7 @@ confidence: 0.85
 sources: 1
 entities: [knomit verify ci, store.CheckRange, RangeVerdict, cmd.ExitCodeError, tools/ci/verify-signatures.yml, KNOMIT_FLEET_URL, KNOMIT_FLEET_TOKEN, merge-agent-branches.yml]
 motifs: [one-implementation-two-sites]
-refs: ['src://7b4887ce51d9/cmd/verify_signatures.go@6d16e466e722e829bca967e29bac8aa4d865d391:b53e7f5cfa260c1eeb396b701b39e2a82b55f4f6', 'src://7b4887ce51d9/cmd/verify_signatures_test.go@6d16e466e722e829bca967e29bac8aa4d865d391:33a2200163eb70de2edf7f13a506d7230bc5d076', 'src://7b4887ce51d9/tools/ci/verify-signatures.yml@6d16e466e722e829bca967e29bac8aa4d865d391:ca11ae5f4fca6ccac46d88440141c92490182b9e', 'src://7b4887ce51d9/internal/store/verify_range.go@6d16e466e722e829bca967e29bac8aa4d865d391:e77b933b4320cf7751e631b50ebc80c8a690cb59']
+refs: ['src://7b4887ce51d9/cmd/verify_signatures.go@ba41ef143c2fbd30615660652678d28cb5c7bacf:b53e7f5cfa260c1eeb396b701b39e2a82b55f4f6', 'src://7b4887ce51d9/cmd/verify_signatures_test.go@ba41ef143c2fbd30615660652678d28cb5c7bacf:33a2200163eb70de2edf7f13a506d7230bc5d076', 'src://7b4887ce51d9/tools/ci/verify-signatures.yml@ba41ef143c2fbd30615660652678d28cb5c7bacf:ca11ae5f4fca6ccac46d88440141c92490182b9e', 'src://7b4887ce51d9/internal/store/verify_range.go@ba41ef143c2fbd30615660652678d28cb5c7bacf:e77b933b4320cf7751e631b50ebc80c8a690cb59', 'https://github.com/knomit/knomit/pull/330']
 ---
 # `knomit verify ci` IS the F09 acceptance gate for a GitHub-hosted knowledge base: store.CheckRange over plain checkouts, with --fleet <fleet checkout>; it reads verify_signatures at the upstream's tip FIRST and exits 0 without touching the fleet when it is off
 
