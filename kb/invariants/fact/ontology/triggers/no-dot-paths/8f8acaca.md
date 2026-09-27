@@ -6,7 +6,7 @@ confidence: 0.95
 sources: 1
 entities: [compileGlob, substitutePlaceholders, .knomit, isFactPath, internal/fact/glob.go]
 motifs: [private-state-invisible]
-refs: ['src://7b4887ce51d9/internal/fact/glob.go@21eb775ef7016db14d18ebd8c8f801fce7029def:612b3e9a35572e1c6136cef0b76aa1884eccd6b0', 'src://7b4887ce51d9/internal/fact/triggers.go@21eb775ef7016db14d18ebd8c8f801fce7029def:aa13860fcde06aeebde8928183336abad427ba2f', 'kb://3ec012f5b4d2/kb/invariants/fact/private-paths/b6babb00.md']
+refs: ['src://7b4887ce51d9/internal/fact/glob.go@47cfef6c8f030088722fda917b5f43bcdcfb4f15:612b3e9a35572e1c6136cef0b76aa1884eccd6b0', 'src://7b4887ce51d9/internal/fact/triggers.go@47cfef6c8f030088722fda917b5f43bcdcfb4f15:aa13860fcde06aeebde8928183336abad427ba2f', 'kb://3ec012f5b4d2/kb/invariants/fact/private-paths/b6babb00.md', 'https://github.com/knomit/knomit/pull/332']
 ---
 # A trigger `match` can never name a dot path: `.knomit/` and every private segment are refused at compile, now and in future (user ruling D-c)
 
