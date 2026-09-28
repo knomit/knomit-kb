@@ -6,7 +6,7 @@ confidence: 0.9
 sources: 1
 entities: [factPath, IsPrivatePath, NormalizePath, IsWritablePrivatePath, TestScript_PrivatePathRefused, TestScriptTools_SameCodePathAsMCP, internal/repos/trigger_script.go]
 motifs: [caller-side-denial]
-refs: ['src://7b4887ce51d9/internal/repos/trigger_script.go@0a8cf85c4395715622dde5a0076dda19d224817b:e65c3fdb14a763353b138fdccdc20cbb22ed2b15', 'src://7b4887ce51d9/internal/mcp/script_tools_test.go@0a8cf85c4395715622dde5a0076dda19d224817b:17d7462edaa7f4e21e527762e2bd39c157ab1670']
+refs: ['src://7b4887ce51d9/internal/repos/trigger_script.go@49bc0a6a5fc8493d538be563cf9baa204071f160:e65c3fdb14a763353b138fdccdc20cbb22ed2b15', 'src://7b4887ce51d9/internal/mcp/script_tools_test.go@49bc0a6a5fc8493d538be563cf9baa204071f160:17d7462edaa7f4e21e527762e2bd39c157ab1670', 'src://7b4887ce51d9/internal/repos/triggers_script_test.go@49bc0a6a5fc8493d538be563cf9baa204071f160:08810bc5fb48efa863f3b71f6c2e4cee75869733', 'https://github.com/knomit/knomit/pull/339']
 ---
 # A trigger script may NOT write under `.knomit/`, and the refusal is the HOST's, not the handler's: the MCP learn/update/retract tools deliberately ACCEPT `.knomit/<area>/…` job state for sessions, so "same code path as the MCP tools" alone would let a script write there — the host refuses a `path` key on any learn fact and any private path on update/retract (checked after fact.NormalizePath, the handler's own order) BEFORE the tool runs
 
