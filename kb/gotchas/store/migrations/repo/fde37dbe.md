@@ -5,7 +5,7 @@ confidence: 0.9
 sources: 1
 entities: [000031_trigger_recipe.up.sql, upWithRecovery, trigger_fires, facts_vec, TestMigration000031_ReRunsAndKeepsTheLog]
 motifs: [rebuild-not-alter, schema-wide-revalidation]
-refs: ['src://7b4887ce51d9/internal/store/migrate/repo/000031_trigger_recipe.up.sql@790f62c85d5c75f458789d9736ceced095770179:de1b6986697a032a21ceb97800c2c6e0d8a7fe14', 'src://7b4887ce51d9/internal/store/triggers_recipe_test.go@790f62c85d5c75f458789d9736ceced095770179:a993d80481950b4a022353a73b2f6fcd0de811bc', 'kb://3ec012f5b4d2/kb/conventions/store/migrations/idempotent-up-bodies/037ee64d.md']
+refs: ['src://7b4887ce51d9/internal/store/migrate/repo/000031_trigger_recipe.up.sql@476c8037d3d2c905aab5a6243584edf5d02911ce:de1b6986697a032a21ceb97800c2c6e0d8a7fe14', 'src://7b4887ce51d9/internal/store/triggers_recipe_test.go@476c8037d3d2c905aab5a6243584edf5d02911ce:a993d80481950b4a022353a73b2f6fcd0de811bc', 'kb://3ec012f5b4d2/kb/conventions/store/migrations/idempotent-up-bodies/037ee64d.md', 'https://github.com/knomit/knomit/pull/346']
 ---
 # A repo migration cannot ALTER TABLE ... RENAME (SQLite re-parses the whole schema and fails on the facts triggers that name the sqlite-vec virtual table: "no such table: main.facts_vec") and cannot ADD COLUMN (upWithRecovery re-runs a body); to add columns, copy the table OUT with CREATE TABLE … AS SELECT, DROP, recreate, copy BACK, drop the copy — 000031 is the template
 
