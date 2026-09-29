@@ -5,7 +5,7 @@ confidence: 0.9
 sources: 1
 entities: [internal/store/fact_write.go, writeFileExact, WriteFact, WriteRootFile, BatchWriteFacts, fact.NormalizePath, skillFileEntry, SKILL.md]
 motifs: [normalization-breaks-external-convention]
-refs: ['src://7b4887ce51d9/internal/store/fact_write.go@a72455f980a33e0afbfd0ab7f51424876287d9cc:2e76224e55cfed12bb21583c1ee5dd61268fa29f', 'src://7b4887ce51d9/internal/store/skills.go@a72455f980a33e0afbfd0ab7f51424876287d9cc:602ba9e7509d1420c0566075d2614dc96ddcac23']
+refs: ['src://7b4887ce51d9/internal/store/fact_write.go@ad75940b36c05b3c88d312b130e7107a37d14acd:2e76224e55cfed12bb21583c1ee5dd61268fa29f', 'src://7b4887ce51d9/internal/store/skills.go@ad75940b36c05b3c88d312b130e7107a37d14acd:602ba9e7509d1420c0566075d2614dc96ddcac23', 'https://github.com/knomit/knomit/pull/351']
 ---
 # Every knomit write door lowercases a nested path (WriteFact, WriteFactIfUnchanged, BatchWriteFacts), so `.knomit/skills/x/SKILL.md` written THROUGH knomit lands as `skill.md`; only git keeps SKILL.md, and the skills reader therefore matches SKILL.md case-insensitively
 
