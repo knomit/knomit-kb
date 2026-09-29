@@ -20,6 +20,6 @@ What changed (branch fix/race-workflow-flakes): a `raceEnabled` const in interna
 
 Sabotage still caught under -race: make the writer wait for the dispatcher run it kicked. triggerKick blocks on the kick, then polls completedHead. _BusyIf then measured 1.03 s vs 14 ms (73×) and failed.
 
-A naive sabotage does NOT work as a check. Calling d.safeRun synchronously from triggerKick runs the dispatcher on a second goroutine, which corrupts completedHead bookkeeping; the test then fails on 'the dispatcher never completed and flushed a run' after 180 s, not on latency.
+A naive sabotage does NOT work as a check. Calling d.safeRun(d.runCtx) directly from triggerKick runs the dispatcher inside ri.onCommit, and onCommit runs under the writer's branch lock (store notifyCommit; builder.go, the ri.onCommit closure). The test then stalled and failed after 180 s on 'the dispatcher never completed and flushed a run', without ever measuring latency. The exact stall mechanism was not traced; the reviewer reads it as a deadlock on the branch lock.
 
 Not meant: this is not 'perf gates are meaningless under -race'. A gate whose sabotage signal is far outside the noise band (_BusyIf, ~70×) stays useful under -race with a loose bound.
