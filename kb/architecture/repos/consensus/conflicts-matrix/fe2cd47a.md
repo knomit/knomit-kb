@@ -5,7 +5,7 @@ confidence: 0.9
 sources: 1
 entities: [TestConflictsMatrix_T1_HostedAuto, TestConflictsMatrix_T2_GitHubLikeOrigin, conflicts, 'consensus: auto']
 motifs: [role-named-side, merge-base-moves-conflict]
-refs: ['src://7b4887ce51d9/internal/repos/conflicts_matrix_test.go@62190f2ac3c64c38b72099c2f4551c26597a4754:4ea9957f3a891da83af682b2bb147cf2cb1fc6b8', 'src://7b4887ce51d9/internal/store/conflict_merge.go@62190f2ac3c64c38b72099c2f4551c26597a4754:55cc48c1d3192e9b7a0ec8017cdfbc234699f90c', 'kb://3ec012f5b4d2/kb/architecture/store/merge/merge-facts/6cd447f7.md', 'kb://3ec012f5b4d2/kb/gotchas/repos/consensus/conflict-retry-peer-wins/c05b7b09.md']
+refs: ['src://7b4887ce51d9/internal/repos/conflicts_matrix_test.go@b9cdf382af4dd52878f896f8f3c9cdea6213260a:4ea9957f3a891da83af682b2bb147cf2cb1fc6b8', 'src://7b4887ce51d9/internal/store/conflict_merge.go@b9cdf382af4dd52878f896f8f3c9cdea6213260a:55cc48c1d3192e9b7a0ec8017cdfbc234699f90c', 'kb://3ec012f5b4d2/kb/architecture/store/merge/merge-facts/6cd447f7.md', 'kb://3ec012f5b4d2/kb/gotchas/repos/consensus/conflict-retry-peer-wins/c05b7b09.md', 'https://github.com/knomit/knomit/pull/356']
 ---
 # Two-instance outcome table for `conflicts` {facts, state} under consensus: auto (host B, peer A): what each value ends with on B's agent and consensus branches and on A, and which rows converge by themselves
 
