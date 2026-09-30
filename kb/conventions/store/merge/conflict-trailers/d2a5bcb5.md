@@ -6,7 +6,7 @@ confidence: 0.9
 sources: 1
 entities: [TrailerMerge, TrailerConflict, appendTrailerLines, TrailerValues, conflictLine, mergeTreesWithStrategy, Knomit-Merge, Knomit-Conflict]
 motifs: [record-what-was-dropped, trailer-paragraph-sharing]
-refs: ['src://7b4887ce51d9/internal/store/conflict_merge.go@856759258ead41821f1ab17626a5bc0f05d50fe0:10bf40f92409a4447960507fe31f60a6bc336026', 'src://7b4887ce51d9/internal/store/branch_merge.go@856759258ead41821f1ab17626a5bc0f05d50fe0:57485dd93a335efea8f4573f16d81a7b0a46b51e', 'src://7b4887ce51d9/internal/repos/conflict_merge_test.go@856759258ead41821f1ab17626a5bc0f05d50fe0:83f08f05c905d9eb46341d47cd8e0f02b43e53c8']
+refs: ['src://7b4887ce51d9/internal/store/conflict_merge.go@68cc310bffaa07efee26f11428343a846beeece8:10bf40f92409a4447960507fe31f60a6bc336026', 'src://7b4887ce51d9/internal/store/branch_merge.go@68cc310bffaa07efee26f11428343a846beeece8:57485dd93a335efea8f4573f16d81a7b0a46b51e', 'src://7b4887ce51d9/internal/store/conflict_merge_test.go@68cc310bffaa07efee26f11428343a846beeece8:c261015e193e5436a54d39d6c143eec8933d1181', 'src://7b4887ce51d9/internal/repos/conflict_merge_test.go@68cc310bffaa07efee26f11428343a846beeece8:83f08f05c905d9eb46341d47cd8e0f02b43e53c8', 'https://github.com/knomit/knomit/pull/355']
 ---
 # Every conflict a commit settles is recorded in its LAST paragraph: Knomit-Merge for a merged (or retracted) fact, Knomit-Conflict for a side-pick. This includes plain LocalWins/RemoteWins with the conflicts setting absent, so 'nobody is told' no longer holds
 
