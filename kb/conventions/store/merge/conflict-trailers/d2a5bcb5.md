@@ -6,13 +6,13 @@ confidence: 0.9
 sources: 1
 entities: [TrailerMerge, TrailerConflict, appendTrailerLines, TrailerValues, conflictLine, mergeTreesWithStrategy, Knomit-Merge, Knomit-Conflict]
 motifs: [record-what-was-dropped, trailer-paragraph-sharing]
-refs: ['src://7b4887ce51d9/internal/store/conflict_merge.go@68cc310bffaa07efee26f11428343a846beeece8:10bf40f92409a4447960507fe31f60a6bc336026', 'src://7b4887ce51d9/internal/store/branch_merge.go@68cc310bffaa07efee26f11428343a846beeece8:57485dd93a335efea8f4573f16d81a7b0a46b51e', 'src://7b4887ce51d9/internal/store/conflict_merge_test.go@68cc310bffaa07efee26f11428343a846beeece8:c261015e193e5436a54d39d6c143eec8933d1181', 'src://7b4887ce51d9/internal/repos/conflict_merge_test.go@68cc310bffaa07efee26f11428343a846beeece8:83f08f05c905d9eb46341d47cd8e0f02b43e53c8', 'https://github.com/knomit/knomit/pull/355']
+refs: ['src://7b4887ce51d9/internal/store/conflict_merge.go@b9cdf382af4dd52878f896f8f3c9cdea6213260a:55cc48c1d3192e9b7a0ec8017cdfbc234699f90c', 'src://7b4887ce51d9/internal/store/branch_merge.go@b9cdf382af4dd52878f896f8f3c9cdea6213260a:3acd661c542c76cf6e2b5a6e667f8eea290d54ab', 'src://7b4887ce51d9/internal/store/conflict_merge_test.go@b9cdf382af4dd52878f896f8f3c9cdea6213260a:a2eb733ab2677afe8b439a4770961f6d557eb75a', 'src://7b4887ce51d9/internal/store/conflicts_object_test.go@b9cdf382af4dd52878f896f8f3c9cdea6213260a:1faa03f03ae50156926b742bbf72cf7ff6b93a31', 'src://7b4887ce51d9/internal/repos/conflict_merge_test.go@b9cdf382af4dd52878f896f8f3c9cdea6213260a:66a27743b2e3a444b2f0d8388c714605ddc6b66a', 'https://github.com/knomit/knomit/pull/355', 'https://github.com/knomit/knomit/pull/356']
 ---
 # Every conflict a commit settles is recorded in its LAST paragraph: Knomit-Merge for a merged (or retracted) fact, Knomit-Conflict for a side-pick. This includes plain LocalWins/RemoteWins with the conflicts setting absent, so 'nobody is told' no longer holds
 
 Formats (one line per path, sorted by path, in the last paragraph; `none` marks an absent version):
-- `Knomit-Merge: <path> strategy=<confidence|upstream> base=<blob> src=<blob> dst=<blob> out=<blob> decided=<fields>`. A retraction adds `out=none dropped=<side>-modify decided=delete`.
-- `Knomit-Conflict: <path> kept=<src|dst> dropped=<side>-<modify|delete|add> strategy=<conflict strategy> base=… src=… dst=…`, with `reason=<why>` when a merge fell back (not-a-fact, src-unparsable, kind-mismatch, src-lossy, …) or a human chose the whole-set side (`reason=chosen`).
+- `Knomit-Merge: <path> strategy=<merge|merge_consensus> base=<blob> src=<blob> dst=<blob> out=<blob> decided=<fields>`. A retraction adds `out=none dropped=<side>-modify decided=delete`.
+- `Knomit-Conflict: <path> kept=<src|dst> dropped=<side>-<modify|delete|add> strategy=<consensus|local_wins|remote_wins|refuse> base=… src=… dst=…`, with `reason=<why>` when a merge fell back (not-a-fact, src-unparsable, kind-mismatch, src-lossy, …) or a human chose the whole-set side (`reason=chosen`).
 
 WHO WRITES THEM:
 - the LocalWins and RemoteWins arms of mergeTreesWithStrategy, which now returns its record; a side-pick where both sides made the SAME change drops nothing and writes no line;
@@ -26,3 +26,5 @@ A REPLAYED commit (the rebase fallback) keeps its own message. The lines are app
 MISREADINGS:
 - 'the trailer replaces the parents as evidence' is wrong: both input versions are the path's blobs in the merge commit's two parents, and the trailer names their blob ids.
 - 'Knomit-Conflict only appears with conflicts: merge' is wrong: it appears whenever a merge commit dropped a side, the setting absent included.
+
+SINCE CONFLICT-MERGE PR 2 (#356, `conflicts` is an object {facts, state}): the form is unchanged, and only the `strategy=` values follow the new names. Knomit-Merge now says `merge` (the confidence rule, PR 1's `confidence`) or `merge_consensus` (PR 1's `upstream`). A Knomit-Conflict line with `strategy=consensus` means the consensus side's version was taken, by `facts: consensus` or by `state: consensus`. Any other strategy there is the site's own side-pick for a key set to off. Commits written by PR 1 binaries keep the old names, so a reader must accept both.
