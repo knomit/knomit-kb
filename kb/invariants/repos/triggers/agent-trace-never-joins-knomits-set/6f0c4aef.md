@@ -1,0 +1,13 @@
+---
+kind: pragmatic
+type: policy
+domain: [repos, triggers, trace, mcp]
+confidence: 0.9
+sources: 1
+entities: [store.WithAgentTrace, ErrTraceOverride, scriptHost.learn, opts.trace, TestScript_LearnTraceRefused, TestRun_RecipeLearnTraceRefused, TestScriptTools_AgentTraceRefusedOnKnomitsSet, internal/repos/trigger_script.go]
+motifs: [caller-side-denial, refuse-never-drop]
+refs: ['src://7b4887ce51d9/internal/repos/trigger_script.go@9f731d099876deee94b23350841953500b42d5b2:1ad187820d6c47b66d582c5320198364e4b7b38b', 'src://7b4887ce51d9/internal/store/trailers.go@9f731d099876deee94b23350841953500b42d5b2:8eda2261d8e8fa82e7a47a1ee83bc87b83f5f8a8', 'src://7b4887ce51d9/internal/mcp/script_tools_test.go@9f731d099876deee94b23350841953500b42d5b2:4441e0d706ce2ff312c01b44dade431f0b6df8a7', 'src://7b4887ce51d9/internal/repos/triggers_script_test.go@9f731d099876deee94b23350841953500b42d5b2:0c1c0614a8c28b7792100c1b5eb8a0ebdbb815c6', 'kb://3ec012f5b4d2/kb/invariants/repos/triggers/script-private-path/b1c7ee9c.md', 'kb://3ec012f5b4d2/kb/invariants/mcp/write-tools/trace-entry-rules/d34ff943.md', 'https://github.com/knomit/knomit/issues/349', 'https://github.com/knomit/knomit/pull/385']
+---
+# An agent `trace` is REFUSED on a trigger script's or recipe's own write, never merged and never dropped: store.WithAgentTrace refuses whenever the ctx already carries a set (even for an empty trace), and the script host's knomit.learn refuses opts.trace itself because it builds a FRESH tool call that would otherwise drop it silently
+
+#349, reviewer N1. The script and recipe hosts put knomit's own set on their ctx with store.WithTrailers (Trace, Cause, Trigger; the recipe host adds Run). knomit.update/knomit.retract pass the script's option map straight through to the MCP handler, so a `trace` there reaches applyTrace, and store.WithAgentTrace returns ErrTraceOverride because a set is already on the ctx — checked BEFORE the empty-set shortcut, so `trace: {}` is refused too (refuse, never drop). knomit.learn instead builds a new call map from facts/moment_name/retract only (internal/repos/trigger_script.go learn), so a `trace` in its options would never reach the handler; the HOST therefore refuses `opts.trace` ('knomit.learn: opts.trace is refused: a script's or recipe's writes carry knomit's own trace entries') before any tool runs. The recipe host shares scriptHost.learn, so the refusal covers recipes. Same caller-side-denial shape as the host's `.knomit/` refusal (kb/invariants/repos/triggers/script-private-path/b1c7ee9c.md). Consequence: a script or recipe cannot add context lines to its commits; if it needs more context it writes facts or state. A future host function that builds a fresh call must refuse `trace` the same way, or it silently drops it.
