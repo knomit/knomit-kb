@@ -5,7 +5,7 @@ confidence: 0.85
 sources: 1
 entities: [deriveBeforeAdvance, notifyCommit, im.Sync, SetReference, ValidTreePath, DiffTree, ListAllWithHash]
 motifs: [check-separated-from-use]
-refs: ['src://7b4887ce51d9/internal/store/fact_write.go@434d4ac957755e93733371a4cc4223ca0048a1a6:e36554124999bb8f2f1d4b8de8b1a825e294b87b', 'src://7b4887ce51d9/internal/store/path_changes.go@434d4ac957755e93733371a4cc4223ca0048a1a6:ec4ccda479de308a962b16e87a47152c9ff5d6a7', 'src://7b4887ce51d9/internal/store/branch_commit.go@434d4ac957755e93733371a4cc4223ca0048a1a6:c01e5c18a37c99095c7669c4aac3b407db011c44', 'kb://3ec012f5b4d2/kb/invariants/store/path-changes/never-fails-a-write/eb72351e.md', 'https://github.com/knomit/knomit/issues/384']
+refs: ['src://7b4887ce51d9/internal/store/fact_write.go@1e437c7f3326f0599816203d578d251322b1c678:e36554124999bb8f2f1d4b8de8b1a825e294b87b', 'src://7b4887ce51d9/internal/store/path_changes.go@1e437c7f3326f0599816203d578d251322b1c678:ec4ccda479de308a962b16e87a47152c9ff5d6a7', 'src://7b4887ce51d9/internal/store/branch_commit.go@1e437c7f3326f0599816203d578d251322b1c678:c01e5c18a37c99095c7669c4aac3b407db011c44', 'kb://3ec012f5b4d2/kb/invariants/store/path-changes/never-fails-a-write/eb72351e.md', 'https://github.com/knomit/knomit/issues/384']
 ---
 # deriveBeforeAdvance refuses a malformed tree (empty entry name) before the ref moves, but NOT a control-character name — only im.Sync, after SetReference, reaches go-git's ValidTreePath
 
