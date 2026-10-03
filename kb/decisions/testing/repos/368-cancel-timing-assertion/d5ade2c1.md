@@ -5,7 +5,7 @@ confidence: 0.95
 sources: 1
 entities: [TestCancelCreate_DuringIndexLandsWithoutWaitingForTheIndex, TestCreate_CancelledDuringIndexSkipsSyncActivation, sawSync, Manager.CancelCreate, RepoInstance.ActivateSync, indexHealGate, knomit#368]
 motifs: [blind-timing-check, baseline-measured-elsewhen]
-refs: ['kb://3ec012f5b4d2/kb/meta/methodology/measure-outcome-not-the-race/eae2bb22.md', 'kb://3ec012f5b4d2/kb/gotchas/repos/create-job/cancel-during-index/25f58520.md', 'src://7b4887ce51d9/internal/repos/create_job_cancel_test.go@5f000d185c49cedf3662b293912a33bc7c6a16a2:7aad885ea50887451a0e8c474d628243ba5f9e8f', 'https://github.com/knomit/knomit/issues/368', 'https://github.com/knomit/knomit/actions/runs/36590870983']
+refs: ['kb://3ec012f5b4d2/kb/meta/methodology/measure-outcome-not-the-race/eae2bb22.md', 'kb://3ec012f5b4d2/kb/gotchas/repos/create-job/cancel-during-index/25f58520.md', 'src://7b4887ce51d9/internal/repos/create_job_cancel_test.go@eaf36ca1db496c804eba2466b206100b497ba930:8e736478529b65bb9f70b5900ce8f32cfc937f77', 'https://github.com/knomit/knomit/issues/368', 'https://github.com/knomit/knomit/pull/407', 'https://github.com/knomit/knomit/actions/runs/36590870983']
 ---
 # TestCancelCreate_DuringIndexLandsWithoutWaitingForTheIndex drops `elapsed < fullCreate` and its baseline create; the regression stays caught by sawSync (e2e) and TestCreate_CancelledDuringIndexSkipsSyncActivation (deterministic) — test-only, no production gate
 
@@ -21,3 +21,8 @@ Options:
 Why sawSync is enough end to end: under the regression the job parks on step 'sync' behind the heal's branch lock for the whole remaining index, so a 5 ms poll cannot miss it.
 
 The 120 s deadline remains as a hang detector only.
+
+OUTCOME (PR #407, merged as eaf36ca1):
+- Shipped as chosen. Review hardening added a postcondition: the terminal IndexState must still be 'indexing'. The anti-vacuity guard runs before CancelCreate, so this proves the index had not finished when the cancel landed.
+- With the regression re-injected, the test fails on sawSync, not on the new check. Instrumented runs saw step 'sync' in 97-98 consecutive 5 ms samples.
+- 10/10 pass locally, with cancels at 67-205 ms. The Windows repos leg passed in 12m48s.
