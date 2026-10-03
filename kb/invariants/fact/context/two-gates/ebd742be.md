@@ -1,0 +1,23 @@
+---
+kind: pragmatic
+type: policy
+domain: [fact, context, validation]
+confidence: 0.9
+sources: 1
+entities: [ValidateContextShape, ValidateContext, ContextWarnings, ErrContextWithoutOntology, SerializeFact, ParseFact, ValidateFact, ContextKeyAllowed]
+motifs: [strict-write-lenient-read, refuse-never-drop]
+refs: ['src://7b4887ce51d9/internal/fact/context.go@4345c879623bc67951560c2c7e018c0c50964214:50e9a06ea0778ee977c86cc787cba1856d07d70f', 'src://7b4887ce51d9/internal/fact/context_ontology.go@4345c879623bc67951560c2c7e018c0c50964214:9bbbbbee3386df4e9fe12ba6769218aded690b12', 'src://7b4887ce51d9/internal/fact/format.go@4345c879623bc67951560c2c7e018c0c50964214:e69851faec9e5745c1f012d729dddb6405a7ebe8', 'src://7b4887ce51d9/internal/fact/validation.go@4345c879623bc67951560c2c7e018c0c50964214:fca91185930fd87f4b4d84634916b238565e182c', 'src://7b4887ce51d9/internal/mcp/learn.go@4345c879623bc67951560c2c7e018c0c50964214:94883a91269ec5e25cfe70fcef5a8903adee3bdd', 'src://7b4887ce51d9/internal/mcp/update.go@4345c879623bc67951560c2c7e018c0c50964214:887c923b03bf5a77e9594026b3b3567a46ef85a5', 'src://7b4887ce51d9/internal/web/handlers_fact_write.go@4345c879623bc67951560c2c7e018c0c50964214:0fa05b187a396e64758dae4bd3daa12a6a99bd74', 'src://7b4887ce51d9/internal/resolutions/resolutions.go@4345c879623bc67951560c2c7e018c0c50964214:cb4b83277a685d6eed6b379cbfa522f05544d6a8', 'src://7b4887ce51d9/internal/fact/context_test.go@4345c879623bc67951560c2c7e018c0c50964214:d2942a1275b4a1ab39aa66f36ceb3d41194c483f', 'src://7b4887ce51d9/internal/mcp/context_test.go@4345c879623bc67951560c2c7e018c0c50964214:290da413e356eece50ae7972c1b9e8534a1b3724', 'https://github.com/knomit/knomit/pull/413']
+---
+# A fact's `context` passes TWO gates on every write — shape in SerializeFact, ontology types in ValidateContext — and is read leniently: a malformed map is dropped WHOLE into ContextWarnings and never silently written away
+
+SHAPE (fact.ValidateContextShape, run by SerializeFact, so by every write path): keys match `[a-z][a-z0-9_]*` and are at most 32 characters; at most 16 keys; values are string, float64 or bool only (Go ints are widened); a string is one line of valid UTF-8 with no unicode.IsControl rune, no U+2028/U+2029, and no bidi formatting character (U+202A–U+202E, U+2066–U+2069, user ruling), at most 256 bytes. Keys cannot hold a bidi character: the key grammar is ASCII.
+
+TYPES (fact.ValidateContext): every key declared on the fact's topic walk; the value satisfies its declaration (type, enum, pattern, min/max); required keys present; strings at most 128 bytes unless the declaration's max_len allows up to 256. It runs FIRST inside ValidateFact (so JS rules see a valid map), on learn, update and experiment resolutions; in learn's dedup merge it also runs at the MATCH's topic, because the prefix search can land the merged fact in a descendant topic; REST PUT runs it (only the context part — PUT runs no JS rules); review's prune merge checks each carried key with Ontology.ContextKeyAllowed.
+
+NO ONTOLOGY / PRIVATE PATH: nothing declares a key, so a non-empty context is REFUSED (ErrContextWithoutOntology). The callers that skip ValidateFact when the ontology is nil or the path is private (learn, update, resolutions) check this explicitly.
+
+READ (ParseFact, ExtractContext): values are read by YAML tag, so an unquoted 2026-10-01 stays a string; a malformed map (not a map, a list or object value, null, an alias, a duplicate key, any shape violation) gives NO context plus one ContextWarnings entry, and the fact still loads. The ontology is NOT consulted on read: a well-shaped undeclared key that arrived via git stays readable and indexed, and the next write through knomit must correct it (the refusal says "send a corrected context, or {} to clear it").
+
+A dropped (malformed) map is never written away silently: knomit_update refuses unless the call sends context; review's confidence update and pairwise dedup skip the fact with a warn; reinforce rejects it; REST PUT returns 422 and resolutions refuse.
+
+MISREADINGS: "ParseFact enforces the ontology" — it does not. "A nil ontology means no checks" — not for context: it means every key is refused.
