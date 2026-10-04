@@ -5,7 +5,7 @@ confidence: 0.95
 sources: 1
 entities: [handleStartRebuild, Rebuild, Reply.Absorbed, indexSpec, publishRebuildTask, TaskHub]
 motifs: [single-writer-by-refusal, visible-failure-over-silent]
-refs: ['kb://3ec012f5b4d2/kb/decisions/repos/lifecycle/rebuild-replaces-or-absorbs/36f50eda.md', 'kb://3ec012f5b4d2/kb/invariants/repos/index-state/publish-chokepoint/4110015c.md', 'kb://3ec012f5b4d2/kb/decisions/repos/create-job/done-means-indexed/0c1b3368.md', 'src://7b4887ce51d9/internal/web/handlers_jobs.go@c619a91b101684b5b8ef0c6e86650f04d0f112f5:e78ebec59f4fc28dc272701a1cf6a65eb94d1530', 'src://7b4887ce51d9/internal/repos/machine.go@c619a91b101684b5b8ef0c6e86650f04d0f112f5:62c0ad5df41d1fc2f5991dff0d070ef64ba0e82a', 'https://github.com/knomit/knomit/pull/221', 'https://github.com/knomit/knomit/issues/411']
+refs: ['kb://3ec012f5b4d2/kb/decisions/repos/lifecycle/rebuild-replaces-or-absorbs/36f50eda.md', 'kb://3ec012f5b4d2/kb/invariants/repos/index-state/publish-chokepoint/4110015c.md', 'kb://3ec012f5b4d2/kb/decisions/repos/create-job/done-means-indexed/0c1b3368.md', 'src://7b4887ce51d9/internal/web/handlers_jobs.go@12a3bb8901b6f78ca19fbc37f99beeb9a243f667:e78ebec59f4fc28dc272701a1cf6a65eb94d1530', 'src://7b4887ce51d9/internal/repos/machine.go@12a3bb8901b6f78ca19fbc37f99beeb9a243f667:6abc9980c7e763ad4c0a5dbf95737ea48067d273', 'https://github.com/knomit/knomit/pull/221', 'https://github.com/knomit/knomit/issues/411', 'https://github.com/knomit/knomit/pull/414']
 ---
 # A rebuild REPLACES a running index job (heal or other-branch rebuild) and ABSORBS an identical running one (same branch, same job id); the 409 of PR #221 is retired because there is exactly one Index life and no status cell to contend for
 
