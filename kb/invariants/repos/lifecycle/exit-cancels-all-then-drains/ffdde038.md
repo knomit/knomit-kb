@@ -6,7 +6,7 @@ confidence: 0.95
 sources: 1
 entities: [Machine.exitStages, Life.cancel, lockBranch, healIndexBranches, runReconcileLoop, TestWalkthrough_ArchiveMidIndexWithAParkedSyncRound]
 motifs: [cancel-before-wait, lock-not-ctx-aware]
-refs: ['src://7b4887ce51d9/internal/repos/machine.go@c619a91b101684b5b8ef0c6e86650f04d0f112f5:62c0ad5df41d1fc2f5991dff0d070ef64ba0e82a', 'src://7b4887ce51d9/internal/store/branch.go@c619a91b101684b5b8ef0c6e86650f04d0f112f5:e87aa9bc7848d55f11c6f6e3e7ef1b0d8dad4150', 'src://7b4887ce51d9/internal/repos/machine_test.go@c619a91b101684b5b8ef0c6e86650f04d0f112f5:62372ac202fccae6dc571e5bca2e64a9d6b238a9', 'kb://3ec012f5b4d2/kb/invariants/store/index/branch-locking/f4911495.md']
+refs: ['src://7b4887ce51d9/internal/repos/machine.go@12a3bb8901b6f78ca19fbc37f99beeb9a243f667:6abc9980c7e763ad4c0a5dbf95737ea48067d273', 'src://7b4887ce51d9/internal/store/branch.go@12a3bb8901b6f78ca19fbc37f99beeb9a243f667:5f6030bd8d84a6d8e50e4adc4f2c77d71212f0b4', 'src://7b4887ce51d9/internal/repos/machine_test.go@12a3bb8901b6f78ca19fbc37f99beeb9a243f667:c084328c756937c2124a5c4711c0cef3b5919a4f', 'kb://3ec012f5b4d2/kb/invariants/store/index/branch-locking/f4911495.md', 'https://github.com/knomit/knomit/pull/414']
 ---
 # When several stages exit, Machine.exitStages cancels EVERY affected life first and only then drains and Exits them newest-first — draining one before cancelling the index job deadlocks on lockBranch, which is not ctx-aware
 
