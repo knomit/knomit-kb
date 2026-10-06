@@ -1,12 +1,21 @@
 ---
 type: observation
 domain: [fact, ontology, repos]
-confidence: 0.85
+confidence: 0.9
 sources: 0
-entities: [repoBuilder.loadOntology, RepoInstance.Ontology, domains/ontology.yaml, fact.DefaultOntology, RepoInstance.ontology, internal/repos/builder.go, internal/repos/manager.go]
+entities: [RepoInstance.loadOntology, identifyStage, RepoInstance.Ontology, RepoInstance.ReadBranch, fact.OntologyPathsNewestFirst, .knomit/ontology.yaml, fact.DefaultOntology, internal/repos/stages.go, internal/repos/instance.go, internal/repos/manager.go]
 motifs: [false-universal-default]
-refs: ['src://knomit/.claude/plans/2026-04-01-per-repo-ontology.md@0938d83', kb/decisions/fact/per-repo-ontology/cd123bf0.md]
+refs: ['src://knomit/.claude/plans/2026-04-01-per-repo-ontology.md@0938d83', 'kb://3ec012f5b4d2/kb/decisions/fact/per-repo-ontology/cd123bf0.md', 'kb://3ec012f5b4d2/kb/invariants/fact/ontology/immutable-after-create/93c73fe1.md', 'kb://3ec012f5b4d2/kb/gotchas/fact/validation/review-writes-unvalidated/2508cabe.md', 'src://7b4887ce51d9/internal/repos/stages.go@ba748e2b3af36937ff4e194bdfd5320eb7d5abc5:30686f4d5efe58092e0c03953a92c5dd049604bd', 'src://7b4887ce51d9/internal/repos/instance.go@ba748e2b3af36937ff4e194bdfd5320eb7d5abc5:76c66d892a7e60cc67515fd3cb50abe47cb8c25b', 'src://7b4887ce51d9/internal/fact/private.go@ba748e2b3af36937ff4e194bdfd5320eb7d5abc5:be868c1cee0fd3e922feb1a6dafb61c4e1be2356']
 ---
-# Each repo loads its own domains/ontology.yaml at open time; Manager has NO shared ontology
+# Each repo loads its OWN ontology once, at the lifecycle machine's identify stage, from its READ branch (the agent branch when hosted, the upstream branch when subscribed) — Manager has no shared ontology, and the snapshot is what every write-time validation uses until the repo is re-identified; an ontology that changes on the consensus tip or arrives by sync is not seen
 
 Each repo loads its own ontology from domains/ontology.yaml on its agent branch at open time via repoBuilder.loadOntology() (falls back to fact.DefaultOntology() if missing or unparseable). Stored on RepoInstance.ontology, exposed via ri.Ontology(). Manager.Ontology() and Manager.ontology field are REMOVED — there is no shared/global ontology. SetupMCP reads from ri.Ontology(), not s.Manager.Ontology(). Manager.Boot() is single-phase — opens knomit.db first then globs *.db; no special two-phase ontology loading. The ontology is captured at repo OPEN time — if domains/ontology.yaml changes in git after that, the in-memory ontology is stale until the repo is reopened.
+
+UPDATE (2026-10-06, verified at origin/dev ba748e2b after #414's lifecycle machine). The paragraph above is the 2026-04 shape; three of its details are now wrong and the core claim is sharper:
+
+- WHERE: `RepoInstance.loadOntology` (internal/repos/stages.go) runs inside `identifyStage.Enter`, after `ensureBranch`. There is no `repoBuilder` any more.
+- WHICH BRANCH: it reads `r.ReadBranch()` — the agent branch for a hosted repo, the upstream (consensus) branch only for a subscription — walking `fact.OntologyPathsNewestFirst()` (`.knomit/ontology.yaml`, then `.domains/ontology.yaml`, then `domains/ontology.yaml`).
+- NO FALLBACK: it NEVER substitutes `fact.DefaultOntology()`. A missing or unparsable ontology is returned as an error, `ri.Ontology()` is nil and the repo opens readable but unwritable. (The embedded-preset refresh in place, for a stored ontology that is a strict subset of its preset, is unchanged; a subscription never refreshes.)
+- WHERE IT LIVES: an atomic `identity{ontology, ontologyErr}` on the instance; `identifyStage.Exit` forgets it. The only way the in-memory ontology changes is the identify stage running again (mount, remount, a lifecycle walk that re-enters it).
+
+CONSEQUENCE: every ontology-dependent decision at write time — `ValidatePath`, per-topic `validations`, `ValidateContext`, `learn_dedup`, attributes — uses this snapshot. An ontology edit committed on main by a peer and carried in by sync, or one placed on the agent branch after open, changes nothing until the repo is re-identified; and a HOSTED repo validates against its agent branch's copy, not the consensus tip's. Readers of "the ontology is read at the consensus branch" (said of `consensus`/`conflicts` root attributes, which the sync code re-reads per merge) must not generalise it to the validation ontology.
