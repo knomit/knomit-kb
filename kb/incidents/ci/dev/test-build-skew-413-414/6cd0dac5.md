@@ -1,0 +1,18 @@
+---
+type: observation
+domain: [ci, testing, repos, mcp, web, process]
+confidence: 0.95
+sources: 1
+entities: [origin/dev, ba748e2b, '#413', '#414', internal/mcp/context_test.go, internal/web/context_test.go, store.Service.InitRepo, repos.Deps.DisableBackgroundSync, repos.Options.Synchronous, go vet]
+motifs: [green-against-stale-base, merge-without-textual-conflict]
+refs: ['kb://3ec012f5b4d2/kb/gotchas/auth/closed-set-validator-is-a-merge-hazard/c7fffbe8.md', 'src://7b4887ce51d9/internal/mcp/context_test.go@ba748e2b3af36937ff4e194bdfd5320eb7d5abc5:290da413e356eece50ae7972c1b9e8534a1b3724', 'src://7b4887ce51d9/internal/web/context_test.go@ba748e2b3af36937ff4e194bdfd5320eb7d5abc5:fd9b1a04c1d693f8c3837de575d86dae5e015b63', 'src://7b4887ce51d9/internal/repos/machine.go@ba748e2b3af36937ff4e194bdfd5320eb7d5abc5:6abc9980c7e763ad4c0a5dbf95737ea48067d273', 'src://7b4887ce51d9/internal/store/service.go@ba748e2b3af36937ff4e194bdfd5320eb7d5abc5:e6f6b788b328a6506795e11c45b3aac9f617ad66', 'https://github.com/knomit/knomit/pull/413', 'https://github.com/knomit/knomit/pull/414', 'https://github.com/knomit/knomit/actions/runs/37221877598']
+---
+# origin/dev at ba748e2b (merge of #413, three minutes after #414) does not build its tests: two F22 test fixtures still use the pre-#414 API (`svc.InitRepo` without a context in internal/mcp/context_test.go, `repos.Deps.DisableBackgroundSync` in internal/web/context_test.go), so `go vet ./...` and `go test ./...` fail for internal/mcp and internal/web — each PR was green against the dev it was reviewed on
+
+Observed 2026-10-06 (go vet at a clean worktree of ba748e2b) and in CI: both runs on dev at ba748e2b (37221877598, 37221877764) failed `go test -race ./...` with `internal/mcp/context_test.go:54: not enough arguments in call to svc.InitRepo` and `internal/web/context_test.go:37: unknown field DisableBackgroundSync in struct literal of type repos.Deps`, `[build failed]` for both packages. The same runs also report `--- FAIL: TestWalkthrough_ArchiveMidIndexWithAParkedSyncRound` (internal/repos) and the #414 run reports `--- FAIL: TestRepoIndexEvents_StartupHealEmitsIndexingThenReady`; those two are NOT the skew and their cause was not established here.
+
+WHAT HAPPENED: #414 (lifecycle machine, merged 2026-10-04 17:44 UTC) changed `store.Service.InitRepo` to take a `context.Context` and replaced `repos.Deps.DisableBackgroundSync` with `Machine: repos.Options{Synchronous: true}`. #413 (F22 fact context, merged 17:47 UTC) added two test files written against the old signatures. Neither branch could see the other's change; GitHub's merge produced no textual conflict because the files are new in #413, so the merge commit itself was never built before it became dev's tip. The non-test code compiles; only test packages are broken, which is why nothing fails at runtime.
+
+THE FIX IS TWO LINES: `svc.InitRepo(context.Background(), map[string]string{}, "agent/test")` and `Machine: repos.Options{Synchronous: true}` (how internal/web/handlers_fleet_test.go already spells it).
+
+CONSEQUENCE for process: a PR's green CI is a statement about the base it was tested on. When two PRs that touch shared test fixtures merge minutes apart, the second one's "green" is stale; the reviewer gate must re-run on a branch rebased onto the dev tip that will actually receive the merge, or the merge queue must build the merge commit (kb/gotchas/auth/closed-set-validator-is-a-merge-hazard/c7fffbe8.md is the same shape in non-test code). Until a fix lands, anyone verifying claims at origin/dev must patch these two lines locally before trusting `go test ./internal/mcp/...` or `./internal/web/...`, and must not read the red dev CI as a signal about their own change.
