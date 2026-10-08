@@ -22,3 +22,5 @@ R8: "stop for a second, instead of "prompts" maybe we should have a folder with 
 **The choice as built (#351).** `.knomit/skills/<name>/SKILL.md` + bundled files; each skill is an MCP prompt on its repo's mount (one optional `args` argument for $ARGUMENTS); bundled text files inlined up to 256 KiB in total, binaries listed by path; malformed skills skipped with one WARN per blob. Available whether or not the instance is in a fleet.
 
 **Non-scope.** Nothing is copied into .claude/skills or any harness folder, and `kb claude init` is unchanged. MCP resources are not used for bundled files.
+
+SYMLINKS (fix/skill-symlink, the follow-up to #437; user ruling 2026-10-08 "we do NOT want to follow symlinks, so 404"): SKILL.md and every bundled file must be REGULAR files (or executable). A folder whose SKILL.md is a symlink is no skill, and a regular skill.md beside such a symlink is the skill. A symlinked bundled file is neither inlined nor listed. The test is store.isSystemFileMode, shared with SystemFileAt; see kb/gotchas/store/go-git/tree-entry-modes/206d1283.md.
