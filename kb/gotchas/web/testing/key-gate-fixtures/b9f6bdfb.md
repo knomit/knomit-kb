@@ -14,4 +14,4 @@ Escape on Browse clears the open fact (CLEAR_FILTERS) and Backspace pops the nav
 
 The rule: a no-op test first puts real state in place (a committed free-text filter, an open fact, a nav-stack entry), presses the key on the gated page, returns, and asserts the state is still there; and a separate control test shows the same key DOES change that state where it is live. `App.server.test.tsx` opens a fact on Browse, presses the key on a server page, returns by the gear and asserts the fact is still open.
 
-WHAT THIS DOES NOT MEAN: "assert the page is still shown" is not enough. The gate protects the hidden Browse state, not the visible page. Verify the test by sabotage: delete the gate (`if (shownFacet !== 'browse') return;` in App's key handler) and see exactly the key tests fail.
+WHAT THIS DOES NOT MEAN: "assert the page is still shown" is not enough. The gate protects the hidden Browse state, not the visible page. Verify the test by sabotage: delete the gate (`if (!browseShown) return;` in App's key handler (browseShown = no server page open, on the context, Browse shown)) and see exactly the key tests fail.
