@@ -1,0 +1,16 @@
+---
+type: observation
+domain: [desktop, windows, build, embeddings]
+confidence: 0.85
+sources: 1
+entities: [knomit-desktop.exe, onnxruntime.dll, OrtGetApiBase, lib\onnxruntime.dll, make desktop, wails3 CLI, MSYS make, System32]
+motifs: [packaging-hides-resolution]
+refs: ['src://7b4887ce51d9/Makefile@2104fd6d5e0fe0d6a1bdfbad4c75a973a539a62d:474060ecf7538ee32fd959050d3b4a9c957a5a32', 'kb://3ec012f5b4d2/kb/architecture/build/7ea43342.md', 'kb://3ec012f5b4d2/kb/gotchas/build/embeddings/ort-lib-path/2a9eebc8.md', 'kb://3ec012f5b4d2/kb/gotchas/desktop/rebuilding-kills-the-running-server/e964f7b3.md', 'kb://3ec012f5b4d2/kb/conventions/testing/dev-box-limits/c50ff45a.md']
+---
+# On Windows knomit-desktop.exe must sit beside its lib\onnxruntime.dll: a copy elsewhere loads the older onnxruntime.dll from System32 and the server fails with "Error finding OrtGetApiBase function in onnxruntime.dll"; `make desktop` itself works unchanged from cmd with MSYS make and needs no wails3 CLI
+
+Measured 2026-10-12 on Windows 10 22H2, Go 1.26.8, build at the #488 merge 2104fd6d; times are dated support.
+
+RUNTIME LIBRARY. The Windows desktop resolves the ONNX runtime relative to its own exe (`lib\onnxruntime.dll` beside it). A copy of the exe placed elsewhere without `lib\` fell back to the older onnxruntime.dll that ships in System32, and the embedded server failed to start with "Error finding OrtGetApiBase function in onnxruntime.dll". CONSEQUENCE: when relocating or copying knomit-desktop.exe (a verification copy, a spike build in a worktree), copy `lib\` along with it. WHAT THIS DOES NOT MEAN: the error is not a corrupt build or a missing symbol in the shipped DLL; it is the wrong DLL being found. This is the Windows instance of the layout-dependent resolution described in kb/architecture/build/7ea43342.
+
+BUILD. `make desktop` ran unchanged from cmd.exe with MSYS make on PATH: `web` (npm ci && npm run build: tsc -b + vite), `desktop-ui` (npm ci && npm run build), the native libs (onnxruntime.dll and libtokenizers.a fetched only if absent), then `CGO_ENABLED=1 go build -tags desktop -ldflags "... -H windowsgui" -o dist/windows-amd64/knomit-desktop.exe ./tools/desktop`, then kb.exe and knomit-okf.exe (non-darwin branch of the desktop target in the Makefile). No `wails3` CLI is needed: the committed bindings suffice and a plain `go build -tags desktop` links. First build took about 7 minutes, dominated by the Wails beta.28 module download; the exe was about 129.5 MB. A spike or scratch build without `-H windowsgui` is the way to get stderr redirected to a file. The target overwrites the running app's exe without killing it (see kb/gotchas/desktop/rebuilding-kills-the-running-server/e964f7b3).
