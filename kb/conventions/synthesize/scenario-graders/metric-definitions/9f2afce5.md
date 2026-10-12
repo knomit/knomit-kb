@@ -1,0 +1,16 @@
+---
+type: observation
+domain: [synthesize, scenario, expert, evaluation]
+confidence: 0.9
+sources: 1
+entities: [GradeChain, ChainScore, ReasonChain, repos.ReasonResult, readEmitted, LoadedWorld.IDOfPath, inCategory, GapRates, CalibrationECE]
+motifs: [producer-owned-contract, vacuous-truth-score]
+refs: ['src://7b4887ce51d9/internal/synthesize/scenario_grade.go@087f420f1d07833459f52cca48496d0da75fbc5e:c61b604c64af81399375f32d8f943093227799e7', 'src://7b4887ce51d9/internal/synthesize/scenario_chain.go@087f420f1d07833459f52cca48496d0da75fbc5e:a9b84e2b9077813603321e620853ccb8976d776e', 'src://7b4887ce51d9/internal/synthesize/scenario_grade_test.go@087f420f1d07833459f52cca48496d0da75fbc5e:8dcc79254d15f4945001ec1626efe9b296857e61', 'https://github.com/knomit/knomit/pull/499']
+---
+# GradeChain scores a decoded repos.ReasonResult against one question's gold: answer facts are read from the paths the host wrote, refs are judged at the world head the run started from, and every ratio is n/d with 0/0 = 1 (except move accuracy with no run moves, misattribution and the false-gap rate)
+
+internal/synthesize/scenario_grade.go and scenario_chain.go. The contract is the ENGINE's own JSON: ReasonChain/ReasonStep/ChainGap mirror repos.ReasonResult field for field with the same JSON tags, the graders conform to the engine and never the reverse, and TestGradeChain_DecodesTheEngineResult round-trips a result. Answer facts are not in the result: readEmitted reads chain.AnswerFacts on chain.ExperimentBranch when the run opened one, else the world branch, plus ExistingAnswer on the world branch. Every ref is judged at LoadedWorld.Head (the head the run started from) because a kb:// ref carries no commit. Chain paths map to spec ids via LoadedWorld.IDOfPath. A category matches by equality or at a '/' boundary (inCategory), so 'storage-legacy' is not 'storage'.
+
+Metrics (ChainScore): MoveAccuracy (run moves matching a gold step in the gold's partial order, greedy in run order, over run moves that are in synthesize.ScenarioMoves; 0 when there are none), MoveRecall (required, non-optional gold steps matched), ExtraMoves; RelevancePrecision/RelevanceRecall over the run's `relevant` labels; SupportAccuracy (gold support labels reproduced exactly; the last label on a fact stands); Misattribution (share of `supports` labels given to a forbidden or distractor-role fact; 0 when no supports); ChainRecall and ChainPrecision (should-cite and partial-support facts are neutral); ForbiddenCited; AnswerValidity (checks passed over checks run: ontology path, ValidateFact, serialize, kind/type, populated fields, plus type, topic, confidence band, must/should/must-not cite, entities, motifs; a gap is checked on its hypothesis fact); RefCorrectness; GapExpected/GapDeclared/GapHypothesisValid; Correct, Posterior, Brier. OutcomeCorrect compares the run's outcome with the gold outcome (an `answer` run matches gold answer and partly; gap matches gap); the gold `assess` label is not graded. GapRates and CalibrationECE aggregate over chains.
+
+Convention: ratio(n, d) returns 1 when d == 0, so a gap question is not punished for citing nothing. Misreading to avoid: a perfect ratio on an empty denominator is not evidence the run did the work; read Correct, which requires an answer, ChainRecall 1, no forbidden citation, AnswerValidity 1 and RefCorrectness 1.
