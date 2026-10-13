@@ -5,7 +5,7 @@ confidence: 0.85
 sources: 1
 entities: [settings.tsx, index.css, App.css, '.k-select:disabled']
 motifs: [import-order-cascade, shorthand-resets-longhand]
-refs: ['src://7b4887ce51d9/tools/desktop/ui/src/settings.tsx@22e3921249b9d06cb64378bcc93f276f6997b2e3:edbf7f1f9c74cba0644ad696cc2134ef6e29d126', 'src://7b4887ce51d9/tools/desktop/ui/src/index.css@22e3921249b9d06cb64378bcc93f276f6997b2e3:5c0f287affa6e3093ba051542b84924715ed6a13', 'src://7b4887ce51d9/tools/desktop/ui/src/App.css@22e3921249b9d06cb64378bcc93f276f6997b2e3:88c78c32693a5d239bceef80ad4b4328eaa4dd59']
+refs: ['src://7b4887ce51d9/tools/desktop/ui/src/settings.tsx@545994a2740bf7b48696604331f114eab1f2aa3f:edbf7f1f9c74cba0644ad696cc2134ef6e29d126#L3-L7', 'src://7b4887ce51d9/tools/desktop/ui/src/index.css@545994a2740bf7b48696604331f114eab1f2aa3f:5c0f287affa6e3093ba051542b84924715ed6a13#L149-L153', 'src://7b4887ce51d9/tools/desktop/ui/src/App.css@545994a2740bf7b48696604331f114eab1f2aa3f:082b189553e09f3d6f348735f7b58e302e50be44#L368-L381']
 ---
 # In the desktop Settings bundle index.css loads AFTER App.css (settings.tsx imports SettingsApp, which imports App.css, before './index.css'), so an index.css rule of equal specificity wins — its `.k-select:disabled { background: ... }` shorthand silently drops a background-image set in App.css
 
