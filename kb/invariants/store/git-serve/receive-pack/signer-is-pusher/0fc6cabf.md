@@ -19,3 +19,5 @@ WHICH COMMITS: only new ones (newCommits stops at any commit the host holds). A 
 ABSENT PUSHER: none reachable — judgeRequest refuses `len(Pusher) < 8` and pushPolicy sets Pusher only for a KindInstance/ViaCert principal; there is no non-mTLS push path.
 
 TEST GOTCHA: receive-pack tests' `pushFP` is a fake fingerprint ("abcd1234"+zeros); any test pushing SIGNED commits under enforce must use the signer's real fingerprint as Pusher (`pusherOf` in receivepack_closure_test.go) or it now fails not-pusher.
+
+GAP (PR #511 review F2): a push whose tip the host already holds sends no new commits, so this rule never runs for it: a member can point its own branch at another member's tip the host holds. That is not a content hole for `.knomit/` (the merge-time guard, kb/invariants/store/git-serve/pushed-branch-merge/private-path-guard/fbd12444.md, judges the merge result), but it means "every commit on a member's branch was signed by that member" does NOT follow from this rule.
