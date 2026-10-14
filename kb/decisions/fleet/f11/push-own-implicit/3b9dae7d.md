@@ -4,7 +4,7 @@ domain: [fleet, auth, decisions]
 confidence: 0.95
 sources: 1
 entities: [auth.CertGrants, auth.PushOwn, knomit grants]
-refs: ['kb://3ec012f5b4d2/kb/decisions/auth/instance-read-implicit/85dd6b5d.md', 'kb://3ec012f5b4d2/kb/architecture/store/git-serve/receive-pack/7642c213.md', 'src://7b4887ce51d9/internal/auth/certgrants.go@c7423c3e3a7ad8280a73b9269d1f416844d14656:90f075df7e1f0abb4e733f50bee69308404a6d19', 'https://github.com/knomit/knomit/pull/340']
+refs: ['kb://3ec012f5b4d2/kb/decisions/auth/instance-read-implicit/85dd6b5d.md', 'kb://3ec012f5b4d2/kb/architecture/store/git-serve/receive-pack/7642c213.md', 'src://7b4887ce51d9/internal/auth/certgrants.go@c7423c3e3a7ad8280a73b9269d1f416844d14656:90f075df7e1f0abb4e733f50bee69308404a6d19', 'https://github.com/knomit/knomit/pull/340', 'src://7b4887ce51d9/internal/auth/certgrants.go@c9c599dee475771c4226212ac0889817c6b268d4:1ad7d3526e1b3131c498f3298bcdcf648567d953', 'kb://3ec012f5b4d2/kb/decisions/fleet/branch-ownership-not-identity/28db3a86.md', 'https://github.com/knomit/knomit/pull/513']
 ---
 # Every enrolled instance may push its own agent branch to a host without a per-peer grant: push:own is implicit for chained instance certificates (user ruling "1. A", F11)
 
@@ -12,7 +12,7 @@ OPTIONS (as put to the user, 2026-09-28, F11 RCA open decision 1): (A) every enr
 
 CHOICE (user, verbatim): "1. A".
 
-RATIONALE: `push:own` lets a peer do exactly one thing — update ITS OWN agent branch on the host; receive-pack refuses every other ref. A per-peer grant was a step every operator would always take, the kind of per-instance knob the user has been stripping (R7). Built in PR #340: `auth.CertGrants` returns `{read, push:own}` for KindInstance + ViaCert + non-empty ID.
+RATIONALE: `push:own` was meant to let a peer do exactly one thing — update ITS OWN agent branch on the host. After PR #513 (P1b, D18) that is no longer true: receive-pack admits any agent/* ref except the host's own and refuses the rest (main, non-agent refs, the upstream); the name push:own is historical and no branch is owned (kb/decisions/fleet/branch-ownership-not-identity/28db3a86.md). A per-peer grant was a step every operator would always take, the kind of per-instance knob the user has been stripping (R7). Built in PR #340: `auth.CertGrants` returns `{read, push:own}` for KindInstance + ViaCert + non-empty ID.
 
 REJECTED: the per-peer `push:own` grant.
 
