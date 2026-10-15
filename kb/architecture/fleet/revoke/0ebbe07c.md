@@ -1,0 +1,20 @@
+---
+type: process
+domain: [fleet, pki, repos]
+confidence: 0.92
+sources: 1
+entities: [Manager.RevokeFleetMember, pki.RevokeSerial, pki.RecordRevocation, pki.InstallCRL, FleetRevocation, not_enrolled, already_revoked, own_id, installCRLCallers]
+motifs: [authority-and-copies]
+refs: ['src://7b4887ce51d9/internal/repos/fleet_membership.go@fd991d4fa4295afefbaa354723824f23a86b4de0:fc4908b9950b336903ddafbe34c7086f4968a9f8', 'src://7b4887ce51d9/internal/pki/crl.go@fd991d4fa4295afefbaa354723824f23a86b4de0:a3444f7c1555871876c4bbe54844c07caf641017', 'src://7b4887ce51d9/internal/pki/install.go@fd991d4fa4295afefbaa354723824f23a86b4de0:d7e7589bb508b2395901aec3d8c874632a25862a', 'src://7b4887ce51d9/test/archtest/install_callers_test.go@fd991d4fa4295afefbaa354723824f23a86b4de0:8c330c0b13159769570088884d76427438f5be62', 'kb://3ec012f5b4d2/kb/architecture/pki/ledgers/as-bytes/dff1c1d8.md', 'kb://3ec012f5b4d2/kb/invariants/pki/install/crl-only/42678ae3.md', 'kb://3ec012f5b4d2/kb/decisions/fleet/pki/per-operation-records/235c9dd9.md', 'https://github.com/knomit/knomit/pull/525']
+---
+# POST /api/v1/fleet/revoke builds the new CRL from MAIN's current CRL (pki.RevokeSerial), commits crl.pem and revocations/<serial>.txt, copies them locally with pki.RecordRevocation (revoked.jsonl line and an ATOMIC crl.pem), installs the CRL here (pki.InstallCRL, its first production caller) and publishes; refusals not_enrolled, already_revoked, own_id
+
+SEQUENCE (PR #525, verified at merge commit fd991d4f, RevokeFleetMember in internal/repos/fleet_membership.go; master only, under fleetOpMu). (1) own_id (409) for the master's own agent id (decommission instead). (2) Read main (fleetAtMain): its CRL must exist; the agent's leaf is certs/<id>.pem on main, none = 404 `not_enrolled`. (3) pki.RevokeSerial(root, MAIN's CURRENT CRL, serial, ...) builds the new CRL (Number + 1, a superset of the current list) and the root-signed revocation statement; a serial already listed is 409 `already_revoked`, any other failure 422 `revoke_failed`. (4) writeFleetArtifacts commits crl.pem and revocations/<serial>.txt on the master's agent branch. (5) pki.RecordRevocation copies locally: appends the revoked.jsonl audit line and replaces <home>/fleet/crl.pem through writeFileAtomic, so a crash never leaves a torn crl.pem (the file GET /fleet/root hands the next master); a failure is a WARN. (6) pki.InstallCRL(here, root, CRL) installs the CRL on this instance (a failure is `install_error` in the answer and does not undo the revoke). (7) publish (hub: local main fast-forward; forge: push agent branch, then main). The answer is 200 {agent_id, serial, crl_number, published, publish_error, install_error}.
+
+AUTHORITY. MAIN's CRL is the authority and the base of the new CRL; the local crl.pem and revoked.jsonl are COPIES. The old pki.Revoke refused to build from a crl.pem that lagged revoked.jsonl or was missing; that check is gone with the function, so nothing verifies that the local crl.pem lists every logged serial. The artifact rule `revoked_set: superset` (kb/decisions/fleet/pki/per-operation-records/235c9dd9.md) judges main's CRL. Revoking a lost-key leaf needs the leaf to be the one at certs/<id>.pem (see the enroll invariant).
+
+REACH. Revoke reaches other members only when THEY hold the new CRL: a member does not fetch it from the fleet repository yet (P6, PR 8), and the revoked member's own listener keeps admitting it until it installs the CRL. The gate (judge rule B) refuses the revoked member's commits once the CRL is on main at the revision it reads, and readers show `revoked` (derived).
+
+PINNED BY the repos forge e2e (TestFleetMembership_ForgeEnrollJoinAdmitLeaveRevokeDecommission: statement on main, CRL #2 installed, revoked.jsonl one line, the local crl.pem equals main's new CRL) and the cmd knomit-hosted e2e; sabotage that skips InstallCRL or RecordRevocation turns them red.
+
+MISREADINGS. 'Revoke deletes the member's record or removes it from the fleet': it only lists the serial. 'Revoke needs the member online': it does not.
