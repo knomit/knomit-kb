@@ -19,3 +19,5 @@ ORDER OF WRITES. IssueLeaf (pure), then the leaf and its issued/<serial>.pem are
 PINNED BY TestFleetMembership_EnrollOverAnExistingID (asserts the codes, that certs/<id>.pem on main and the issued.jsonl line count are unchanged after every refusal, the rejoin's new serial, and that BOTH serials end up on main's CRL after the two revokes).
 
 MISREADINGS. 'Enroll is idempotent for the same key': it is refused as `enrolled` until the leaf is revoked. 'Enroll refuses every id that was ever enrolled': a revoked leaf with the same key is the rejoin.
+
+UPDATE (PR #526, merge 0488c05d): enroll also takes an optional `address` and answers a bundle DOCUMENT naming the fleet URL; its address refusals (address_required, address_unknown, address_not_https, address_not_applicable, addresses_required) come BEFORE issuance and before this rule, so they leave main, issued.jsonl and certs/<id>.pem untouched (kb/architecture/fleet/enroll/bc7f6c5f.md, kb/decisions/fleet/bundle-document/0c5cf18a.md). This rule's codes are unchanged.
