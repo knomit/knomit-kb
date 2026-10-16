@@ -1,0 +1,22 @@
+---
+type: reference
+domain: [fleet, repos, web, architecture]
+confidence: 0.9
+sources: 1
+entities: [Manager.CheckFleetJoin, FleetJoinCheck, joinReachErr, joinPreflight, HostingMaster, HostingForge, bundle_refused, unreachable, bundle_required, auth_invalid, clone_failed]
+motifs: [check-before-commit-step]
+refs: ['kb://3ec012f5b4d2/kb/invariants/fleet/join/a0225037.md', 'kb://3ec012f5b4d2/kb/architecture/fleet/membership-routes/7f87bdd5.md', 'src://7b4887ce51d9/internal/repos/fleet_membership.go@0488c05db1f8ecc49f19ecf51011d5d10f3e4e28:36ed2b3964e614d1a83f5f3060324f6dd26ba621', 'src://7b4887ce51d9/internal/web/handlers_fleet_membership.go@0488c05db1f8ecc49f19ecf51011d5d10f3e4e28:fa266375d5bddfdbf2860a95a4cb79023d90508a', 'src://7b4887ce51d9/internal/web/router.go@0488c05db1f8ecc49f19ecf51011d5d10f3e4e28:c319749ce115dc7367b4537b4aeef582658e3e7b', 'src://7b4887ce51d9/cmd/fleet_join_check_test.go@0488c05db1f8ecc49f19ecf51011d5d10f3e4e28:6941e1ea8ba0801d4ae6519c5f8fb59dc3840d1c', 'src://7b4887ce51d9/internal/web/static/openapi.yaml@0488c05db1f8ecc49f19ecf51011d5d10f3e4e28:3ccf5930b70b8693a78c99cded63f8de0118497d', 'https://github.com/knomit/knomit/pull/526']
+---
+# POST /fleet/join:check (local-only) runs the join's pre-flights, then classifies the bundle's URL against the BUNDLE's root from a temporary directory and writes nothing; its codes at merge are bundle_refused 422 vs unreachable 502, bundle_required, auth_invalid, and a forge's refused credential is 200 with auth_required
+
+Built in PR #526 (merge 0488c05d), internal/repos/fleet_membership.go CheckFleetJoin, web handleCheckFleetJoin, mounted in the local-only RequireLocalVia group (TestFleetMembership_EveryOperationIsLocalOnly has its row). It holds the fleet-op lock like the join, so it waits behind a running fleet operation.
+
+WHAT IT DOES. (1) The join's pre-flights, nothing installed: fleet_present, trust_installed (409), bundle_invalid, key_mismatch, agent_mismatch (422). (2) cert as auth_method is auth_invalid (422) before any dial. (3) The bundle's leaf, root and CRL are written to a private temp directory (removed on return; pinned by requireNoJoinCheckTemp) and pki.ClassifyOrigin judges the bundle's URL against THAT root with this instance's key: the check does not touch [tls].dir. It answers 200 {url, hosting, host, root_fingerprint, agent_id, auth_required, detail}. The operator confirms root_fingerprint and host BEFORE the join installs the root (issue #299; the join itself passes InstallOptions{} and does not demand the confirmation, the caller does).
+- hosting `master`: the URL is an instance of the bundle's fleet. A credential given (auth_method not ''/none, or a token) is auth_invalid (ErrPeerCredential).
+- hosting `forge`: anything else. The joiner's own credential is probed through ProbeOriginRefs (no 'decided' mark; trust_installed guarantees this instance holds no fleet root so the probe dials nothing fleet-side). A forge refusing the credential is 200 with auth_required true and a detail; a forge that cannot be reached is 502 `unreachable`.
+
+CODES AT THE MERGE for a failed classification (joinReachErr): pki.ErrOriginUnreachable (no TCP, or a stalled handshake before our verifier ran) is 502 `unreachable` ('couldn't reach <host>'); EVERY OTHER classification error is 422 `bundle_refused` ('the fleet at <host> refused this bundle (<cause>): ask the fleet's master for a new bundle'), the realistic case being an old bundle used after a revoke and rejoin. Request errors: bundle_required (400), auth_invalid (422).
+
+KNOWN DISAGREEMENTS (queued for PR 7, accepted at review). (a) bundle_refused ALSO catches network failures after the handshake: 'peer did not answer after the handshake' (an i/o timeout or reset), 'handshake failed' after our verifier accepted the host, and pre-dial errors (stat, no host, unusable trust files). Those are not a refused bundle, so the 'ask for a new bundle' advice is wrong for them; narrowing it to ErrRefusedByPeer and verifier verdicts is the fix. (b) POST /fleet/join maps the same errors differently: a pki.ErrOriginUnreachable on the clone path stays 502 `clone_failed`, where join:check says `unreachable`; other classification errors are bundle_refused on both. (c) A forge refusing the credential is 200 auth_required on the check.
+
+MISREADINGS. 'A green join:check guarantees the join succeeds': the clone, root_differs and the push still run. 'join:check is read-only on the network': it dials the bundle's URL.

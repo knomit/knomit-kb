@@ -1,0 +1,20 @@
+---
+type: reference
+domain: [fleet, repos, web, architecture]
+confidence: 0.92
+sources: 1
+entities: [Manager.EnrollFleetMember, fleetURLForBundle, FleetError.Choices, address_required, address_unknown, address_not_https, address_not_applicable, addresses_required, external_addresses]
+motifs: [ask-dont-guess]
+refs: ['kb://3ec012f5b4d2/kb/invariants/fleet/enroll/5c5a3bef.md', 'kb://3ec012f5b4d2/kb/invariants/fleet/member-addresses/40335d34.md', 'src://7b4887ce51d9/internal/repos/fleet_membership.go@0488c05db1f8ecc49f19ecf51011d5d10f3e4e28:36ed2b3964e614d1a83f5f3060324f6dd26ba621', 'src://7b4887ce51d9/internal/web/handlers_fleet_membership.go@0488c05db1f8ecc49f19ecf51011d5d10f3e4e28:fa266375d5bddfdbf2860a95a4cb79023d90508a', 'src://7b4887ce51d9/internal/web/static/openapi.yaml@0488c05db1f8ecc49f19ecf51011d5d10f3e4e28:3ccf5930b70b8693a78c99cded63f8de0118497d', 'https://github.com/knomit/knomit/pull/526']
+---
+# POST /fleet/enroll takes an optional address and the bundle carries ONE fleet URL: with several external_addresses and none chosen it is address_required (with choices), an unlisted one address_unknown, a non-https one address_not_https, and an address given for a copy that has an origin address_not_applicable
+
+Built in PR #526 (merge 0488c05d), internal/repos/fleet_membership.go fleetURLForBundle; every refusal comes BEFORE any issuance. The user's ruling: "why not ask during the bundle generation which one to use, if more than one are present?" The master chooses, at enroll, the address the member will reach it at; nothing guesses and nothing tries addresses in order.
+
+THE URL IN THE BUNDLE.
+- The fleet repository on this instance syncs with an ORIGIN (a forge, or a hub that is not this instance): the bundle carries that origin's URL as stored, and `address` is refused: address_not_applicable (422, the message names the URL). There is nothing to choose.
+- This instance is the hub (no origin): https://<chosen external address>/git/<repo name>, address trimmed of a trailing slash. With exactly ONE entry in [external_addresses] no choice is needed. With none: addresses_required (422). With several and no `address`: address_required (422, `choices` lists them). An `address` that is not one of the configured entries: address_unknown (422, `choices` lists them). A chosen or single address that is not https:// (the config accepts any scheme://host[:port]): address_not_https (422), because members reach the hub's mTLS listener ([tls].addr) over https and an http bundle could never work.
+
+CONSEQUENCES. The bundle URL is operator text copied verbatim from external_addresses (kb/invariants/fleet/member-addresses/40335d34.md), so a wrong address is the operator's. A caller that gets address_required must ask the operator and call enroll again; enroll is not idempotent for the same id once a leaf is on main (kb/invariants/fleet/enroll/5c5a3bef.md), but these refusals happen before issuance so a retry is safe. Enroll's other 422 codes: invalid_agent_id, invalid_key.
+
+MISREADINGS. 'address is a way to point a forge-hosted fleet elsewhere': it is refused there. 'The bundle lists all the hub's addresses': it carries one.
