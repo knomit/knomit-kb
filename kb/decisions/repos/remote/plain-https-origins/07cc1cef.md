@@ -1,0 +1,28 @@
+---
+type: observation
+domain: [repos, remote, pki, auth, fleet, decisions]
+confidence: 0.92
+sources: 1
+entities: [pki.ClassifyOrigin, pki.GitURL, Manager.ResolveOrigin, ErrOriginUnreachable, ErrPeerCredential, ErrCertNotAnInput, ErrUnsupportedOriginScheme, auth method cert, ConfigureGitRemote]
+motifs: [decide-once-persist, internal-key-never-input]
+refs: ['kb://3ec012f5b4d2/kb/decisions/repos/remote/knomit-https-scheme/180d8654.md', 'kb://3ec012f5b4d2/kb/invariants/repos/remote/no-plaintext-fallback-for-fleet-origins/a8058e67.md', 'kb://3ec012f5b4d2/kb/invariants/fleet/create/preflights/f9e04b09.md', 'src://7b4887ce51d9/internal/pki/client.go@0488c05db1f8ecc49f19ecf51011d5d10f3e4e28:2a8b26ed399358554ee4aa8a89c1bcb19de2640b', 'src://7b4887ce51d9/internal/pki/gittransport.go@0488c05db1f8ecc49f19ecf51011d5d10f3e4e28:496801cbe24a9ae4ecc97e71fa2635ed92e0c43b', 'src://7b4887ce51d9/internal/repos/auth.go@0488c05db1f8ecc49f19ecf51011d5d10f3e4e28:395365c129c22a2d80ab6154ad4ff62b84b0878e', 'src://7b4887ce51d9/internal/web/helpers.go@0488c05db1f8ecc49f19ecf51011d5d10f3e4e28:af9a9ccaa3b3824968055774d9e1bfe587f9ac8a', 'src://7b4887ce51d9/test/archtest/origin_scheme_test.go@0488c05db1f8ecc49f19ecf51011d5d10f3e4e28:6be14e6d36d9658c6b25922c03f56ca77dbb5f7d', 'https://github.com/knomit/knomit/pull/526']
+---
+# A fleet peer is named by its plain https:// URL: knomit classifies the origin ONCE, when it is set (pki.ClassifyOrigin via Manager.ResolveOrigin), and stores auth method cert; the knomit+https scheme exists only at the go-git boundary (pki.GitURL) and in the derived .git/config
+
+Decided for PR #526 (merge 0488c05d, 2026-10-15). It reverses the user-facing half of kb/decisions/repos/remote/knomit-https-scheme/180d8654.md: the user no longer types knomit+https://. The user's words on the old way: "what's the benefit of this crappy new invention?"
+
+THE DECISION. The user types https://host:port/git/<repo>. When an origin is SET (create in every mode, join, attach, a Connect swap, a probe), Manager.ResolveOrigin asks pki.ClassifyOrigin once. A peer (a server whose certificate VerifyInstanceChain accepts against the INSTALLED fleet root, and which accepts this instance's certificate) is stored with auth method cert, the https URL unchanged, in control.db. Everything else keeps the caller's auth. The method cert is the stored 'known peer' bit; nothing re-classifies it later. The internal scheme appears only (a) inside pki.GitURL, which maps a cert origin to it for go-git, and (b) in the .git/config remote that repos.ConfigureGitRemote derives. control.db, the REST API, the HAL responses and the UI hold the https URL.
+
+THE FOUR RULINGS (D1 to D4).
+D1: a host that cannot be reached is REFUSED with ErrOriginUnreachable, never stored as stock https. The alternative (guess 'not a peer' when the dial fails) would store a peer as a forge, and the first sync would then send a forge credential to it or fail with an x509 error.
+D2: a token or auth method typed for a host that classifies as a peer is REFUSED with ErrPeerCredential, not silently dropped.
+D3: cert is NOT an input. The edge (validateURLAuth, the wizard, ResolveOrigin) refuses it with ErrCertNotAnInput; the Origin response enum still shows it read-only; a PUT origin does not carry a stored cert forward (the attach decides again).
+D4: NO migration. A knomit+https URL typed, or found stored, is refused (pki.ErrUnsupportedOriginScheme, 'use https://') at open and sync before anything is dialled. The scheme check is case-insensitive because go-git lowercases the scheme.
+
+OPTIONS REJECTED: classify at every sync (a network round trip per sync, and the answer could flip with the network); keep typing the scheme and add a second spelling; client.InstallProtocol('https', ...) (still option (b) of 180d8654: process-global, needs a system-verification fallback). The mechanism of 180d8654's option (c) is unchanged: a separate registered scheme whose wrapper delegates to go-git's http transport over pki.HTTPClient.
+
+Also removed with it: pki.IsFleetURL, the exported pki.GitScheme, the fleet-create refusal `knomit_origin` (the user: "I don't even know what that is ... Remove it"; a peer origin cannot pass create anyway, see kb/invariants/fleet/create/preflights/f9e04b09.md), validateURLAuth's two fleet rules, and the wizard's cert option.
+
+CONSEQUENCES. An instance that holds fleet trust cannot attach or clone an https forge it cannot reach: it gets 'can't reach', not a stored origin (D1 applies to forges too once trust is installed). An instance with no fleet trust (no root.crt) dials nothing and nothing changes for forges. Create classifies authoritatively; a create with trust installed makes two handshakes (see the ResolveOrigin 'decided' gotcha).
+
+MISREADINGS. 'cert means the user chose mTLS': it is knomit's decision and the user cannot set it. 'The scheme is gone from the codebase': it is one constant in internal/pki (archtest TestInternalFleetSchemeLivesOnlyInPKI pins that it appears nowhere else in .go, .ts, .tsx or .yaml). 'Classification protects the credential by itself': the layers that keep a forge credential away from a peer are in kb/invariants/repos/remote/no-plaintext-fallback-for-fleet-origins/a8058e67.md.
