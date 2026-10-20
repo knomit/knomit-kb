@@ -1,0 +1,21 @@
+---
+type: principle
+domain: [store, architecture]
+confidence: 0.85
+sources: 1
+entities: [repoHandler, Service, integrity, experiment_record.go, interface_guards.go, service_fsck.go, consensus_branch.go, replay.go, vec_table.go, sqlite_conn.go]
+motifs: [dependency-direction, misplaced-helper]
+refs: ['src://7b4887ce51d9/internal/store/experiment_record.go@c7bf5d547c3b79631730e90954acddd023050417:0040fc6eb863c9fe5fc92b707eee19eb5013425b', 'src://7b4887ce51d9/internal/store/interface_guards.go@c7bf5d547c3b79631730e90954acddd023050417:bf35b72eccb8f0efe4b9768217b8a2044671fa85', 'src://7b4887ce51d9/internal/store/service_fsck.go@c7bf5d547c3b79631730e90954acddd023050417:3ceef04ab4e08cebb9b667b9e9298934af027be3', 'src://7b4887ce51d9/internal/store/verify.go@c7bf5d547c3b79631730e90954acddd023050417:094550545a296f6fd0543a98fd6f90664009cc16', 'kb://3ec012f5b4d2/kb/architecture/store/sub-index-up-not-sideways/360ce7a5.md']
+---
+# internal/store files are grouped into planned clusters, and a file may reference only symbols of its own or a lower cluster; shared helpers live in the lowest cluster that uses them
+
+Preparation for splitting internal/store into subpackages (PR 05 of the internal/ hierarchy stack): after it, every non-test file of internal/store belongs to one planned cluster and references only symbols (including methods, struct fields and exported types) from its own or a LOWER cluster. Order, lowest first: sqlite, vcs, fleetrec, verify, facts, merge, index, vocab, sessions (sqlite only), sync, gitserve, fsck, facade. Direct arrows: fleetrec to vcs; verify to vcs and fleetrec; facts to vcs and verify; merge to vcs, verify, facts; index to sqlite, vcs, facts; vocab to sqlite, vcs, index; sync to vcs, verify, merge; gitserve to vcs, verify, sync; fsck and facade to everything below.
+
+How the cuts were made, so the next change repeats them instead of re-creating a back-edge:
+- Helpers move DOWN to the lowest cluster that uses them, never up: conn/beginTxIfNeeded, groupingKey, motifClusterKeyExpr and the textnorm aliases to sqlite; the experiment record (Experiment, GetExperiment, checkExperimentParentCurrent, touchExperimentActivity, IsExperimentBranch, the experiments-row errors), walkHistory, parentTrees, checkTreeShape, agentIDOfAuthor, isTrailerParagraph, treeOntology, the ontology cache, the AcceptList, branch-role helpers (IsRoleBranch, ChooseConsensusBranch, ErrNoConsensusBranch) and the Embedder/IndexManager ports to vcs; the incoming-push judge (judgeIncoming, signerIsPusher, privatePathClosure, verifyModeAt, CommitRefusedBy*) to verify; FactRecord to facts.
+- No hook funcs were needed for the experiment checks. The commit path still calls touchExperimentActivity from notifyCommit and checkExperimentParentCurrent from commitAgentID at exactly the same points, under the same branch lock; only the declarations moved (into vcs), so lock order, transaction boundaries and when onCommit fires are unchanged.
+- Service methods live ONLY in facade files (service.go, service_facts.go, service_fleetrec.go, service_merge.go, service_sync.go, service_vcs.go, service_verify.go, service_gitserve.go, service_fsck.go, plus consensus_branch.go and replay.go, which are Service-level orchestration and count as facade). A cluster file that names *Service is a back-reference. The integrity checker (verify.go, fsck) takes an `integrity` struct holding rh, fi, si instead of *Service.
+- Compile-time interface guards (`var _ FactIndex = ...`) live in interface_guards.go, not beside the implementing type. pipelineIndex holds the repo *sql.DB, not the repoHandler.
+- vec_table.go is index, not sqlite: its methods hang off searchIndex.
+
+CONSEQUENCE: when adding code to internal/store, put a helper that two clusters need in the lower one; do not make a lower file call a Service method, a published interface, or a type declared in types.go/interfaces.go (declare the type with the cluster that owns it). MISREADING: this is a file-placement rule inside one package, not a package boundary yet; the Go compiler does not enforce it until the clusters become packages (hier-06 to hier-11), so it is checked with a go/types script (symbol use by file cluster), not by `go build`.
