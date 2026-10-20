@@ -5,7 +5,7 @@ confidence: 0.95
 sources: 0
 entities: [NotifyCommit, notifyCommit, vcs.Repo, AppendCommitLog, im.Sync, touchExperimentActivity, writeFile, deleteFile, batchWrite, mergeIntoBranch, reconcileAgentMerge]
 motifs: [bypass-defeats-guarantee]
-refs: ['src://knomit/internal/store/branch_commit.go@307b67d', 'src://knomit/internal/store/fact_write.go@307b67d', 'src://knomit/internal/store/branch_merge.go@307b67d', 'src://7b4887ce51d9/internal/store/internal/vcs/branch_commit.go@ad7059d21b05f3a576994b27578e0ef626e818f9:ed1528c7cd165e693d157ae7f97b1cf8e5d244de#L117-L142', 'src://7b4887ce51d9/internal/store/fact_write.go@ad7059d21b05f3a576994b27578e0ef626e818f9:36b02269f140db54872f7c16fd86b1fb638694aa']
+refs: ['src://knomit/internal/store/branch_commit.go@307b67d', 'src://knomit/internal/store/fact_write.go@307b67d', 'src://knomit/internal/store/branch_merge.go@307b67d', 'src://7b4887ce51d9/internal/store/internal/vcs/branch_commit.go@ad7059d21b05f3a576994b27578e0ef626e818f9:ed1528c7cd165e693d157ae7f97b1cf8e5d244de#L117-L139', 'src://7b4887ce51d9/internal/store/fact_write.go@ad7059d21b05f3a576994b27578e0ef626e818f9:36b02269f140db54872f7c16fd86b1fb638694aa']
 ---
 # Every branch-ref mutation MUST call vcs.Repo.NotifyCommit (rh.NotifyCommit from the parent) while holding the branch lock
 
