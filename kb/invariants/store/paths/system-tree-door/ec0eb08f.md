@@ -15,3 +15,5 @@ RULE: every fact write door lowercases nested paths (kb/gotchas/store/paths/lowe
 CONSEQUENCE FOR NEW CODE: do not widen it to 'root-level files': a root LICENSE, .gitmodules or a readme.md beside README.md is a file knomit never writes (internal/repos/manifest.go), and a case-duplicate is resolved by forges as the README. Do not expose it through MCP or REST: `.knomit/` stays closed to the fact tools (F25); the door exists for knomit's own server act of creating a repo from a template.
 
 MISREADING: it is not a general 'exact path' write; WriteRootFile (root-only) is still the door for a root file rewrite.
+
+LOCATION (refactor-store-slim-d-orchestration): the door's body is facts.Index.WriteSystemTree in internal/store/facts/system_files.go; Service.WriteSystemTree is a one-line forward. It is deliberately not in facts/fact_write.go or facts/triggers.go, which text-scanning guards read by path. The checks (read-only refusal, fact.TemplatePathAllowed, case-fold duplicates, ValidatePath) run before the branch lock, exactly as before the move.
