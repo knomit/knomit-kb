@@ -1,0 +1,18 @@
+---
+type: observation
+domain: [testing, fleet, e2e, flaky]
+confidence: 0.9
+sources: 1
+entities: [untilMasterRounds, maxMasterRounds, fleetMasterDuty, fleetLeaveRound, fleetHostRound, fleetOpMu, Machine.Options.Synchronous, fleetNode.round]
+motifs: [budget-from-faster-machine, round-shaped-convergence]
+refs: ['src://7b4887ce51d9/cmd/fleet_membership_test.go@301154c5bbf111c27142fc7e73ebfa9884268a17:c71d362c315868b81b9ce6e0f8f907e69f04ed0d', 'src://7b4887ce51d9/cmd/fleet_e2e_test.go@301154c5bbf111c27142fc7e73ebfa9884268a17:5ed3e860365d183f1452cc427511f9a8205e61f5', 'src://7b4887ce51d9/cmd/fleet_leave_test.go@301154c5bbf111c27142fc7e73ebfa9884268a17:ada20d22a4f2e3b761d7563cc66e0c48e760ceb6', 'src://7b4887ce51d9/internal/repos/fleet_leave.go@301154c5bbf111c27142fc7e73ebfa9884268a17:6468f181ed02f49b59c1b5d71716c8ffc45dff3e', 'src://7b4887ce51d9/internal/repos/fleet_host.go@301154c5bbf111c27142fc7e73ebfa9884268a17:a70d2e0010f6b6615a0c2348643f9887b86047c4', 'kb://3ec012f5b4d2/kb/conventions/testing/timing/assert-ordering/1b60e3a6.md', 'kb://3ec012f5b4d2/kb/gotchas/ci/race-workflow/synthesize-timeout-headroom/4950ec60.md', 'kb://3ec012f5b4d2/kb/gotchas/repos/triggers/testing/race/77ef53fc.md', 'kb://3ec012f5b4d2/kb/invariants/fleet/leave/master-revokes-left/d2132d6b.md', 'https://github.com/knomit/knomit/pull/571']
+---
+# The forge-fleet e2e tests converge in master ROUNDS, not seconds: revocation after a leave takes 2 rounds, records and rejoin 0-1; untilMasterRounds bounds by round count (maxMasterRounds = 10), never by a wall-clock deadline
+
+The cmd/ forge-fleet e2e tests wait for the fleet to converge by running the acting master's rounds, and the number of rounds a change needs is small and fixed: the revocation of a member after it left takes 2 master rounds; records onto main, a rejoin and similar steps take 0 to 1. PR #571 replaced a wall-clock deadline with untilMasterRounds (cmd/fleet_membership_test.go), which runs master.round(t) until the condition holds and fails after maxMasterRounds = 10 of them. Ten is a hang detector for a broken duty, not a time budget; a round that hangs is caught by go test -timeout.
+
+CONSEQUENCE: bound a convergence wait in these tests by the ROUND COUNT. Do NOT bound it by a wall-clock deadline: a slow round on a loaded machine can spend the whole deadline alone, which is what flaked before #571 (motif budget-from-faster-machine; see the convention kb/conventions/testing/timing/assert-ordering/1b60e3a6.md and the same shape in 4950ec60 and 77ef53fc).
+
+WHY TEN ROUNDS IS SAFE ONLY WITH A SYNCHRONOUS MACHINE: the fleet nodes are built with Machine.Options.Synchronous, so no background sync loop runs a round that contends for fleetOpMu. fleetMasterDuty (and fleetHostRound) take fleetOpMu with TryLock and SKIP their duty when it is held, so a contended round is not a slow round but a round that did nothing, and it burns one of the 10. A test that mounts a fleet node without Synchronous can lose rounds to its own background loop and fail untilMasterRounds with no bug in the duty.
+
+SABOTAGE TARGETING: the forge fleet's leave duty runs through fleetMasterDuty -> fleetLeaveRound (internal/repos/fleet_leave.go). fleetHostRound (internal/repos/fleet_host.go) is the knomit-hosted hub path. Sabotaging fleetHostRound to prove the forge e2e test guards revocation leaves the test GREEN, because the forge master never calls it. MISREADING: round counts are not a promise that every step takes a fixed number of rounds in production; they describe how many of THIS test's synchronous rounds the change needed, and the 10 bound is deliberately loose.
