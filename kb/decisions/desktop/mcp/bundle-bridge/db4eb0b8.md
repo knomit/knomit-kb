@@ -4,7 +4,7 @@ domain: [desktop, mcp, integrations, build, bridge]
 confidence: 0.95
 sources: 0
 entities: [tools/desktop/app.go, tools/desktop/bundled.go, installBridgeTool, bridgeExecName, tools/bridge/main.go, Makefile, config.Config.Home, kb, knomit-bridge]
-refs: ['src://knomit/Makefile@c83980f', 'src://knomit/tools/desktop/app.go@c83980f', 'src://knomit/tools/bridge/main.go@c83980f', 'src://knomit/internal/config/config.go@c83980f', 'src://7b4887ce51d9/tools/desktop/bundled.go@b3d026204c2dbb1b3ea0d9cf0b1474560a6f1d49:8734d73785953f183a9ac19175efd4d48727053b', 'https://github.com/knomit/knomit/pull/218', 'kb://3ec012f5b4d2/kb/decisions/tools/bridge/rename-bridge-binary-to-kb/1f2bc3e7.md']
+refs: ['src://knomit/Makefile@c83980f', 'src://knomit/tools/desktop/app.go@c83980f', 'src://knomit/tools/bridge/main.go@c83980f', 'src://7b4887ce51d9/internal/foundation/config/config.go@0610c20083fcef9e84f42ab0311a14708bcb6193:726e04a2e41773a709be888892cecd12a77bd06f', 'src://7b4887ce51d9/tools/desktop/bundled.go@b3d026204c2dbb1b3ea0d9cf0b1474560a6f1d49:8734d73785953f183a9ac19175efd4d48727053b', 'https://github.com/knomit/knomit/pull/218', 'kb://3ec012f5b4d2/kb/decisions/tools/bridge/rename-bridge-binary-to-kb/1f2bc3e7.md']
 ---
 # macOS .app ships the bridge executable `kb` and symlinks it to <home>/bin on launch for stable MCP wiring
 

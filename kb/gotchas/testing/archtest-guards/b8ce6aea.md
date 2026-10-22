@@ -5,7 +5,7 @@ confidence: 0.9
 sources: 1
 entities: [TestLayers, checkLayers, internalGoDirs, go list]
 motifs: [bypass-through-outside-node, measured-constant-floor]
-refs: ['src://7b4887ce51d9/test/archtest/layers_test.go@fcc1613da698d7a18b02381959257a6f00029c3c:0610c20083fcef9e84f42ab0311a14708bcb6193', 'https://github.com/knomit/knomit/pull/592', 'kb://3ec012f5b4d2/kb/decisions/architecture/internal-layer-hierarchy/c81f5882.md']
+refs: ['src://7b4887ce51d9/test/archtest/layers_test.go@0610c20083fcef9e84f42ab0311a14708bcb6193:fcc1613da698d7a18b02381959257a6f00029c3c', 'https://github.com/knomit/knomit/pull/592', 'kb://3ec012f5b4d2/kb/decisions/architecture/internal-layer-hierarchy/c81f5882.md']
 ---
 # A layer check that inspects only imports inside the guarded tree is bypassed by laundering through a non-internal package; and a non-vacuity size floor is a measured constant, so derive the expected set from the filesystem
 
