@@ -3,9 +3,9 @@ type: observation
 domain: [store, sqlite, performance, testing]
 confidence: 0.85
 sources: 1
-entities: [wal_autocheckpoint, PRAGMA wal_checkpoint, rebuildCommitLog, WriteFact, lockBranch, _journal_mode=WAL, internal/store/branch_commit_log.go, knomit#366, knomit#403]
+entities: [wal_autocheckpoint, PRAGMA wal_checkpoint, rebuildCommitLog, WriteFact, lockBranch, _journal_mode=WAL, internal/engine/store/internal/vcs/branch_commit_log.go, knomit#366, knomit#403]
 motifs: [next-caller-pays, timing-measures-environment]
-refs: ['src://7b4887ce51d9/internal/store/service.go@c079a8282bcfaced958b6827fb58434ca1575a21:9a229982458f0f86afb9c35856bba60a8eae5f07', 'src://7b4887ce51d9/internal/store/path_history_index_test.go@c079a8282bcfaced958b6827fb58434ca1575a21:d0938da8e89f041991fe2b0d647401c9481ddc11', 'https://github.com/knomit/knomit/issues/366', 'https://github.com/knomit/knomit/issues/403', 'https://github.com/knomit/knomit/pull/405', 'https://github.com/knomit/knomit/actions/runs/36863649277']
+refs: ['src://7b4887ce51d9/internal/engine/store/service.go@0610c20083fcef9e84f42ab0311a14708bcb6193:4567055ef5ab9502c7f0a298871b31e6224970b2', 'src://7b4887ce51d9/internal/engine/store/path_history_index_test.go@0610c20083fcef9e84f42ab0311a14708bcb6193:0761106d9c604b3f5e4065d6b9b8ce5c5435ae03', 'https://github.com/knomit/knomit/issues/366', 'https://github.com/knomit/knomit/issues/403', 'https://github.com/knomit/knomit/pull/405', 'https://github.com/knomit/knomit/actions/runs/36863649277']
 ---
 # After a bulk write such as rebuildCommitLog, the FIRST later commit pays SQLite's automatic WAL checkpoint of the whole backlog (7-20 MB after a 2000-commit re-derive): 0.2-0.6 s idle, 6-11 s on a loaded Windows disk, inside whichever COMMIT comes first
 
