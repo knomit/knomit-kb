@@ -4,7 +4,7 @@ domain: [web, store, git, history, provenance]
 confidence: 0.95
 sources: 0
 entities: [CommitLogEntry, CommitLogRow, LogEntryWithTags, CommitDetailResult, commitItem, commit_log.author_name, commit_log.author_email, c.Author.Name, c.Author.Email]
-refs: ['src://knomit/internal/store/fact_history.go@74f330d', 'src://knomit/internal/store/git/commitlog.go@74f330d', 'src://knomit/internal/store/types.go@74f330d', 'https://github.com/knomit/knowkb/commit/d84f9d352f986b241148a61580b0ab03a476ed14']
+refs: ['src://7b4887ce51d9/internal/engine/store/internal/vcs/fact_history.go@0610c20083fcef9e84f42ab0311a14708bcb6193:3be7372cd59f8bf0a5997e384f9e86e1729af58e', 'src://7b4887ce51d9/internal/engine/store/git/commitlog.go@0610c20083fcef9e84f42ab0311a14708bcb6193:6a211b394fd99da45f507815ab41e6c8dbde04b6', 'src://7b4887ce51d9/internal/engine/store/types.go@0610c20083fcef9e84f42ab0311a14708bcb6193:63b60548375ae420095d944b61e51d7f256e32bf', 'https://github.com/knomit/knowkb/commit/d84f9d352f986b241148a61580b0ab03a476ed14']
 ---
 # Fact-history API exposes the commit AUTHOR (name+email, as-is) as a nested object, not committer
 
