@@ -3,8 +3,8 @@ type: observation
 domain: [mcp, claude-code, tools, integrations]
 confidence: 0.9
 sources: 1
-entities: [toolRegistrations, ToolSearch, knomit_learn, knomit_query, UserPromptSubmit, stream-json, internal/mcp/server.go]
-refs: ['src://7b4887ce51d9/internal/mcp/server.go@996f2d5019a0ad54fb0ea9b6591e979adbfa62c2:e6f3fd47d1f39602e2cd091b5a6c10e747d73258', 'src://7b4887ce51d9/internal/mcp/instructions.go@996f2d5019a0ad54fb0ea9b6591e979adbfa62c2:25629d1f6ff3bd71012aadbb0e6c2f9ef9e02953', 'src://7b4887ce51d9/tools/bridge/claude/templates/settings.json.tmpl@2104fd6d5e0fe0d6a1bdfbad4c75a973a539a62d:ee64aeac6a3ff3421c393cd5332103be4f925eb8']
+entities: [toolRegistrations, ToolSearch, knomit_learn, knomit_query, UserPromptSubmit, stream-json, internal/edge/mcp/server.go]
+refs: ['src://7b4887ce51d9/internal/edge/mcp/server.go@0610c20083fcef9e84f42ab0311a14708bcb6193:e1cfe0cce8118976c00f665901b6ec6705d09841', 'src://7b4887ce51d9/internal/edge/mcp/instructions.go@0610c20083fcef9e84f42ab0311a14708bcb6193:ff8eba66de67e2fc074a425613b9cef7e8e5b84b', 'src://7b4887ce51d9/tools/bridge/claude/templates/settings.json.tmpl@2104fd6d5e0fe0d6a1bdfbad4c75a973a539a62d:ee64aeac6a3ff3421c393cd5332103be4f925eb8']
 ---
 # knomit's failure mode under Claude Code is NON-USE of the write path (~20-37% call rate), not misrouting between servers — misrouting never occurred in 630 measured calls
 
