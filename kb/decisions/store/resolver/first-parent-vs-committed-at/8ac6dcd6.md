@@ -3,7 +3,7 @@ type: principle
 domain: [store, resolver, git, graph]
 confidence: 0.9
 sources: 0
-entities: [resolveTargetCommit, firstParentCommit, internal/store/derived_from.go, internal/store/search_index.go, rebuildGraph, branch_commits]
+entities: [resolveTargetCommit, firstParentCommit, internal/engine/store/index/derived_from.go, internal/engine/store/index/search_index.go, rebuildGraph, branch_commits]
 motifs: [causal-order-not-timestamp]
 refs: ['src://knomit/.claude/plans/2026-05-01-topological-ordering-followup.md@0938d83']
 ---

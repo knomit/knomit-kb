@@ -3,8 +3,8 @@ type: observation
 domain: [store, migrations, schema, recovery]
 confidence: 0.95
 sources: 0
-entities: [migrate.All, migrate.Core, internal/store/migrate/migrate.go, schema_migrations.dirty, migrate.Migrate.Force, store.Open, Manager.Add, internal/repos/manager.go]
-refs: ['src://knomit/internal/store/migrate/migrate.go@2e242866', 'src://knomit/internal/repos/manager.go@2e242866', 'https://github.com/knomit/knomit/issues/33', kb/architecture/store/migrations-numbered-up-down/78bbac3d.md]
+entities: [migrate.All, migrate.Core, internal/engine/store/migrate/migrate.go, schema_migrations.dirty, migrate.Migrate.Force, store.Open, Manager.Add, internal/corpus/repos/manager.go]
+refs: ['src://7b4887ce51d9/internal/engine/store/migrate/migrate.go@0610c20083fcef9e84f42ab0311a14708bcb6193:782b1259087d987dfb9b86d3f1de8f4162ef8d99', 'src://7b4887ce51d9/internal/corpus/repos/manager.go@0610c20083fcef9e84f42ab0311a14708bcb6193:85952799dd62df86b0def2737f81bbe252e42cf0', 'https://github.com/knomit/knomit/issues/33', 'kb://3ec012f5b4d2/kb/architecture/store/migrations-numbered-up-down/78bbac3d.md']
 ---
 # An interrupted migration self-heals inside migrate.All — Force(N-1) then Up(), attempted exactly ONCE per process
 
