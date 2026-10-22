@@ -3,9 +3,9 @@ type: observation
 domain: [llm, gemini, caching]
 confidence: 0.9
 sources: 1
-entities: [GeminiAdapter, cacheEntry, liveCacheName, dropCache, isCacheMissingErr, geminiCacheTTL, geminiCacheSkew, CachedContent, GenerateContentStream, internal/llm/gemini.go]
+entities: [GeminiAdapter, cacheEntry, liveCacheName, dropCache, isCacheMissingErr, geminiCacheTTL, geminiCacheSkew, CachedContent, GenerateContentStream, internal/engine/llm/gemini.go]
 motifs: [handle-outlives-target]
-refs: ['src://knomit/internal/llm/gemini.go@488cb1839c912f3113cc57fbb6dac5f9447b65f3', 'src://knomit/internal/llm/gemini_cache_test.go@488cb1839c912f3113cc57fbb6dac5f9447b65f3']
+refs: ['src://7b4887ce51d9/internal/engine/llm/gemini.go@0610c20083fcef9e84f42ab0311a14708bcb6193:1ddc2bc4df78775047916090574f3aa34d0c14e2', 'src://7b4887ce51d9/internal/engine/llm/gemini_cache_test.go@0610c20083fcef9e84f42ab0311a14708bcb6193:3bcd533e8ef757d8d547cbec5da0c142ff62eb1c']
 ---
 # A memoized Gemini cached-content name is a time-bounded handle, not a stable id — and the inline retry is gated on nothing having streamed yet
 
