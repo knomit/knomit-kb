@@ -3,9 +3,9 @@ type: observation
 domain: [fleet, triggers, decisions, sqlite, performance]
 confidence: 0.9
 sources: 1
-entities: [pendingFlush, settle, flushOnStop, triggerFlushGrace, RecordTriggerRuns, AdvanceTriggerWatermarks, internal/repos/triggers.go, internal/store/triggers.go]
+entities: [pendingFlush, settle, flushOnStop, triggerFlushGrace, RecordTriggerRuns, AdvanceTriggerWatermarks, internal/corpus/repos/triggers.go, internal/store/triggers.go]
 motifs: [write-behind-buffer, busy-handler-backoff]
-refs: ['src://7b4887ce51d9/internal/repos/triggers.go@0ef7edeecbf5863c6c9091f39a65be1aceb96d66:8411c6b3bef2f8b7c5768fb8960c890e281d7b3b', 'src://7b4887ce51d9/internal/store/triggers.go@0ef7edeecbf5863c6c9091f39a65be1aceb96d66:62bda301a444689511798e53d94622221b5d37a2', 'https://github.com/knomit/knomit/pull/335', 'kb://3ec012f5b4d2/kb/decisions/repos/triggers/fire-log-write-behind/db7bd869.md', 'kb://3ec012f5b4d2/kb/invariants/store/sqlite/write-serialization/9caa7895.md']
+refs: ['src://7b4887ce51d9/internal/corpus/repos/triggers.go@0610c20083fcef9e84f42ab0311a14708bcb6193:657d206eae98b57da7342bff00b702fe6ecdb601', 'src://7b4887ce51d9/internal/store/triggers.go@0ef7edeecbf5863c6c9091f39a65be1aceb96d66:62bda301a444689511798e53d94622221b5d37a2', 'https://github.com/knomit/knomit/pull/335', 'kb://3ec012f5b4d2/kb/decisions/repos/triggers/fire-log-write-behind/db7bd869.md', 'kb://3ec012f5b4d2/kb/invariants/store/sqlite/write-serialization/9caa7895.md']
 ---
 # Phase C of a dispatcher run is WRITE-BEHIND (flushed after 20 ms of writer silence, at a size bound, or at shutdown) rather than two transactions per run: a worker deviation, measured (per-run flushing cost the writer 5–7 ms per write through SQLite's busy-handler backoff), accepted by the master with the user informed and not vetoing
 

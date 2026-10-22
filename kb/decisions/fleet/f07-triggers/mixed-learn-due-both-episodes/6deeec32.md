@@ -3,9 +3,9 @@ type: observation
 domain: [fleet, triggers, decisions, expires]
 confidence: 0.95
 sources: 1
-entities: [sweepDue, advance, change.episode, TestDue_MixedLearnDue, internal/repos/triggers.go]
+entities: [sweepDue, advance, change.episode, TestDue_MixedLearnDue, internal/corpus/repos/triggers.go]
 motifs: [state-not-event, two-episodes-one-run]
-refs: ['src://7b4887ce51d9/internal/repos/triggers.go@5e3036526100c6f98b5a2dbefa8944eaa5d57bf6:7dec69912ce10d6f6f4b34bebb78c82004384850', 'src://7b4887ce51d9/internal/repos/triggers_due_test.go@5e3036526100c6f98b5a2dbefa8944eaa5d57bf6:225eca9a36c5e70e61ea347864b65b207425cd59', 'kb://3ec012f5b4d2/kb/architecture/repos/triggers/due-sweep/a23473de.md', 'https://github.com/knomit/knomit/pull/337']
+refs: ['src://7b4887ce51d9/internal/corpus/repos/triggers.go@0610c20083fcef9e84f42ab0311a14708bcb6193:657d206eae98b57da7342bff00b702fe6ecdb601', 'src://7b4887ce51d9/internal/corpus/repos/triggers_due_test.go@0610c20083fcef9e84f42ab0311a14708bcb6193:0e7a90cee4cd4a6f5696ff3b0a6e0900e0996f23', 'kb://3ec012f5b4d2/kb/architecture/repos/triggers/due-sweep/a23473de.md', 'https://github.com/knomit/knomit/pull/337']
 ---
 # A mixed `[learn, due]` trigger fires BOTH episodes in one run for a fact learned already past its date (two log rows, `change.episode` tells them apart; likewise `[update, due]` when the date moves to another past instant); rejected suppressing `due` in the run where the same path fired `learn`
 

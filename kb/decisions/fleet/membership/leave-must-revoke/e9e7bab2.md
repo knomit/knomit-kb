@@ -6,7 +6,7 @@ confidence: 0.9
 sources: 1
 entities: [leave duty, leaf_serial, CRL, master duty]
 motifs: [stale-names-old-object]
-refs: ['src://7b4887ce51d9/internal/repos/fleet_leave.go@a1b0ca5d0f92de4498fde3db8246037f2e33c55e:2107309293d3555989b20c198f3fbf00c2987686', 'src://7b4887ce51d9/internal/repos/fleet_leave_test.go@a1b0ca5d0f92de4498fde3db8246037f2e33c55e:6d2ea678a9a47877bcfa3b45327ba31b8d51e19f', 'kb://3ec012f5b4d2/kb/decisions/fleet/membership/leave-means-revoke/97126da4.md', 'https://github.com/knomit/knomit/pull/532']
+refs: ['src://7b4887ce51d9/internal/corpus/repos/fleet_leave.go@0610c20083fcef9e84f42ab0311a14708bcb6193:6ee9dd87c6a538a3cb80fbbd8ff3f1bc5b23ce43', 'src://7b4887ce51d9/internal/corpus/repos/fleet_leave_test.go@0610c20083fcef9e84f42ab0311a14708bcb6193:e17c029f5a05de2dbc7e6149be92de16a7e20a8b', 'kb://3ec012f5b4d2/kb/decisions/fleet/membership/leave-means-revoke/97126da4.md', 'https://github.com/knomit/knomit/pull/532']
 ---
 # Decision (user ruling 2026-10-16): "leave must revoke, the cert is valid per fleet, not in general" - a left member's leaf goes on the fleet's CRL through the master's duty, keyed by the serial the left record names
 

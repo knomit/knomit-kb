@@ -4,7 +4,7 @@ domain: [fleet, decisions, triggers, ontology]
 confidence: 0.95
 sources: 1
 entities: [js, script, compileInlineJS, TriggerCache, recipes, R9]
-refs: ['kb://3ec012f5b4d2/kb/architecture/fact/ontology/triggers/inline-js/09638689.md', 'src://7b4887ce51d9/internal/fact/triggers.go@53d102e998b25671eb2922a9ba25b064652ec6fd:e680371729faed7cbe3d77ff2e627b2e1b76cf9b', 'https://github.com/knomit/knomit/pull/348']
+refs: ['kb://3ec012f5b4d2/kb/architecture/fact/ontology/triggers/inline-js/09638689.md', 'src://7b4887ce51d9/internal/domain/fact/triggers.go@0610c20083fcef9e84f42ab0311a14708bcb6193:7ca350d0255f8d992ab101b0fc31d46ac853c021', 'https://github.com/knomit/knomit/pull/348']
 ---
 # Trigger scripts may be inline under `js:` (exclusive with `script:`), compiled with the ontology and cached by source hash; recipes stay files
 
