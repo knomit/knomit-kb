@@ -5,7 +5,7 @@ confidence: 0.95
 sources: 1
 entities: [app.newIdentity, sanitizeHostname, internal/app/identity.go, agent_branch_owner]
 motifs: [assumed-upstream-normalisation]
-refs: ['src://7b4887ce51d9/internal/app/identity.go@3e2e83b082a450210e5de0111fa55774ccb891e6:13145703058e7247bd6dc0b8c634a57d13e8b57b', 'src://7b4887ce51d9/internal/repos/fleet_identity.go@3e2e83b082a450210e5de0111fa55774ccb891e6:64d6b86d6c8fedd380df05f3c5b59b6c963d58b9', 'kb://3ec012f5b4d2/kb/decisions/identity/agent-branch-from-key-fingerprint/3ee0414b.md', 'kb://3ec012f5b4d2/kb/gotchas/repos/agent-branch-divergence-is-by-design/5478e46e.md', 'kb://3ec012f5b4d2/kb/invariants/pki/agent-id-binding/efad10db.md', 'https://github.com/knomit/knomit/pull/247', 'https://github.com/knomit/knomit/pull/513', 'https://github.com/knomit/knomit/pull/514']
+refs: ['src://7b4887ce51d9/internal/app/identity.go@3e2e83b082a450210e5de0111fa55774ccb891e6:13145703058e7247bd6dc0b8c634a57d13e8b57b', 'src://7b4887ce51d9/internal/corpus/repos/fleet_identity.go@0610c20083fcef9e84f42ab0311a14708bcb6193:8e20a6b271a28d2665a0f489751644e883d2ba07', 'kb://3ec012f5b4d2/kb/decisions/identity/agent-branch-from-key-fingerprint/3ee0414b.md', 'kb://3ec012f5b4d2/kb/gotchas/repos/agent-branch-divergence-is-by-design/5478e46e.md', 'kb://3ec012f5b4d2/kb/invariants/pki/agent-id-binding/efad10db.md', 'https://github.com/knomit/knomit/pull/247', 'https://github.com/knomit/knomit/pull/513', 'https://github.com/knomit/knomit/pull/514']
 ---
 # sanitizeHostname LOWERCASES the hostname and replaces '+' and '@' and the chars git rejects in a ref (since PR #514: agent ids are lower case everywhere), but it still does NOT map dots, so `mindev.local` survives whole into the agent branch
 

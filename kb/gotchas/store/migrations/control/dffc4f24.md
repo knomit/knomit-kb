@@ -5,11 +5,11 @@ confidence: 0.9
 sources: 1
 entities: [TestControl_UpMigrationsAreIdempotentDDL, migrate.Control, upWithRecovery, recoverDirty, forcePastCommittedBody, alreadyApplied]
 motifs: [replayability-constrains-schema, rationale-outlives-its-cause]
-refs: ['src://7b4887ce51d9/internal/store/migrate/control_test.go@1cc5413c593830e521cbd7cb44bf38473c51a003:eec52544d282c98c825bb076afbedbd099d9b410#L44-L72', 'src://7b4887ce51d9/internal/store/migrate/migrate.go@1cc5413c593830e521cbd7cb44bf38473c51a003:782b1259087d987dfb9b86d3f1de8f4162ef8d99#L59-L230', 'kb://3ec012f5b4d2/kb/conventions/store/migrations/idempotent-up-bodies/037ee64d.md', 'https://github.com/knomit/knomit/issues/326']
+refs: ['src://7b4887ce51d9/internal/engine/store/migrate/control_test.go@0610c20083fcef9e84f42ab0311a14708bcb6193:c27ebcb4664f331ed3750482255b6e0d53e5d13b', 'src://7b4887ce51d9/internal/engine/store/migrate/migrate.go@0610c20083fcef9e84f42ab0311a14708bcb6193:782b1259087d987dfb9b86d3f1de8f4162ef8d99', 'kb://3ec012f5b4d2/kb/conventions/store/migrations/idempotent-up-bodies/037ee64d.md', 'https://github.com/knomit/knomit/issues/326']
 ---
 # control.db up-migrations must be CREATE ... IF NOT EXISTS only because recovery re-runs a body, and the fallback that tolerates a non-idempotent body recognises just two errors
 
-TestControl_UpMigrationsAreIdempotentDDL (internal/store/migrate/control_test.go) requires every statement in every control/*.up.sql to match `CREATE (TABLE|UNIQUE INDEX|INDEX) IF NOT EXISTS`. The reason is recovery; nothing else applies the control chain.
+TestControl_UpMigrationsAreIdempotentDDL (internal/engine/store/migrate/control_test.go) requires every statement in every control/*.up.sql to match `CREATE (TABLE|UNIQUE INDEX|INDEX) IF NOT EXISTS`. The reason is recovery; nothing else applies the control chain.
 
 THE PATH THAT RE-RUNS A BODY: migrate.Control -> upWithRecovery. On a dirty version N, recoverDirty forces N-1 and calls Up again, which re-executes N's body against a database that may already hold what it created. With idempotent DDL that re-run is a no-op and recovery succeeds on its first path.
 

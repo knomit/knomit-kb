@@ -6,7 +6,7 @@ confidence: 0.9
 sources: 1
 entities: [paramClass, TestRouter_NoStaticSiblingsOfUserNamedParams]
 motifs: [hedge-signals-shape-error, one-key-two-truths]
-refs: ['kb://3ec012f5b4d2/kb/invariants/web/routing/no-static-children-under-repos/ea605d86.md', 'kb://3ec012f5b4d2/kb/meta/methodology/testing/mutation-must-name-its-failure/184f4255.md', 'src://7b4887ce51d9/internal/web/router_static_children_test.go@2d36336ce0e9420d6977905436c344e1aec3d5ea:75d81328c565418c56117525220db184bc81868f', 'https://github.com/knomit/knomit/pull/224']
+refs: ['kb://3ec012f5b4d2/kb/invariants/web/routing/no-static-children-under-repos/ea605d86.md', 'kb://3ec012f5b4d2/kb/meta/methodology/testing/mutation-must-name-its-failure/184f4255.md', 'src://7b4887ce51d9/internal/edge/web/router_static_children_test.go@0610c20083fcef9e84f42ab0311a14708bcb6193:cc8d85c161450a3ee401c20bb932a2beb6a5c195', 'https://github.com/knomit/knomit/pull/224']
 ---
 # A caveat written into a classification's own reason is evidence the KEY is at the wrong granularity — one key being asked to hold two truths — not evidence the classifier was unsure; check the key before hedging the entry
 

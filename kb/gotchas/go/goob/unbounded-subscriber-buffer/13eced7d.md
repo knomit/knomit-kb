@@ -4,9 +4,9 @@ type: heuristic
 domain: [go, events, sse, memory, repos, web]
 confidence: 0.95
 sources: 2
-entities: [goob.Observable, goob.NewPipe, Observable.Publish, Observable.Subscribe, TaskHub, internal/repos/hub.go, logging.Tap, Subscription.deliver, subscriberBuffer, github.com/ysmood/goob]
+entities: [goob.Observable, goob.NewPipe, Observable.Publish, Observable.Subscribe, TaskHub, internal/corpus/repos/hub.go, logging.Tap, Subscription.deliver, subscriberBuffer, github.com/ysmood/goob]
 motifs: [nonblocking-hides-unbounded-buffer, safety-depends-on-rate]
-refs: ['kb://3ec012f5b4d2/kb/architecture/repos/taskhub-four-event-types/205b9763.md', 'kb://3ec012f5b4d2/kb/decisions/web/manage/logs-tab-sse-ring/ddceb81b.md', 'src://7b4887ce51d9/internal/platform/logging/tap.go@19b63d81310c3a2502db559bd47f0abf4285038d:ab1243f4c55f4b92492187c60a71c54f3c5e045f', 'src://7b4887ce51d9/internal/repos/hub.go@19b63d81310c3a2502db559bd47f0abf4285038d:c9f20676b9ee0ad813871a3483cd21786d28dc6d', 'https://github.com/knomit/knomit/pull/199']
+refs: ['kb://3ec012f5b4d2/kb/architecture/repos/taskhub-four-event-types/205b9763.md', 'kb://3ec012f5b4d2/kb/decisions/web/manage/logs-tab-sse-ring/ddceb81b.md', 'src://7b4887ce51d9/internal/platform/logging/tap.go@19b63d81310c3a2502db559bd47f0abf4285038d:ab1243f4c55f4b92492187c60a71c54f3c5e045f', 'src://7b4887ce51d9/internal/corpus/repos/hub.go@0610c20083fcef9e84f42ab0311a14708bcb6193:8111f912381db3b6fc1dfb81bd9cba4d9e60241c', 'https://github.com/knomit/knomit/pull/199']
 ---
 # goob.Observable never blocks Publish because each subscriber's pipe buffers into an UNBOUNDED slice — so it is safe only for LOW-RATE events, and a high-rate publisher with one stalled subscriber grows the heap with no ceiling and no signal
 
@@ -14,7 +14,7 @@ goob v0.4.0's `NewPipe` documents itself as "Events uses an internal buffer so i
 
 The pump goroutine forwards `buf` into an unbuffered channel. If the consumer stops reading — an SSE handler wedged on a socket write to a suspended laptop or a proxy that stopped draining — the pump blocks on the send and `buf` grows by one entry per published event for as long as the stall lasts. Nothing bounds it, nothing counts it, and nothing logs it.
 
-WHAT TO DO: goob is the right tool when the EVENT RATE IS BOUNDED BY SOMETHING OTHER THAN REQUEST TRAFFIC. TaskHub (internal/repos/hub.go) qualifies — its TaskEvent/StatusEvent/SyncEvent/PushEvent fire on synth runs, HEAD changes and reconcile ticks, so a stalled browser retains a handful of small structs. Before adding a new goob hub, ask what publishes and how often. If the answer is "once per HTTP/MCP request" or "once per log line", goob is the wrong choice and the fan-out must be bounded with drops counted and reported.
+WHAT TO DO: goob is the right tool when the EVENT RATE IS BOUNDED BY SOMETHING OTHER THAN REQUEST TRAFFIC. TaskHub (internal/corpus/repos/hub.go) qualifies — its TaskEvent/StatusEvent/SyncEvent/PushEvent fire on synth runs, HEAD changes and reconcile ticks, so a stalled browser retains a handful of small structs. Before adding a new goob hub, ask what publishes and how often. If the answer is "once per HTTP/MCP request" or "once per log line", goob is the wrong choice and the fan-out must be bounded with drops counted and reported.
 
 logging.Tap is the worked example of the bounded alternative: a per-subscriber `chan string` of fixed capacity (subscriberBuffer = 1024), a non-blocking `select` with a `default:` that increments an atomic `dropped` counter, and an endpoint that emits the delta as a `dropped` event so a viewer never renders a gap as continuity. That shape costs a stalled subscriber a fixed ceiling instead of the process.
 

@@ -5,11 +5,11 @@ confidence: 0.95
 sources: 1
 entities: [httptest.NewRequest, RemoteAddr, isLoopback, fromLoopback, withoutAuthForTests, authDisabled, writeGate, AuthMiddleware, mcpRoutePattern, APIBase, NewAPIRouter]
 motifs: [test-default-diverges, tempting-fix-widens-boundary]
-refs: ['src://7b4887ce51d9/internal/web/auth_middleware.go@cec7c5c10b4a752dadbb34a45cb749427923ba8d:8dc48207941b3ccbcadccb284305e61238fcf387', 'src://7b4887ce51d9/internal/web/auth_testaddr_test.go@cec7c5c10b4a752dadbb34a45cb749427923ba8d:f9a0305371aaf6c4642423931603979829d7551a', 'src://7b4887ce51d9/internal/web/auth_disable_test.go@cec7c5c10b4a752dadbb34a45cb749427923ba8d:dfb3bd798e7fd45cf73745c5183f7ac0920c52f6', 'src://7b4887ce51d9/internal/web/readonly.go@cec7c5c10b4a752dadbb34a45cb749427923ba8d:db1c242d3824cd1767059cd3b68514ff4f1e210c', 'https://github.com/knomit/knomit/pull/243']
+refs: ['src://7b4887ce51d9/internal/edge/web/auth_middleware.go@0610c20083fcef9e84f42ab0311a14708bcb6193:82e2baff8992a0deb5ffc6b3b5e167972fc95ca3', 'src://7b4887ce51d9/internal/edge/web/auth_testaddr_test.go@0610c20083fcef9e84f42ab0311a14708bcb6193:0c33ee4c155cf5c4b848df71cc11cf5d30b3d6b3', 'src://7b4887ce51d9/internal/edge/web/auth_disable_test.go@0610c20083fcef9e84f42ab0311a14708bcb6193:dfb3bd798e7fd45cf73745c5183f7ac0920c52f6', 'src://7b4887ce51d9/internal/edge/web/readonly.go@0610c20083fcef9e84f42ab0311a14708bcb6193:a152708674c7da044f76ba5f4be2d13f0b3eb830', 'https://github.com/knomit/knomit/pull/243']
 ---
 # httptest.NewRequest's RemoteAddr is 192.0.2.1:1234 — documentation space, NOT loopback — so a mutating request built with it carries no principal and the write gate refuses it
 
-`httptest.NewRequest` sets `RemoteAddr` to `192.0.2.1:1234`. That is TEST-NET-1 documentation space and is deliberately NOT loopback, so `AuthMiddleware` attaches no principal to such a request, and `writeGate` then refuses any mutating one with 403 "Permission denied". Adding the write gate turned 353 pre-existing tests in `internal/web` red for exactly this reason and nothing else.
+`httptest.NewRequest` sets `RemoteAddr` to `192.0.2.1:1234`. That is TEST-NET-1 documentation space and is deliberately NOT loopback, so `AuthMiddleware` attaches no principal to such a request, and `writeGate` then refuses any mutating one with 403 "Permission denied". Adding the write gate turned 353 pre-existing tests in `internal/edge/web` red for exactly this reason and nothing else.
 
 THERE ARE TWO SANCTIONED FIXES and it matters which one you reach for.
 

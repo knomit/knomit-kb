@@ -4,9 +4,9 @@ type: policy
 domain: [web, api, lens, collections]
 confidence: 0.95
 sources: 1
-entities: [internal/web/handlers_lenses_read.go, internal/web/handlers_facts_collection.go, internal/store/search_query.go, RecentFacts, maxLensRecencyDepth, maxLensSearchCandidates, lensFanoutDepth, TestLensFanoutDepth_OverflowingOffsetStillClamps]
+entities: [internal/edge/web/handlers_lenses_read.go, internal/edge/web/handlers_facts_collection.go, internal/engine/store/index/search_query.go, RecentFacts, maxLensRecencyDepth, maxLensSearchCandidates, lensFanoutDepth, TestLensFanoutDepth_OverflowingOffsetStillClamps]
 motifs: [measures-work-not-outcome]
-refs: ['src://7b4887ce51d9/internal/web/handlers_lenses_read.go@a11f174ecd6ce171baeb046372151d7c77b3e141:0cc988a4d6ced809be08ff38638f2139e54e235d', 'src://7b4887ce51d9/internal/web/handlers_lenses_read_test.go@a11f174ecd6ce171baeb046372151d7c77b3e141:306819fc323c08d21ecc296d2c49fefa9cf34f45', 'src://7b4887ce51d9/internal/store/search_query.go@a11f174ecd6ce171baeb046372151d7c77b3e141:0c7b62cb06d9b027a1decccb55f5410a85b2a333', 'src://7b4887ce51d9/internal/web/handlers_facts_collection.go@a11f174ecd6ce171baeb046372151d7c77b3e141:fae1a2e17de23552606aed1b282f4cc4610381b6']
+refs: ['src://7b4887ce51d9/internal/edge/web/handlers_lenses_read.go@0610c20083fcef9e84f42ab0311a14708bcb6193:ae5d1a0be5f1640583d34af9997534bc5740da29', 'src://7b4887ce51d9/internal/edge/web/handlers_lenses_read_test.go@0610c20083fcef9e84f42ab0311a14708bcb6193:12b8bd312e6d8b40ed2673ed544008f023aa8c89', 'src://7b4887ce51d9/internal/engine/store/index/search_query.go@0610c20083fcef9e84f42ab0311a14708bcb6193:5a20922f4876029a0b68e4df70d95485bde0b170', 'src://7b4887ce51d9/internal/edge/web/handlers_facts_collection.go@0610c20083fcef9e84f42ab0311a14708bcb6193:d4f341a2c8269a134afe0992d8a9279dd0842a37']
 ---
 # A collection's `total` answers how many rows MATCH, never how many were fetched — bounding transfer must never bound the count
 
