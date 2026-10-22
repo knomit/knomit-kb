@@ -5,7 +5,7 @@ domain: [synthesize, search, embedding]
 confidence: 0.95
 sources: 0
 entities: [ScopedCluster, dedupCluster, QueryByPath, facts_vec, SearchOptions]
-refs: ['src://knomit/internal/synthesize/cluster.go@307b67d', 'src://knomit/internal/synthesize/dedup.go@307b67d']
+refs: ['src://7b4887ce51d9/internal/corpus/synthesize/cluster.go@0610c20083fcef9e84f42ab0311a14708bcb6193:37ec8bc8e3b5633e4e55ca5bae378c7cfeacff46', 'src://7b4887ce51d9/internal/corpus/synthesize/dedup.go@0610c20083fcef9e84f42ab0311a14708bcb6193:b8c401ef89c4b1ad3ed2eacadb40373efdeadc07']
 ---
 # ScopedCluster and dedupCluster use QueryByPath — NEVER re-embed indexed facts
 
