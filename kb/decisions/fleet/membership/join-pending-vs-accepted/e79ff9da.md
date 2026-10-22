@@ -6,7 +6,7 @@ confidence: 0.92
 sources: 1
 entities: [recordStateOf, record_state, RecordPending, record_pending_update, state registered]
 motifs: [candidate-versus-accepted]
-refs: ['src://7b4887ce51d9/internal/repos/fleet.go@a1b0ca5d0f92de4498fde3db8246037f2e33c55e:4283661b454197e33f91f197f44783e311750a0a', 'src://7b4887ce51d9/internal/repos/fleet_leave_test.go@a1b0ca5d0f92de4498fde3db8246037f2e33c55e:6d2ea678a9a47877bcfa3b45327ba31b8d51e19f', 'kb://3ec012f5b4d2/kb/decisions/fleet/derived-revoked/504782ff.md', 'https://github.com/knomit/knomit/pull/532']
+refs: ['src://7b4887ce51d9/internal/corpus/repos/fleet.go@0610c20083fcef9e84f42ab0311a14708bcb6193:756540a5025bc7b3199f2964602124a03c7cba49', 'src://7b4887ce51d9/internal/corpus/repos/fleet_leave_test.go@0610c20083fcef9e84f42ab0311a14708bcb6193:e17c029f5a05de2dbc7e6149be92de16a7e20a8b', 'kb://3ec012f5b4d2/kb/decisions/fleet/derived-revoked/504782ff.md', 'https://github.com/knomit/knomit/pull/532']
 ---
 # Decision (user ruling 2026-10-16): "our candidate record in our branch means pending. our record in main means accepted." - a joiner's record_state is pending until main holds its record in the same state, and the comparison is of STATE, not of record version
 

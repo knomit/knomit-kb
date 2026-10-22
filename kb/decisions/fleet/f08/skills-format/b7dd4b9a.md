@@ -3,8 +3,8 @@ type: observation
 domain: [fleet, mcp, skills]
 confidence: 0.95
 sources: 1
-entities: [F08, R6, R8, .knomit/skills, SKILL.md, MCP prompts, internal/mcp/prompts.go, kb claude init]
-refs: ['src://7b4887ce51d9/internal/mcp/prompts.go@ad75940b36c05b3c88d312b130e7107a37d14acd:13bc50baa5e947aefd0d389956c9999f29f7547b', 'src://7b4887ce51d9/internal/fact/skill.go@ad75940b36c05b3c88d312b130e7107a37d14acd:e4b5f5740bf7baa7843c20bacf48356dbe8b1177', 'src://7b4887ce51d9/internal/store/skills.go@ea6836909036f558f80f7c90ff4e95dcf250b693:946e1ab5a0fe5e6a9fdb7e0a07b8b847bbda5c72', 'kb://3ec012f5b4d2/kb/architecture/mcp/skills/prompts-per-binding/25fa02e5.md', 'kb://3ec012f5b4d2/kb/gotchas/store/go-git/tree-entry-modes/206d1283.md', 'https://github.com/knomit/knomit/pull/351', 'https://github.com/knomit/knomit/pull/438']
+entities: [F08, R6, R8, .knomit/skills, SKILL.md, MCP prompts, internal/edge/mcp/prompts.go, kb claude init]
+refs: ['src://7b4887ce51d9/internal/edge/mcp/prompts.go@0610c20083fcef9e84f42ab0311a14708bcb6193:ddb5f15c618a5e06e79b1a23622cfd31fe4cadd5', 'src://7b4887ce51d9/internal/domain/fact/skill.go@0610c20083fcef9e84f42ab0311a14708bcb6193:e4b5f5740bf7baa7843c20bacf48356dbe8b1177', 'src://7b4887ce51d9/internal/store/skills.go@ea6836909036f558f80f7c90ff4e95dcf250b693:946e1ab5a0fe5e6a9fdb7e0a07b8b847bbda5c72', 'kb://3ec012f5b4d2/kb/architecture/mcp/skills/prompts-per-binding/25fa02e5.md', 'kb://3ec012f5b4d2/kb/gotchas/store/go-git/tree-entry-modes/206d1283.md', 'https://github.com/knomit/knomit/pull/351', 'https://github.com/knomit/knomit/pull/438']
 ---
 # Repo instructions are Agent Skills folders in .knomit/skills/<name>/SKILL.md, served by knomit over MCP as prompts; knomit installs them nowhere (R6 + R8)
 

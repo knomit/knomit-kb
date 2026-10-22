@@ -4,7 +4,7 @@ domain: [fleet, auth, decisions]
 confidence: 0.95
 sources: 1
 entities: [auth.CertGrants, auth.PushOwn, knomit grants]
-refs: ['kb://3ec012f5b4d2/kb/decisions/auth/instance-read-implicit/85dd6b5d.md', 'kb://3ec012f5b4d2/kb/architecture/store/git-serve/receive-pack/7642c213.md', 'src://7b4887ce51d9/internal/auth/certgrants.go@c7423c3e3a7ad8280a73b9269d1f416844d14656:90f075df7e1f0abb4e733f50bee69308404a6d19', 'https://github.com/knomit/knomit/pull/340', 'src://7b4887ce51d9/internal/auth/certgrants.go@c9c599dee475771c4226212ac0889817c6b268d4:1ad7d3526e1b3131c498f3298bcdcf648567d953', 'kb://3ec012f5b4d2/kb/decisions/fleet/branch-ownership-not-identity/28db3a86.md', 'https://github.com/knomit/knomit/pull/513']
+refs: ['kb://3ec012f5b4d2/kb/decisions/auth/instance-read-implicit/85dd6b5d.md', 'kb://3ec012f5b4d2/kb/architecture/store/git-serve/receive-pack/7642c213.md', 'src://7b4887ce51d9/internal/foundation/auth/certgrants.go@0610c20083fcef9e84f42ab0311a14708bcb6193:1ad7d3526e1b3131c498f3298bcdcf648567d953', 'https://github.com/knomit/knomit/pull/340', 'kb://3ec012f5b4d2/kb/decisions/fleet/branch-ownership-not-identity/28db3a86.md', 'https://github.com/knomit/knomit/pull/513']
 ---
 # Every enrolled instance may push its own agent branch to a host without a per-peer grant: push:own is implicit for chained instance certificates (user ruling "1. A", F11)
 

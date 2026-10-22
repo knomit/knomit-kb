@@ -3,9 +3,9 @@ type: observation
 domain: [fleet, triggers, decisions, expires]
 confidence: 0.95
 sources: 1
-entities: [sweepDue, trigger_due_fires, TestDue_ActivationAlreadyOverdue, TestDue_RemovedTriggerForgetsMarks, TestDue_SurvivesSwapStore, internal/repos/triggers.go]
+entities: [sweepDue, trigger_due_fires, TestDue_ActivationAlreadyOverdue, TestDue_RemovedTriggerForgetsMarks, TestDue_SurvivesSwapStore, internal/corpus/repos/triggers.go]
 motifs: [state-not-event, loud-failure-over-silent]
-refs: ['src://7b4887ce51d9/internal/repos/triggers.go@5e3036526100c6f98b5a2dbefa8944eaa5d57bf6:7dec69912ce10d6f6f4b34bebb78c82004384850', 'src://7b4887ce51d9/internal/repos/triggers_due_test.go@5e3036526100c6f98b5a2dbefa8944eaa5d57bf6:225eca9a36c5e70e61ea347864b65b207425cd59', 'kb://3ec012f5b4d2/kb/decisions/fleet/f07-triggers/unsupported-state-no-backfill/f27fc8d8.md', 'kb://3ec012f5b4d2/kb/invariants/repos/triggers/due-marks/db770fa9.md', 'https://github.com/knomit/knomit/pull/337']
+refs: ['src://7b4887ce51d9/internal/corpus/repos/triggers.go@0610c20083fcef9e84f42ab0311a14708bcb6193:657d206eae98b57da7342bff00b702fe6ecdb601', 'src://7b4887ce51d9/internal/corpus/repos/triggers_due_test.go@0610c20083fcef9e84f42ab0311a14708bcb6193:0e7a90cee4cd4a6f5696ff3b0a6e0900e0996f23', 'kb://3ec012f5b4d2/kb/decisions/fleet/f07-triggers/unsupported-state-no-backfill/f27fc8d8.md', 'kb://3ec012f5b4d2/kb/invariants/repos/triggers/due-marks/db770fa9.md', 'https://github.com/knomit/knomit/pull/337']
 ---
 # Facts already overdue when a `due` trigger first becomes active fire ONCE on the first sweep — and the same after a SwapStore, a rename or a remove-and-re-add — because 'the feature was never live - we're writing it now'; rejected 'never' (seeding marks at activation), whose silence would recur on every bookmark reset
 

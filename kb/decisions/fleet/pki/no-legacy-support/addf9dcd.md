@@ -6,7 +6,7 @@ confidence: 0.9
 sources: 1
 entities: [repos.ErrStoredAgentIDInvalid, 'knomit://instance URI SAN', control.db]
 motifs: [no-unshipped-migration]
-refs: ['src://7b4887ce51d9/internal/repos/fleet_identity.go@3e2e83b082a450210e5de0111fa55774ccb891e6:64d6b86d6c8fedd380df05f3c5b59b6c963d58b9', 'src://7b4887ce51d9/internal/pki/verify.go@3e2e83b082a450210e5de0111fa55774ccb891e6:a524c42b53f2cf4794f89679c80ac8bb03fffc28', 'kb://3ec012f5b4d2/kb/decisions/identity/opaque-persisted-agent-id/cd3a110e.md', 'https://github.com/knomit/knomit/pull/514']
+refs: ['src://7b4887ce51d9/internal/corpus/repos/fleet_identity.go@0610c20083fcef9e84f42ab0311a14708bcb6193:8e20a6b271a28d2665a0f489751644e883d2ba07', 'src://7b4887ce51d9/internal/foundation/pki/verify.go@0610c20083fcef9e84f42ab0311a14708bcb6193:65a35abe1a3d61bef078b96009035ab24ff485ca', 'kb://3ec012f5b4d2/kb/decisions/identity/opaque-persisted-agent-id/cd3a110e.md', 'https://github.com/knomit/knomit/pull/514']
 ---
 # PR #514 builds NO legacy support: no fleet repositories predate the fleet preset change, certificates issued before it are not migrated (they now read as operator certificates), and a stored agent id that is not lower case stops boot with a fresh-start error instead of being rewritten
 
