@@ -5,7 +5,7 @@ domain: [mcp, handlers]
 confidence: 0.95
 sources: 0
 entities: [context.WithTimeout, repos.RepoFromContext, storeIndices, mcpgo.NewToolResultError]
-refs: ['src://knomit/internal/mcp/query.go@307b67d', 'src://knomit/internal/mcp/learn.go@307b67d']
+refs: ['src://7b4887ce51d9/internal/edge/mcp/query.go@0610c20083fcef9e84f42ab0311a14708bcb6193:ca03e74bb60c2ee60d9ea5fdde1fec35f0b8a102', 'src://7b4887ce51d9/internal/edge/mcp/learn.go@0610c20083fcef9e84f42ab0311a14708bcb6193:fa685369f268f0187648eb3af58af3b643566432']
 ---
 # All MCP handlers follow the same prologue: timeout, RepoFromContext, storeIndices, accessors, validate, execute
 

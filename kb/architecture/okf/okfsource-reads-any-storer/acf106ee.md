@@ -14,6 +14,6 @@ It reads git objects and NOTHING else — no SQLite, no knomit Service, no repo 
 
 This package is a lift of the read half of the former internal/store/okf.go, which was verified to touch no SQL and was therefore already storer-agnostic in substance. The logic was moved deliberately unchanged; only the plumbing was re-pointed (methods on *Service became functions taking a storer, and the logging call became a Warnings slice on Snapshot, because the package must not log — a CLI and a server want to surface degradation differently).
 
-The consequence to preserve: any new read the exporter needs must be expressible against a storer. Reaching back into internal/store for it would silently re-couple the tool to a running server and break the plain-clone case.
+The consequence to preserve: any new read the exporter needs must be expressible against a storer. Reaching back into internal/engine/store for it would silently re-couple the tool to a running server and break the plain-clone case.
 
 Note the module constraint that forces the layout: Go forbids importing knomit/internal/... from outside the module, so the CLI must live in-tree at tools/okf rather than in its own repository.
