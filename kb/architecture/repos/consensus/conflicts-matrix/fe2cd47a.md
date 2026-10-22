@@ -5,11 +5,11 @@ confidence: 0.9
 sources: 1
 entities: [TestConflictsMatrix_T1_HostedAuto, TestConflictsMatrix_T2_GitHubLikeOrigin, conflicts, 'consensus: auto']
 motifs: [role-named-side, merge-base-moves-conflict]
-refs: ['src://7b4887ce51d9/internal/repos/conflicts_matrix_test.go@b9cdf382af4dd52878f896f8f3c9cdea6213260a:4ea9957f3a891da83af682b2bb147cf2cb1fc6b8', 'src://7b4887ce51d9/internal/store/conflict_merge.go@b9cdf382af4dd52878f896f8f3c9cdea6213260a:55cc48c1d3192e9b7a0ec8017cdfbc234699f90c', 'kb://3ec012f5b4d2/kb/architecture/store/merge/merge-facts/6cd447f7.md', 'kb://3ec012f5b4d2/kb/gotchas/repos/consensus/conflict-retry-peer-wins/c05b7b09.md', 'https://github.com/knomit/knomit/pull/356']
+refs: ['src://7b4887ce51d9/internal/corpus/repos/conflicts_matrix_test.go@0610c20083fcef9e84f42ab0311a14708bcb6193:c9a40aa7d3b570dd49a03f77979702b57b5a2ad6', 'src://7b4887ce51d9/internal/engine/store/merge/conflict_merge.go@0610c20083fcef9e84f42ab0311a14708bcb6193:3651ed132e2bc69891715bdaaccb34df2e4d1423', 'kb://3ec012f5b4d2/kb/architecture/store/merge/merge-facts/6cd447f7.md', 'kb://3ec012f5b4d2/kb/gotchas/repos/consensus/conflict-retry-peer-wins/c05b7b09.md', 'https://github.com/knomit/knomit/pull/356']
 ---
 # Two-instance outcome table for `conflicts` {facts, state} under consensus: auto (host B, peer A): what each value ends with on B's agent and consensus branches and on A, and which rows converge by themselves
 
-Measured by TestConflictsMatrix_T1_HostedAuto (internal/repos/conflicts_matrix_test.go). The setup has real receive-pack pushes, B's consensus merger and A's ordinary sync, with no merge called by hand.
+Measured by TestConflictsMatrix_T1_HostedAuto (internal/corpus/repos/conflicts_matrix_test.go). The setup has real receive-pack pushes, B's consensus merger and A's ordinary sync, with no merge called by hand.
 
 Fixture: from the base (body "base", confidence 0.7), A edits the fact to body "A body", confidence 0.95, entity ea, and B edits it to body "B body", entity eb. Both also change the non-fact notes.txt.
 
