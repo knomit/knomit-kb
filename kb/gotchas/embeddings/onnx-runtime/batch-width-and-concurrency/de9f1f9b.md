@@ -5,7 +5,7 @@ confidence: 0.85
 sources: 1
 entities: [session.Run, batchConcurrency, ORT intra-op parallelism, KNOMIT_BENCH_BUDGET, concurrency_bench_test.go]
 motifs: [uncontrolled-variable-misread]
-refs: ['src://7b4887ce51d9/internal/embeddings/embedder.go@f6f82e4ac338b5e73aa5e5a07c8c093ce98176f6:ab36c4e9cf45bc1902d89c42a04c7052fa9a646b', 'kb://3ec012f5b4d2/kb/invariants/embeddings/concurrency/shared-embedder/7288aed4.md', 'kb://3ec012f5b4d2/kb/meta/measurement/embedding-memory-harness/6f13be80.md', 'https://github.com/knomit/knomit/pull/176']
+refs: ['src://7b4887ce51d9/internal/engine/embeddings/embedder.go@0610c20083fcef9e84f42ab0311a14708bcb6193:c7ab4cd5e1fe07aa28f030af6913d625090026bf', 'kb://3ec012f5b4d2/kb/invariants/embeddings/concurrency/shared-embedder/7288aed4.md', 'kb://3ec012f5b4d2/kb/meta/measurement/embedding-memory-harness/6f13be80.md', 'https://github.com/knomit/knomit/pull/176']
 ---
 # Whether concurrent ONNX runs buy anything depends on batch WIDTH — a wide batch already saturates the cores, so serializing it is nearly free; a narrow one leaves headroom worth ~36%
 

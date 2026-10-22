@@ -5,7 +5,7 @@ confidence: 0.95
 sources: 1
 entities: [onnxruntime_go, session.Run, VmHWM, arena allocator, embeddinggemma]
 motifs: [retained-high-water-mark]
-refs: ['src://7b4887ce51d9/internal/embeddings/batching.go@31c420243f188c9e824022c996393f6f27a7e97e:40c76d0627e87e01c9cf432cbb40bb7cfb751c93', 'https://github.com/knomit/knomit/pull/175']
+refs: ['src://7b4887ce51d9/internal/engine/embeddings/batching.go@0610c20083fcef9e84f42ab0311a14708bcb6193:905c131f8ecd90a40faac922f0e0f1c3ae1ffbf1', 'https://github.com/knomit/knomit/pull/175']
 ---
 # The ONNX Runtime arena retains its high-water RSS for the process lifetime — the worst single batch sets STEADY-STATE memory, not a transient spike
 

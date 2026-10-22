@@ -5,7 +5,7 @@ confidence: 0.75
 sources: 1
 entities: [TestFleetREST_FactWritesRefused, handleStartSynthesis, stub LLM, Windows fault guard]
 motifs: [recovered-panic-still-fails]
-refs: ['src://7b4887ce51d9/internal/web/handlers_jobs.go@1a6c03f705737f5c7c50213ed39c2df63dc3e7ce:afcf6e7b33b6a5b9b4c83f814f71c077722c4326', 'https://github.com/knomit/knomit/pull/520']
+refs: ['src://7b4887ce51d9/internal/edge/web/handlers_jobs.go@0610c20083fcef9e84f42ab0311a14708bcb6193:fd8645ef9b3e68b0d286dcc85888a994c8a19a69', 'https://github.com/knomit/knomit/pull/520']
 ---
 # A REST test that starts a real synthesis review with the stub LLM dereferences nil; the panic is recovered as a task error but the Windows fault guard still fails the leg ('a test took a real access violation') — stop such a test at the hub's 409 and never run the review
 

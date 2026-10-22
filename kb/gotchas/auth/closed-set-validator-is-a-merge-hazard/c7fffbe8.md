@@ -5,7 +5,7 @@ confidence: 0.95
 sources: 1
 entities: [auth.ParsePrincipal, auth.ViaPipe, auth.ViaSocket, cmd/grants.go, parseGrantArgs, grantsList, TestParsePrincipal_RoundTripsThisPlatformsLocalPrincipal, TestParsePrincipal_AcceptsBothLocalVias]
 motifs: [correct-alone-wrong-together, enumeration-drifts-from-type]
-refs: ['src://7b4887ce51d9/internal/auth/principal.go@e58f08a34a481fa682f798d1b62f84a54c34c058:0fe505786c81fec004c7610cc91070dc86519e22', 'src://7b4887ce51d9/internal/auth/principal_test.go@e58f08a34a481fa682f798d1b62f84a54c34c058:4a407b9b3b234cc3216ef0b786ef3718533f08e1', 'src://7b4887ce51d9/cmd/grants.go@e58f08a34a481fa682f798d1b62f84a54c34c058:c865b01a10fe10152f4782bf28210b401606ef0a', 'https://github.com/knomit/knomit/pull/251', 'https://github.com/knomit/knomit/pull/252']
+refs: ['src://7b4887ce51d9/internal/foundation/auth/principal.go@0610c20083fcef9e84f42ab0311a14708bcb6193:b64e29a78b0a02215b0391d8dc459ca2d5cec9e3', 'src://7b4887ce51d9/internal/foundation/auth/principal_test.go@0610c20083fcef9e84f42ab0311a14708bcb6193:4a407b9b3b234cc3216ef0b786ef3718533f08e1', 'src://7b4887ce51d9/cmd/grants.go@e58f08a34a481fa682f798d1b62f84a54c34c058:c865b01a10fe10152f4782bf28210b401606ef0a', 'https://github.com/knomit/knomit/pull/251', 'https://github.com/knomit/knomit/pull/252']
 ---
 # A closed-set validator over an enumerated type is a MERGE HAZARD — ParsePrincipal's via switch was correct on dev and wrong the moment ViaPipe merged in, and neither branch's tests could have caught it
 

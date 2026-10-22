@@ -4,9 +4,9 @@ type: policy
 domain: [repos, subscription, branches, invariant]
 confidence: 0.95
 sources: 1
-entities: [RepoInstance.subscribed, RepoInstance.Subscribed, RepoInstance.ReadBranch, RepoInstance.AgentBranch, RepoInstance.WritableBranch, repoBuilder.subscribed, NewTestInstanceWithDeps, internal/repos/instance.go, internal/repos/builder.go]
+entities: [RepoInstance.subscribed, RepoInstance.Subscribed, RepoInstance.ReadBranch, RepoInstance.AgentBranch, RepoInstance.WritableBranch, repoBuilder.subscribed, NewTestInstanceWithDeps, internal/corpus/repos/instance.go, internal/repos/builder.go]
 motifs: [paired-fields-must-agree, failure-presents-as-success]
-refs: ['src://7b4887ce51d9/internal/repos/instance.go@a1be0404ff37b9c342a90cb9241e17eab053d9f0:3dd5d4798afe37e604a02351f46ecd9534139c62', 'src://7b4887ce51d9/internal/repos/builder.go@a1be0404ff37b9c342a90cb9241e17eab053d9f0:b8ede3f32b31e8c834332134889968227ef34fa3', 'kb://3ec012f5b4d2/kb/decisions/lens/writes-agent-branch-only/a8589a83.md', 'https://github.com/knomit/knomit/pull/186']
+refs: ['src://7b4887ce51d9/internal/corpus/repos/instance.go@0610c20083fcef9e84f42ab0311a14708bcb6193:eecc452f342c28c27586db37dbb4094509f03765', 'src://7b4887ce51d9/internal/repos/builder.go@a1be0404ff37b9c342a90cb9241e17eab053d9f0:b8ede3f32b31e8c834332134889968227ef34fa3', 'kb://3ec012f5b4d2/kb/decisions/lens/writes-agent-branch-only/a8589a83.md', 'https://github.com/knomit/knomit/pull/186']
 ---
 # RepoInstance.subscribed is true ONLY alongside an empty agentBranch — the two are one state written in two places, and a mismatch fails silently
 

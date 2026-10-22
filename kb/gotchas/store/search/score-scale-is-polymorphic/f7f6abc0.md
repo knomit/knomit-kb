@@ -3,9 +3,9 @@ type: observation
 domain: [store, search, embeddings]
 confidence: 0.9
 sources: 1
-entities: [store.SearchResult, SearchOptions.MinSimilarity, params.Thresholds, factQuery.Search, internal/store/index/search_query.go]
+entities: [store.SearchResult, SearchOptions.MinSimilarity, params.Thresholds, factQuery.Search, internal/engine/store/index/search_query.go]
 motifs: [same-name-different-scale]
-refs: ['src://7b4887ce51d9/internal/store/index/search_query.go@d73aad37bdc4b780db3115154bf073669f942c07:861622fc68d102f191a3db12996d8bb8ec74a460', 'kb://3ec012f5b4d2/kb/decisions/mcp/learn/same-subject-refusal/f77be375.md', 'kb://3ec012f5b4d2/kb/decisions/mcp/learn/same-subject-band-endpoints/0c5a0529.md', 'https://github.com/knomit/knomit/pull/187']
+refs: ['src://7b4887ce51d9/internal/engine/store/index/search_query.go@0610c20083fcef9e84f42ab0311a14708bcb6193:5a20922f4876029a0b68e4df70d95485bde0b170', 'kb://3ec012f5b4d2/kb/decisions/mcp/learn/same-subject-refusal/f77be375.md', 'kb://3ec012f5b4d2/kb/decisions/mcp/learn/same-subject-band-endpoints/0c5a0529.md', 'https://github.com/knomit/knomit/pull/187']
 ---
 # store.SearchResult.Score is cosine*100 on the vector path and a literal 100 on the text-less path — comparing it against a params.Thresholds value silently does nothing
 

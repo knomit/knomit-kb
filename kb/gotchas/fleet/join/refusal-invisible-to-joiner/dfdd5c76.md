@@ -5,7 +5,7 @@ confidence: 0.88
 sources: 1
 entities: [last_refusal, fleetPeers.refusals, PeerRefusal, join_refused, record_state]
 motifs: [state-invisible-to-reader]
-refs: ['src://7b4887ce51d9/internal/repos/fleet.go@a1b0ca5d0f92de4498fde3db8246037f2e33c55e:4283661b454197e33f91f197f44783e311750a0a', 'src://7b4887ce51d9/internal/repos/fleet_master.go@a1b0ca5d0f92de4498fde3db8246037f2e33c55e:2ee3efa0c33f7f8b597711849051657d79a2a073', 'kb://3ec012f5b4d2/kb/architecture/fleet/master-merges/91e3f6da.md', 'https://github.com/knomit/knomit/pull/532']
+refs: ['src://7b4887ce51d9/internal/corpus/repos/fleet.go@0610c20083fcef9e84f42ab0311a14708bcb6193:756540a5025bc7b3199f2964602124a03c7cba49', 'src://7b4887ce51d9/internal/corpus/repos/fleet_master.go@0610c20083fcef9e84f42ab0311a14708bcb6193:d8c79f63e13474a2c844ed395c6e7c4df1a2071d', 'kb://3ec012f5b4d2/kb/architecture/fleet/master-merges/91e3f6da.md', 'https://github.com/knomit/knomit/pull/532']
 ---
 # KNOWN GAP: a master's refusal of a joiner's branch (last_refusal) cannot reach the joiner, so a joiner whose record the master refuses after the push stays `pending` with no explanation
 
