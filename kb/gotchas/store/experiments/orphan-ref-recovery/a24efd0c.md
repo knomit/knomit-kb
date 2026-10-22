@@ -5,7 +5,7 @@ confidence: 0.9
 sources: 1
 entities: [OpenExperiment, RollbackExperiment, ErrOrphanExperimentRef, dropExperiment, DropBranch, CreateBranch, EnsureBranch, pipeline_watermarks]
 motifs: [adoption-hides-provenance, recovery-misses-own-case]
-refs: ['kb://3ec012f5b4d2/kb/conventions/store/create-branch-clones-three-things/8ef32469.md', 'kb://3ec012f5b4d2/kb/decisions/store/experiments/fork-copies-watermarks/33dba5d6.md', 'src://7b4887ce51d9/internal/store/experiment.go@acd9f39e21f5dc0150194e21a6066c6d26b108a4:119e25b665da771d5f0e8fcffd9f7d554be1667a', 'src://7b4887ce51d9/internal/store/branch.go@acd9f39e21f5dc0150194e21a6066c6d26b108a4:b0b37fdca41c41d2fc7f0b29da60cd5efc418747', 'https://github.com/knomit/knomit/pull/235']
+refs: ['kb://3ec012f5b4d2/kb/conventions/store/create-branch-clones-three-things/8ef32469.md', 'kb://3ec012f5b4d2/kb/decisions/store/experiments/fork-copies-watermarks/33dba5d6.md', 'src://7b4887ce51d9/internal/engine/store/merge/experiment.go@0610c20083fcef9e84f42ab0311a14708bcb6193:a9be579648cdf8f7963dfa53968462ffd51c8543', 'src://7b4887ce51d9/internal/engine/store/internal/vcs/branch.go@0610c20083fcef9e84f42ab0311a14708bcb6193:86f9fe658cab8113f213678916a3538f1e382cf3', 'https://github.com/knomit/knomit/pull/235']
 ---
 # OpenExperiment REFUSES an exp/<name> ref that has no experiments row instead of adopting it, and RollbackExperiment is the recovery — except when the ref has no branches row either, which CreateBranch's ref-before-row ordering can produce
 
