@@ -5,7 +5,7 @@ confidence: 0.95
 sources: 1
 entities: [filterByBlendedCosine, dedupCluster, mergeFacts, refreshRestatementShortlist, clusterCoMembership, restatement_pairs, EmbedderThresholds]
 motifs: [certainty-disqualifies-candidate, proxy-inverts-predicate]
-refs: ['src://7b4887ce51d9/internal/synthesize/restatement.go@8c094a6b9679f3e336824fa7b2e8004da0417ae0:03b5de13c1a04811c0d4c24ac891ff1ac5743946', 'src://7b4887ce51d9/internal/synthesize/dedup.go@8c094a6b9679f3e336824fa7b2e8004da0417ae0:651f9573022a551a3c5cd9075330cef2b01821c9', 'https://github.com/knomit/knomit/issues/127', 'https://github.com/knomit/knomit/pull/153', 'kb://3ec012f5b4d2/kb/gotchas/synthesize/prune-scope/c40d6748.md']
+refs: ['src://7b4887ce51d9/internal/corpus/synthesize/restatement.go@0610c20083fcef9e84f42ab0311a14708bcb6193:f4da5e42fcb7ecd0e52f1259fa8b21e1b02d1c08', 'src://7b4887ce51d9/internal/corpus/synthesize/dedup.go@0610c20083fcef9e84f42ab0311a14708bcb6193:b8c401ef89c4b1ad3ed2eacadb40373efdeadc07', 'https://github.com/knomit/knomit/issues/127', 'https://github.com/knomit/knomit/pull/153', 'kb://3ec012f5b4d2/kb/gotchas/synthesize/prune-scope/c40d6748.md']
 ---
 # The restatement shortlist deleted its own best candidates: a pair at or above the dedup floor was dropped as "mergeFacts handles it", but mergeFacts only merges WITHIN a cluster
 

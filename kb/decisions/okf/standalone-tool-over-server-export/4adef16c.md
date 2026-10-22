@@ -3,8 +3,8 @@ type: observation
 domain: [okf, export, architecture, cli]
 confidence: 0.95
 sources: 1
-entities: [tools/okf, internal/okfsource, internal/okf, knomit-okf, EnsureOKF, MapperVersion]
-refs: ['src://7b4887ce51d9/tools/okf/main.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:a54ced3cdc4c281cbe1ca92330700639ff280d97', 'src://7b4887ce51d9/internal/okf/source/source.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:59f3ccf26464f5c77ea32edd81a0e83d537707af', 'https://github.com/knomit/knomit/pull/41']
+entities: [tools/okf, internal/okfsource, internal/domain/okf, knomit-okf, EnsureOKF, MapperVersion]
+refs: ['src://7b4887ce51d9/tools/okf/main.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:a54ced3cdc4c281cbe1ca92330700639ff280d97', 'src://7b4887ce51d9/internal/domain/okf/source/source.go@0610c20083fcef9e84f42ab0311a14708bcb6193:7ed0b7ab16a38e7ad92507b731da6f77b5f31065', 'https://github.com/knomit/knomit/pull/41']
 ---
 # OKF export is a standalone knomit-okf CLI, not a server feature — no generated refs, no cache, no server state
 
@@ -16,4 +16,4 @@ Rationale: (a) shipped first and was withdrawn. Holding state caused the problem
 
 The choice: (b). Determinism does the diffing — the mapper is pure, so re-exporting an unchanged source produces byte-identical output, git reports no change, and no commit is made. A commit therefore exists only when the exported KNOWLEDGE differs. Verified: two independent clones of the same source produce the identical output commit SHA, because export commits are timestamped from the source commit rather than the clock.
 
-What this does NOT mean: the pure mapper in internal/okf was KEPT, unchanged — it was the valuable half. Only the server-side plumbing (EnsureOKF, okfWriteTree, the ref write, the marker, okf_trigger.go, the /okf/<branch>.tar.gz route, push_guard.go, okf_marker.go, MapperVersion) was deleted. It also does not mean the server can no longer be a source: the tool fetches over ordinary git, so knomit's own read-only smart-HTTP endpoint is a perfectly good URL to point it at.
+What this does NOT mean: the pure mapper in internal/domain/okf was KEPT, unchanged — it was the valuable half. Only the server-side plumbing (EnsureOKF, okfWriteTree, the ref write, the marker, okf_trigger.go, the /okf/<branch>.tar.gz route, push_guard.go, okf_marker.go, MapperVersion) was deleted. It also does not mean the server can no longer be a source: the tool fetches over ordinary git, so knomit's own read-only smart-HTTP endpoint is a perfectly good URL to point it at.

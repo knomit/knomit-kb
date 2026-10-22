@@ -4,9 +4,9 @@ type: policy
 domain: [repos, lifecycle, bootstrap, invariant]
 confidence: 0.95
 sources: 1
-entities: [Manager.Start, Manager.openOne, Manager.Create, Manager.Archive, repoBuilder.openGit, config.GitConfig, internal/repos/manager.go, internal/repos/lifecycle.go]
+entities: [Manager.Start, Manager.openOne, Manager.Create, Manager.Archive, repoBuilder.openGit, config.GitConfig, internal/corpus/repos/manager.go, internal/corpus/repos/lifecycle.go]
 motifs: [intent-misread-as-defect]
-refs: ['kb://3ec012f5b4d2/kb/invariants/repos/remote/local-origin-gate/426d64a7.md', 'src://7b4887ce51d9/internal/repos/manager.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:826fe133412fddb6a7d08810922fc60bd55fb205', 'src://7b4887ce51d9/internal/repos/builder.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:18a0cc46be27a0ca611bebdf50558dcbc802ae8a', 'src://7b4887ce51d9/internal/repos/lifecycle.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:1d23011f07edfc6ae9fea777ccbf4297df366f2e', 'src://7b4887ce51d9/internal/config/config.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:a9a2b21791d3abc28d2044a3b5ac70175158cdb7']
+refs: ['kb://3ec012f5b4d2/kb/invariants/repos/remote/local-origin-gate/426d64a7.md', 'src://7b4887ce51d9/internal/corpus/repos/manager.go@0610c20083fcef9e84f42ab0311a14708bcb6193:85952799dd62df86b0def2737f81bbe252e42cf0', 'src://7b4887ce51d9/internal/repos/builder.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:18a0cc46be27a0ca611bebdf50558dcbc802ae8a', 'src://7b4887ce51d9/internal/corpus/repos/lifecycle.go@0610c20083fcef9e84f42ab0311a14708bcb6193:acde3315f8f00d21782ba752a70f759a7a2e9111', 'src://7b4887ce51d9/internal/foundation/config/config.go@0610c20083fcef9e84f42ab0311a14708bcb6193:726e04a2e41773a709be888892cecd12a77bd06f']
 ---
 # knomit has NO default repo — Manager.Start opens what is on disk and CREATES nothing; zero repos is a valid steady state
 
@@ -14,7 +14,7 @@ No repo is privileged in knomit, by any name. There is no `config.DefaultRepoNam
 
 The two halves of the rule:
 
-1. **Start OPENS; it never CREATES.** `Manager.Start` makes `<home>/repos/`, opens `control.db`, globs `repos/*.db` (sorted, skipping session sidecars and invalid names), starts the session reaper, and registers exactly what it found. On a fresh home that is ZERO repos, and Start returns nil — an empty knomit is a healthy boot, not a failure. `repoBuilder.openGit` therefore returns the `OpenRepo` error unconditionally: a .db with no git data is a broken repo, not an invitation to seed one under that name.
+1. **Start OPENS; it never CREATES.** `Manager.Start` makes `<home>/repos/`, opens `control.db`, globs `repos/*.db` (sorted, skipping session sidecars and invalid names), starts the session reaper, and registers exactly what it found. On a fresh home that is ZERO repos, and Start returns nil — an empty knomit is a healthy boot, not a failure. the mount's open stage (internal/corpus/repos/stages.go) therefore returns the `OpenRepo` error unconditionally: a .db with no git data is a broken repo, not an invitation to seed one under that name.
 
 2. **Zero is reachable as well as initial.** `Manager.Archive` has no default-repo guard and no last-repo guard (`ErrCannotArchiveDefault` and `ErrCannotArchiveLast` are both deleted). Archiving the only repo succeeds, returns 200, and leaves the manager empty; the archive is restorable, so nothing is lost.
 

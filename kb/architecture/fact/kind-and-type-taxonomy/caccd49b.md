@@ -5,7 +5,7 @@ confidence: 0.95
 sources: 0
 entities: [Kind, Type, EpistemicTypes, PragmaticTypes, AllEpistemicTypes, AllPragmaticTypes, DefaultKind, DefaultEpistemicType, factTypeDocs, typeStyles, TypeIcon, spec/mbekg.md]
 motifs: [undetected-derivation-gap]
-refs: ['src://7b4887ce51d9/internal/domain/fact/kind.go@48d32e95ccc2bb2b439f975479ae15d165e5049e:e9fedce857eaa7b804658b10aef47665436e4d5f', 'src://7b4887ce51d9/internal/domain/fact/epistemic_type.go@48d32e95ccc2bb2b439f975479ae15d165e5049e:967a848d86a6d4968d8a21b55d182ed940d3c6ec', 'src://7b4887ce51d9/internal/domain/fact/pragmatic_type.go@48d32e95ccc2bb2b439f975479ae15d165e5049e:db83c2efaacdbe6b2d2bfcecffe3a090e7b1f7c8', 'src://7b4887ce51d9/internal/mcp/factschema.go@f814273519db70f7c1afc7b07b4708d3d77e9801:7ad3cf96101dbf9464d42045ba808e9f397dabc4', 'src://7b4887ce51d9/internal/store/index.go@f814273519db70f7c1afc7b07b4708d3d77e9801:86800b25927ee62bb77cafbf11d913425613c479', 'src://7b4887ce51d9/internal/mcp/instructions.go@f814273519db70f7c1afc7b07b4708d3d77e9801:f00cca0d16b17d2f99e3a2b9d886d850414334e3', 'src://7b4887ce51d9/web/src/utils.ts@f814273519db70f7c1afc7b07b4708d3d77e9801:148a1bdbfd91a345be304ebd61e8f71e21ad5f42', 'src://7b4887ce51d9/web/src/icons.tsx@f814273519db70f7c1afc7b07b4708d3d77e9801:eb97c1d3c116afde0702890a7757d825a37eaf05', 'src://7b4887ce51d9/web/src/utils.test.ts@f814273519db70f7c1afc7b07b4708d3d77e9801:1b5f71d90014ac20ac8718bfb5a0f0118d6b5ad6', 'src://7b4887ce51d9/spec/mbekg.md@f814273519db70f7c1afc7b07b4708d3d77e9801:1107fca51212575a572eff960780e67f904220a0', 'kb://3ec012f5b4d2/kb/decisions/fact/pragmatic-types/signal/e48a7a32.md', 'kb://3ec012f5b4d2/kb/decisions/fact/epistemic-types/insight/f9640cdc.md', 'https://github.com/knomit/knomit/pull/247']
+refs: ['src://7b4887ce51d9/internal/domain/fact/kind.go@48d32e95ccc2bb2b439f975479ae15d165e5049e:e9fedce857eaa7b804658b10aef47665436e4d5f', 'src://7b4887ce51d9/internal/domain/fact/epistemic_type.go@48d32e95ccc2bb2b439f975479ae15d165e5049e:967a848d86a6d4968d8a21b55d182ed940d3c6ec', 'src://7b4887ce51d9/internal/domain/fact/pragmatic_type.go@48d32e95ccc2bb2b439f975479ae15d165e5049e:db83c2efaacdbe6b2d2bfcecffe3a090e7b1f7c8', 'src://7b4887ce51d9/internal/edge/mcp/factschema.go@0610c20083fcef9e84f42ab0311a14708bcb6193:e0c2587f3dfaacae70c225f9643d5efd445f6bdb', 'src://7b4887ce51d9/internal/engine/store/index/index.go@0610c20083fcef9e84f42ab0311a14708bcb6193:e6962c665f856438cfb60df2ccd1fcd35508093e', 'src://7b4887ce51d9/internal/edge/mcp/instructions.go@0610c20083fcef9e84f42ab0311a14708bcb6193:ff8eba66de67e2fc074a425613b9cef7e8e5b84b', 'src://7b4887ce51d9/web/src/utils.ts@f814273519db70f7c1afc7b07b4708d3d77e9801:148a1bdbfd91a345be304ebd61e8f71e21ad5f42', 'src://7b4887ce51d9/web/src/icons.tsx@f814273519db70f7c1afc7b07b4708d3d77e9801:eb97c1d3c116afde0702890a7757d825a37eaf05', 'src://7b4887ce51d9/web/src/utils.test.ts@f814273519db70f7c1afc7b07b4708d3d77e9801:1b5f71d90014ac20ac8718bfb5a0f0118d6b5ad6', 'src://7b4887ce51d9/spec/mbekg.md@f814273519db70f7c1afc7b07b4708d3d77e9801:1107fca51212575a572eff960780e67f904220a0', 'kb://3ec012f5b4d2/kb/decisions/fact/pragmatic-types/signal/e48a7a32.md', 'kb://3ec012f5b4d2/kb/decisions/fact/epistemic-types/insight/f9640cdc.md', 'https://github.com/knomit/knomit/pull/247']
 ---
 # Kind has 2 members (Epistemic, Pragmatic); Type has 13 leaves; authoritative sets live in maps
 
@@ -20,12 +20,12 @@ Authoritative sets: EpistemicTypes map[Type]bool and PragmaticTypes map[Type]boo
 An earlier revision of this fact said that after the Go helpers "nothing else needs editing", because the consumers it knew about all derive their lists. That was wrong, and F01 proved it: two hand-maintained tables in the web UI have no derivation, so a new type reached the Go enum, the MCP schema and the spec while the UI still could not draw it.
 
 DERIVED — no edit needed, verified at the F01 merge commit:
-- internal/mcp/instructions.go renders both type lists via instructionTypeLines(fact.All*Types(), ...).
-- internal/store/index.go builds the `type` completion list from AllEpistemicTypes()+AllPragmaticTypes().
+- internal/edge/mcp/instructions.go renders both type lists via instructionTypeLines(fact.All*Types(), ...).
+- internal/engine/store/index/index.go builds the `type` completion list from AllEpistemicTypes()+AllPragmaticTypes().
 
 MUST BE EDITED BY HAND:
 1. The EpistemicTypes or PragmaticTypes map AND the matching AllXxxTypes() helper (internal/domain/fact).
-2. internal/mcp/factschema.go — a factTypeDocs entry (gloss + aside). Keep the gloss short: it is what lands in the one-line JSON schema description.
+2. internal/edge/mcp/factschema.go — a factTypeDocs entry (gloss + aside). Keep the gloss short: it is what lands in the one-line JSON schema description.
 3. web/src/utils.ts — a `typeStyles` entry (color, bg, label, icon). The new colour must sit ≥ 60 weighted-RGB from EVERY existing type colour, and 4- or 8-digit hex is rejected.
 4. web/src/icons.tsx — an SVG component plus a `case` in the TypeIcon dispatcher, or the type silently renders as UnknownIcon.
 5. spec/mbekg.md — the epistemic or pragmatic type table (§2.4).
@@ -44,4 +44,4 @@ So items 3, 4 and 5 have no test that fails when you forget them. That is the ho
 
 Do NOT trust the leaf COUNT in this title as a constant to code against; it has moved twice (12 → 13). Derive it from the helpers.
 
-Every ref below is pinned at f8142735, the PR #247 merge commit, and each claim above was re-read there.
+Each src ref below is pinned at the commit it names: the web and spec refs at f8142735 (the PR #247 merge commit, where those claims were re-read), the Go refs at later commits (their claims were re-verified at 0610c200).

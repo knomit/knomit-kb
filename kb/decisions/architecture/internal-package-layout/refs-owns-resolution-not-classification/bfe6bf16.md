@@ -3,10 +3,10 @@ type: observation
 domain: [architecture, refs, fact, packaging, store]
 confidence: 0.95
 sources: 1
-entities: [internal/refs, refs.Gate, refs.New, refs.FromFactQuery, refs.Canonicalize, fact.ClassifyRef, internal/fact, TestFactStaysPure, internal/refgate]
-refs: ['src://7b4887ce51d9/internal/refs/refs.go@8cba29ff2e1c0556c90b1c9b21574772303b28cf:c451fd992c42a2f30f0db62108259c0647b773dc', 'src://7b4887ce51d9/internal/fact/ref.go@8cba29ff2e1c0556c90b1c9b21574772303b28cf:48d1932edb298fc889e24c1aa7bffac5ae1aa5b1', 'src://7b4887ce51d9/test/archtest/layering_test.go@8cba29ff2e1c0556c90b1c9b21574772303b28cf:9a7667d237b127e4fdb7384115a59bb1bd0fbd0e', 'https://github.com/knomit/knomit/pull/57', 'kb://3ec012f5b4d2/kb/decisions/fact/ref-classification-single-authority/a5ceaec8.md']
+entities: [internal/corpus/refs, refs.Gate, refs.New, refs.FromFactQuery, refs.Canonicalize, fact.ClassifyRef, internal/domain/fact, TestFactStaysPure, internal/refgate]
+refs: ['src://7b4887ce51d9/internal/corpus/refs/refs.go@0610c20083fcef9e84f42ab0311a14708bcb6193:433bd3cf5f341eb1c06c4da7f3a65a4f4d355805', 'src://7b4887ce51d9/internal/domain/fact/ref.go@0610c20083fcef9e84f42ab0311a14708bcb6193:15a393c01dab70fb96d8622044bd458c86d87c35', 'src://7b4887ce51d9/test/archtest/layering_test.go@8cba29ff2e1c0556c90b1c9b21574772303b28cf:9a7667d237b127e4fdb7384115a59bb1bd0fbd0e', 'https://github.com/knomit/knomit/pull/57', 'kb://3ec012f5b4d2/kb/decisions/fact/ref-classification-single-authority/a5ceaec8.md']
 ---
-# internal/refgate became internal/refs, and the broader name is bounded: refs owns ref RESOLUTION, internal/fact keeps CLASSIFICATION
+# internal/refgate became internal/refs (now internal/corpus/refs), and the broader name is bounded: refs owns ref RESOLUTION, internal/domain/fact keeps CLASSIFICATION
 
 `internal/refgate` was renamed to `internal/refs` (`refs.Gate`, `refs.New`, `refs.Canonicalize`), and simultaneously fenced so the broader name does not become a dumping ground.
 
