@@ -6,9 +6,9 @@ confidence: 0.95
 sources: 1
 entities: [TestMN4_MotifValidationHasOneCallSite, motifGateCallSites, StripSubjectMotifs, SerializeFact, handlers_fact_write.go]
 motifs: [text-scan-sees-comments, rationale-copied-premise-lost]
-refs: ['src://7b4887ce51d9/internal/fact/motif_conformance_test.go@629d0315068ffec8b3b930d1acdeff295d2b88e6:01e37d32c557eb4b790d0e64d863a2c5756448ce', 'src://7b4887ce51d9/internal/fact/format.go@629d0315068ffec8b3b930d1acdeff295d2b88e6:39aed3ebb1b309e05e27a8654b2b6900d3c6f5b3', 'https://github.com/knomit/knomit/pull/239']
+refs: ['src://7b4887ce51d9/internal/domain/fact/motif_conformance_test.go@0610c20083fcef9e84f42ab0311a14708bcb6193:0d99cce0ccc2077125be61f242b32e294a613e14', 'src://7b4887ce51d9/internal/domain/fact/format.go@0610c20083fcef9e84f42ab0311a14708bcb6193:e69851faec9e5745c1f012d729dddb6405a7ebe8', 'https://github.com/knomit/knomit/pull/239']
 ---
-# internal/fact's motif conformance test matches on SOURCE TEXT, so deleting an offending call leaves it red while the helper's name survives in a comment
+# internal/domain/fact's motif conformance test matches on SOURCE TEXT, so deleting an offending call leaves it red while the helper's name survives in a comment
 
 `TestMN4_MotifValidationHasOneCallSite` scans files for the gate helpers' NAMES. Removing the offending statement is therefore not sufficient: a replacement COMMENT explaining why the call was removed keeps the test red, and reads to anyone reproducing the fix as "the fix did not work".
 
