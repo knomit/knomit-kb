@@ -5,7 +5,7 @@ confidence: 0.9
 sources: 1
 entities: [TestManagerClose_DrainsInFlightCreate, Manager.Close, Manager.StartCreate, drainCreates, ErrManagerStopped]
 motifs: [intervention-perturbs-measurement, test-mode-hides-condition]
-refs: ['kb://3ec012f5b4d2/kb/meta/methodology/guard-setup-outruns-hazard/2b230458.md', 'kb://3ec012f5b4d2/kb/meta/methodology/fixture-discrimination-precondition/f88dc045.md', 'kb://3ec012f5b4d2/kb/meta/methodology/prove-the-regression-test-fails/d321b280.md', 'src://7b4887ce51d9/internal/repos/create_job_test.go@fbb62045665c69729c6af1150fa0303282f5a749:c6899c42dae67f5210e48740ea2bcf2806ac4014', 'src://7b4887ce51d9/internal/repos/manager.go@fbb62045665c69729c6af1150fa0303282f5a749:f4f754dd420fb0bee6b8b46702b4bf7bebf8d8e0', 'https://github.com/knomit/knomit/pull/167']
+refs: ['kb://3ec012f5b4d2/kb/meta/methodology/guard-setup-outruns-hazard/2b230458.md', 'kb://3ec012f5b4d2/kb/meta/methodology/fixture-discrimination-precondition/f88dc045.md', 'kb://3ec012f5b4d2/kb/meta/methodology/prove-the-regression-test-fails/d321b280.md', 'src://7b4887ce51d9/internal/corpus/repos/create_job_test.go@0610c20083fcef9e84f42ab0311a14708bcb6193:1096a65f7bded39657bbb3b776a9fd22857683c2', 'src://7b4887ce51d9/internal/corpus/repos/manager.go@0610c20083fcef9e84f42ab0311a14708bcb6193:85952799dd62df86b0def2737f81bbe252e42cf0', 'https://github.com/knomit/knomit/pull/167']
 ---
 # When the bug's own effect ALTERS the timing you would measure, a timing assertion cannot be made reliable by widening the margin — change the question to the OUTCOME, and treat 'widening made it worse' as the tell
 
