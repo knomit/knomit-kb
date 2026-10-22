@@ -5,7 +5,7 @@ confidence: 0.4
 sources: 1
 entities: [reload_error, restart_needed, Listeners.Reload, server.json]
 motifs: [inconsistent-redaction]
-refs: ['src://7b4887ce51d9/internal/app/listeners_reload.go@4a9018c4eedc0991816c2152ca3700f656e5e9af:338bd825934eb798eb67b6630ab6e7c60356ea73', 'src://7b4887ce51d9/internal/app/listeners_reload_test.go@4a9018c4eedc0991816c2152ca3700f656e5e9af:3dec1c4aba83b15d88512e1b622d6f8d2dafc522', 'src://7b4887ce51d9/internal/serveraddr/lockfile.go@4a9018c4eedc0991816c2152ca3700f656e5e9af:d211b8f4810023d4cb9ef863febf0d2ba5eeff10', 'https://github.com/knomit/knomit/pull/497']
+refs: ['src://7b4887ce51d9/internal/app/listeners_reload.go@4a9018c4eedc0991816c2152ca3700f656e5e9af:338bd825934eb798eb67b6630ab6e7c60356ea73', 'src://7b4887ce51d9/internal/app/listeners_reload_test.go@4a9018c4eedc0991816c2152ca3700f656e5e9af:3dec1c4aba83b15d88512e1b622d6f8d2dafc522', 'src://7b4887ce51d9/internal/foundation/serveraddr/lockfile.go@0610c20083fcef9e84f42ab0311a14708bcb6193:ff047eedd674a0c455198abcd06690de5ded1a6a', 'https://github.com/knomit/knomit/pull/497']
 ---
 # `reload_error` carries the loader's message verbatim, and a TOML parse error can quote the offending token, so a mistyped secret-bearing key could land its fragment in server.json (0600) while restart_needed deliberately holds names only
 
