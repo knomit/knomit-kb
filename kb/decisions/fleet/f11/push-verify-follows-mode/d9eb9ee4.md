@@ -4,7 +4,7 @@ domain: [fleet, verify, decisions]
 confidence: 0.95
 sources: 1
 entities: [verify_signatures, judgeCommit, CheckRange, receivePack.verify]
-refs: ['kb://3ec012f5b4d2/kb/architecture/store/git-serve/receive-pack/7642c213.md', 'src://7b4887ce51d9/internal/store/httphandler_receivepack.go@c7423c3e3a7ad8280a73b9269d1f416844d14656:d4c5a0a6f3a5384d6fb9f9c54a2d5942389786f5', 'https://github.com/knomit/knomit/pull/340']
+refs: ['kb://3ec012f5b4d2/kb/architecture/store/git-serve/receive-pack/7642c213.md', 'src://7b4887ce51d9/internal/engine/store/gitserve/httphandler_receivepack.go@0610c20083fcef9e84f42ab0311a14708bcb6193:211af41a8ac17ed7083b0eb42e46f6530b900499', 'https://github.com/knomit/knomit/pull/340']
 ---
 # Signature checks on a push follow the repo's verify_signatures, read at the HOST's main: off accepts unchecked, log accepts and logs, enforce refuses naming the commit (user ruling "3. yes.", F11)
 
