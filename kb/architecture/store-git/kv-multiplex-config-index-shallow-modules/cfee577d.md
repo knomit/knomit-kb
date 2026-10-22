@@ -4,7 +4,7 @@ domain: [store-git, kv]
 confidence: 0.95
 sources: 0
 entities: [kv table, kvGet, kvSet, ConfigStorer, IndexStorer, ShallowStorer, ModuleStorer, 'index:modtime']
-refs: ['src://knomit/internal/store/git/kv.go@307b67d']
+refs: ['src://7b4887ce51d9/internal/engine/store/git/kv.go@0610c20083fcef9e84f42ab0311a14708bcb6193:7ae56d4f9e656c93120c230f68dd7f210c028192']
 ---
 # kv table backs 4 go-git storer interfaces: Config, Index, Shallow, Module
 

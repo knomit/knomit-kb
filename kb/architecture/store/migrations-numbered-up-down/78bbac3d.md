@@ -3,19 +3,19 @@ type: observation
 domain: [store, schema, migrations]
 confidence: 0.95
 sources: 0
-entities: [migrate.All, migrate.Core, migrate.Control, internal/store/migrate/repo/, internal/store/migrate/control/, 000001_schema.up.sql, 000001_control_baseline.up.sql, 000026_fact_expires.up.sql, 000011_oauth_idp.up.sql]
-refs: ['src://7b4887ce51d9/internal/store/migrate/repo/000001_schema.up.sql@1cc5413c593830e521cbd7cb44bf38473c51a003:d85345916c7eb518d60486ec8ba9d2c96b08e1d6', 'src://7b4887ce51d9/internal/store/service.go@1cc5413c593830e521cbd7cb44bf38473c51a003:de881e4241c287c7480370fdfce3ace2938c250e', 'src://7b4887ce51d9/internal/store/migrate/migrate.go@1cc5413c593830e521cbd7cb44bf38473c51a003:782b1259087d987dfb9b86d3f1de8f4162ef8d99', 'src://7b4887ce51d9/internal/store/migrate/control/000001_control_baseline.up.sql@1cc5413c593830e521cbd7cb44bf38473c51a003:885242761784968e49f88091b97fb501a1c57eda', 'kb://3ec012f5b4d2/kb/conventions/store/migrations/idempotent-up-bodies/037ee64d.md']
+entities: [migrate.All, migrate.Core, migrate.Control, internal/engine/store/migrate/repo/, internal/engine/store/migrate/control/, 000001_schema.up.sql, 000001_control_baseline.up.sql, 000026_fact_expires.up.sql, 000011_oauth_idp.up.sql]
+refs: ['src://7b4887ce51d9/internal/engine/store/migrate/repo/000001_schema.up.sql@0610c20083fcef9e84f42ab0311a14708bcb6193:8efe9c02d2c350f9a537b7b01171f9a0822c49f4', 'src://7b4887ce51d9/internal/engine/store/service.go@0610c20083fcef9e84f42ab0311a14708bcb6193:4567055ef5ab9502c7f0a298871b31e6224970b2', 'src://7b4887ce51d9/internal/engine/store/migrate/migrate.go@0610c20083fcef9e84f42ab0311a14708bcb6193:782b1259087d987dfb9b86d3f1de8f4162ef8d99', 'src://7b4887ce51d9/internal/engine/store/migrate/control/000001_control_baseline.up.sql@0610c20083fcef9e84f42ab0311a14708bcb6193:885242761784968e49f88091b97fb501a1c57eda', 'kb://3ec012f5b4d2/kb/conventions/store/migrations/idempotent-up-bodies/037ee64d.md']
 ---
-# Schema migrations are numbered .up.sql/.down.sql files in internal/store/migrate/repo/, with a sibling internal/store/migrate/control/ for control.db
+# Schema migrations are numbered .up.sql/.down.sql files in internal/engine/store/migrate/repo/, with a sibling internal/engine/store/migrate/control/ for control.db
 
-Schema migrations live in two SIBLING directories under internal/store/migrate/, each holding its own numbered NNNNNN_<name>.up.sql + .down.sql files, embedded via a separate //go:embed:
+Schema migrations live in two SIBLING directories under internal/engine/store/migrate/, each holding its own numbered NNNNNN_<name>.up.sql + .down.sql files, embedded via a separate //go:embed:
 
-- internal/store/migrate/repo/ (embedded as repoFS via `//go:embed repo/*.sql`) — the per-repo store schema. 26 migrations, 000001–000026, as of dev 1cc5413c (2026-09-27).
-- internal/store/migrate/control/ (embedded as controlFS via `//go:embed control/*.sql`) — the schema for the single machine-wide <home>/control.db. 11 migrations, 000001–000011, as of the same commit.
+- internal/engine/store/migrate/repo/ (embedded as repoFS via `//go:embed repo/*.sql`) — the per-repo store schema. 26 migrations, 000001–000026, as of dev 1cc5413c (2026-09-27).
+- internal/engine/store/migrate/control/ (embedded as controlFS via `//go:embed control/*.sql`) — the schema for the single machine-wide <home>/control.db. 11 migrations, 000001–000011, as of the same commit.
 
 The two sequences are INDEPENDENT: each is applied to a DIFFERENT database FILE, each keeps its own schema_migrations table, and each is numbered from 1 — repo/'s 000001 and control/'s 000001 share nothing.
 
-Exported entry points in internal/store/migrate/migrate.go, all built on the shared newMigrator(db, fsys, dir):
+Exported entry points in internal/engine/store/migrate/migrate.go, all built on the shared newMigrator(db, fsys, dir):
 - migrate.All(db) — every migration in repo/, against a repo store DB opened with the sqlite3_knomit driver (sqlite-vec loaded). Called by store.Open.
 - migrate.Core(db) — only repo/'s version 1 (all base tables), against a plain "sqlite3" driver, no self-heal (a rewind on a dirty later version would migrate DOWN to 1 and destroy schema). Used by storegit.NewMemoryStorer, which only ever hands it a fresh :memory: database.
 - migrate.Control(db) — every migration in control/, against <home>/control.db, opened with the stock "sqlite3" driver (control.db needs no sqlite-vec). Must run after upgradeLensSchema; repos.controlUp owns that ordering and is the only production caller.
@@ -27,4 +27,4 @@ control/ set (11 migrations as of 1cc5413c): 000001_control_baseline (repos, rep
 
 Migrations are written to be safe to re-run — see kb/conventions/store/migrations/idempotent-up-bodies/037ee64d.md. The control chain is stricter: CREATE ... IF NOT EXISTS statements only, enforced by TestControl_UpMigrationsAreIdempotentDDL. Runtime-width vec0 tables (facts_vec, fact_titles_vec) are code-managed at the active model's dimension rather than fixed by a migration.
 
-Adding a new migration: pick the next number IN THAT DIRECTORY, write both .up.sql and .down.sql; the matching entry point's //go:embed picks it up and runs unapplied migrations in order. Counts in this fact go stale with every new migration — `ls internal/store/migrate/{repo,control}` is the authority.
+Adding a new migration: pick the next number IN THAT DIRECTORY, write both .up.sql and .down.sql; the matching entry point's //go:embed picks it up and runs unapplied migrations in order. Counts in this fact go stale with every new migration — `ls internal/engine/store/migrate/{repo,control}` is the authority.
