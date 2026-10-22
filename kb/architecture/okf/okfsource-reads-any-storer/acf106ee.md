@@ -3,8 +3,8 @@ type: observation
 domain: [okf, store, architecture, git]
 confidence: 0.95
 sources: 1
-entities: [internal/okfsource, okfsource.Load, okfsource.Snapshot, internal/store/okf.go, internal/okf]
-refs: ['src://7b4887ce51d9/internal/okf/source/source.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:59f3ccf26464f5c77ea32edd81a0e83d537707af', 'src://7b4887ce51d9/internal/okf/source/history.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:b9f5d1851d2470f1a75dc48bbbf68363c036bc89']
+entities: [internal/okfsource, okfsource.Load, okfsource.Snapshot, internal/store/okf.go, internal/domain/okf]
+refs: ['src://7b4887ce51d9/internal/domain/okf/source/source.go@48d32e95ccc2bb2b439f975479ae15d165e5049e:18f73c167fc6c98ba9d45e0f47124a243d5592d5', 'src://7b4887ce51d9/internal/domain/okf/source/history.go@48d32e95ccc2bb2b439f975479ae15d165e5049e:4825ee15f80ff79d53bb90fcd3a73c2e319c709f']
 ---
 # internal/okfsource reads a KB through a go-git storer ONLY — no SQL — so the exporter runs against a plain git clone
 
