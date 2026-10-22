@@ -5,7 +5,7 @@ domain: [fact, strings, dedup]
 confidence: 0.95
 sources: 0
 entities: [UnionStrings, AppendUnique, dedup.mergeFacts]
-refs: ['src://knomit/internal/fact/strings.go@307b67d']
+refs: ['src://7b4887ce51d9/internal/domain/fact/strings.go@0610c20083fcef9e84f42ab0311a14708bcb6193:599c9af00b778bc3e494b059db29e26db4d0cc41']
 ---
 # UnionStrings preserves insertion order (a first then b's new elements); used by dedup.mergeFacts
 
