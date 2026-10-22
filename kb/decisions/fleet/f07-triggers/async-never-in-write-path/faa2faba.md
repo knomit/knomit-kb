@@ -3,9 +3,9 @@ type: observation
 domain: [fleet, triggers, decisions, performance]
 confidence: 0.95
 sources: 1
-entities: [triggerDispatcher, ri.onCommit, triggerKick, TestDispatch_WriteLatencyIndependentOfTriggers, TestDispatch_TriggerKickNeverBlocksWriter, internal/repos/triggers.go, internal/repos/builder.go]
+entities: [triggerDispatcher, ri.onCommit, triggerKick, TestDispatch_WriteLatencyIndependentOfTriggers, TestDispatch_TriggerKickNeverBlocksWriter, internal/corpus/repos/triggers.go, internal/repos/builder.go]
 motifs: [coalescing-pending-flag, off-the-write-path]
-refs: ['src://7b4887ce51d9/internal/repos/triggers.go@0ef7edeecbf5863c6c9091f39a65be1aceb96d66:8411c6b3bef2f8b7c5768fb8960c890e281d7b3b', 'src://7b4887ce51d9/internal/repos/builder.go@0ef7edeecbf5863c6c9091f39a65be1aceb96d66:a8723f5bcf4833cbadf70371026d9035a7e266f0', 'https://github.com/knomit/knomit/pull/335', 'kb://3ec012f5b4d2/kb/architecture/repos/triggers/dispatcher/a01f40fc.md']
+refs: ['src://7b4887ce51d9/internal/corpus/repos/triggers.go@0610c20083fcef9e84f42ab0311a14708bcb6193:657d206eae98b57da7342bff00b702fe6ecdb601', 'src://7b4887ce51d9/internal/repos/builder.go@0ef7edeecbf5863c6c9091f39a65be1aceb96d66:a8723f5bcf4833cbadf70371026d9035a7e266f0', 'https://github.com/knomit/knomit/pull/335', 'kb://3ec012f5b4d2/kb/architecture/repos/triggers/dispatcher/a01f40fc.md']
 ---
 # Triggers are ASYNC and never in the write path: the observer callback only records 'branch advanced' (one non-blocking kick on a 1-slot channel), all diffing/matching/if/actions run on the dispatcher's own goroutine, matching is single-digit ms per advance, and write latency must be indistinguishable with 0 and 50 triggers; rejected any trigger work under the branch lock and any queue that can block the writer
 
