@@ -5,7 +5,7 @@ confidence: 0.9
 sources: 0
 entities: [progressThrottle, rebuildEmbeddings, RebuildProgress, handleStartRebuild, handleApply]
 motifs: [periodic-gate-never-fires]
-refs: ['src://knomit/internal/web/progress_throttle.go', 'https://github.com/knomit/knomit/pull/82']
+refs: ['src://7b4887ce51d9/internal/edge/web/progress_throttle.go@0610c20083fcef9e84f42ab0311a14708bcb6193:751b0a5dcec5444aaf8305d832c6865603384262', 'https://github.com/knomit/knomit/pull/82']
 ---
 # Rebuild progress: forward every batch via a time throttle, never a batch-misaligned modulo gate
 
