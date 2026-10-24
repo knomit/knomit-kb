@@ -3,7 +3,7 @@ type: observation
 domain: [web, repos, store, lens, testing, errors]
 confidence: 0.85
 sources: 1
-entities: [resolveLensFactMount, lensFactMount, Binding.ByID, RepoInstance.ID, handleHALChanges, handleHALSetOrigin, getOrigin, writeStoreUnavailable, TestLensFactMount_RoleDecidesTheUnavailableAnswer]
+entities: [resolveLensFactMount, lensFactMount, Binding.ByID, RepoInstance.ID, handleHALChanges, handleHALSetOrigin, getOrigin, httpx.WriteStoreUnavailable, TestLensFactMount_RoleDecidesTheUnavailableAnswer]
 motifs: [unreachable-branch-needs-hook, fail-closed-masks-cause]
 refs: ['src://7b4887ce51d9/internal/edge/web/handlers_lenses_read.go@1a860912e66c8cfd6da45c4c13d775aef55c58ed:7a41936ee6656893ac7596dac201fbe0a260f58c', 'src://7b4887ce51d9/internal/edge/web/handlers_changes.go@1a860912e66c8cfd6da45c4c13d775aef55c58ed:992dcc43ba7447920bdcc6f21445d7272c3665b8', 'src://7b4887ce51d9/internal/edge/web/handlers_origin_hal.go@1a860912e66c8cfd6da45c4c13d775aef55c58ed:e814cb7018cf6a8945d10d0aadfa9d77a3e1f193', 'src://7b4887ce51d9/internal/edge/web/handlers_lenses_unavailable_test.go@1a860912e66c8cfd6da45c4c13d775aef55c58ed:ddbad77b07ad316e43d4f05079de2f40760d7ec7', 'kb://3ec012f5b4d2/kb/decisions/web/read-store-unavailable-503/d5d606a6.md', 'kb://3ec012f5b4d2/kb/gotchas/repos/lifecycle/write-403-before-store-503/624fcd06.md', 'https://github.com/knomit/knomit/pull/620']
 ---
@@ -20,3 +20,5 @@ Edges of the one store-unavailable 503 (kb/decisions/web/read-store-unavailable-
 CONSEQUENCE: a test that wants the 503 over HTTP must use a store-less instance WITH an identity, or drive the helper directly; a closed machine-backed repo exercises the 409/403/unmounted-404 first.
 
 DOES NOT MEAN: that the lens read-mount 404 or the write-mount 503 is wrong at these edges: the unmounted 404 is the correct answer for an id that no longer resolves, and it leaks nothing.
+
+NAMES AFTER 12b (PR #622, merge commit 3e67923b on dev, re-read there): writeStoreUnavailable in this fact is now httpx.WriteStoreUnavailable (internal/edge/web/httpx/errors.go). The reachability matrix is unchanged; the handlers and tests it cites stay in internal/edge/web. Package overview: kb/architecture/web/httpx/ec668e7b.md.
