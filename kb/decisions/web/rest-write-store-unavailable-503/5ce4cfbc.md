@@ -1,0 +1,31 @@
+---
+type: observation
+domain: [web, repos, store, rest, errors]
+confidence: 0.93
+sources: 1
+entities: [writeStoreError, storeUnavailable, writeStoreUnavailable, writeGateProblem, factResolves, systemFileResolver, priorRefs, writeFact, deleteFact, RepoInstance.WithRead, repos.ErrStoreUnavailable, repos.ErrRepoClosed, errPopulating]
+motifs: [failure-presents-as-success]
+refs: ['src://7b4887ce51d9/internal/edge/web/errors.go@585974c52b3d4866c617b658bfc865a89a9e9b10:48d8a393cacd3810a61ae0c4487eb9e2848705e7', 'src://7b4887ce51d9/internal/edge/web/handlers_fact_write.go@585974c52b3d4866c617b658bfc865a89a9e9b10:c011e1c723f1439c4ba290cb204936927fc4ea47', 'src://7b4887ce51d9/internal/edge/web/handlers_fact_create.go@585974c52b3d4866c617b658bfc865a89a9e9b10:332b9ee5ffe9a556d436931ef6220291cdf633e3', 'src://7b4887ce51d9/internal/edge/web/handlers_fact_write_unavailable_test.go@585974c52b3d4866c617b658bfc865a89a9e9b10:adac72ad91b182e5a05ab05467ad7174e0f855f8', 'src://7b4887ce51d9/internal/edge/web/handlers_repos_hal.go@585974c52b3d4866c617b658bfc865a89a9e9b10:7282ed3783129742d8ebdddcaf363a3a23493e77', 'src://7b4887ce51d9/internal/corpus/repos/instance.go@585974c52b3d4866c617b658bfc865a89a9e9b10:f8ed1288c41e6532033c3517c5014b74a76268e7', 'kb://3ec012f5b4d2/kb/gotchas/web/rest-write-store-unavailable/c725a955.md', 'kb://3ec012f5b4d2/kb/conventions/web/write-store-error-translates-sentinels/1dbb44d5.md', 'kb://3ec012f5b4d2/kb/invariants/repos/experiment-eligibility/2e6138b8.md', 'https://github.com/knomit/knomit/pull/618']
+---
+# A REST fact write (POST, PUT, DELETE) that finds the repo's store unreachable answers 503 "Repo not ready" with a fixed detail, never a false success, never the 422 for unresolvable refs, never the 404 for a missing fact
+
+DECISION (user ruling, 2026-10-23): the false success that PR #617 (W0h) surfaced is fixed in a separate follow-up PR, and the answer is 503 Service Unavailable. Built in PR #618 (merged as 54d6c65b; dev tip 585974c5, re-read there).
+
+OPTIONS for the problem wording: (a) title "Store unavailable" with err.Error() as detail, the shape of the existing WithRead call sites in handlers_changes.go, handlers_experiments.go, handlers_jobs.go, handlers_pushed_branches.go and the experiment diff in handlers_facts_collection.go; (b) title "Repo not ready" with the fixed detail "the repo's store is not available; try again", the answer the repo PATCH (README.md / LICENSE write) already gave for the same two sentinels. CHOSE (b): it is the existing WRITE-path answer, and a fixed detail does not leak the error chain (the ref gate wraps the resolver's error as "ref gate: resolve(<path>): ...", which names the client's ref and the gate's internals).
+
+WHAT IS BUILT (verified at 585974c5):
+- factResolves, systemFileResolver, priorRefs, writeFact and deleteFact return WithRead's error as-is; their `svc == nil` branches are gone (newStoreHandle(nil) returns nil, so a nil store means Acquire refuses and the closure never runs).
+- storeUnavailable(err) (errors.go) is errors.Is ErrStoreUnavailable OR errors.Is ErrRepoClosed. The populating refusal (repos' unexported errPopulating) wraps ErrStoreUnavailable, so it needed no export.
+- writeStoreError answers storeUnavailable FIRST (before branch-not-found, invalid path, ontology 422, fact-not-live, default 500) with writeStoreUnavailable: 503, title "Repo not ready", the fixed detail. PUT's prior read, both writes and the delete reach it through the translator they already called. A refused deleteFact is not errFactNotFound, so DELETE does not 404.
+- writeGateProblem is the ONE gate-refusal answer for POST and PUT: 503 when storeUnavailable (the gate wraps with %w), else 422 "Unresolvable fact references". priorRefs's error stops PUT before the gate runs (handleFactUpdate answers it through writeStoreError), so a refusal is never read as "no prior version" (a nil prior would make the gate re-judge every ref the stored fact carries).
+- The repo PATCH (README.md / LICENSE) uses the same storeUnavailable / writeStoreUnavailable pair: one spelling.
+
+SIDE EFFECT, untested: GET of a `.knomit/` system file (writeSystemFile in system_file_read.go sends WithRead's error through writeStoreError) used to answer 500 "Failed to read system file" while the store was unavailable and now answers 503 "Repo not ready". No test pins this yet.
+
+INCONSISTENCY LEFT OPEN: other routes already answer 503 with different wording: the changes route (handlers_changes.go) and the experiment diff (handlers_facts_collection.go) say "Store unavailable" with the raw error as detail. Two spellings of one state coexist; unifying them is not decided.
+
+CONSEQUENCE: a new web write helper built on ri.WithRead must return WithRead's error and route it through writeStoreError (or storeUnavailable). A READ helper that starts propagating WithRead's error gets the 503 for free (the read helpers do not yet, see kb/gotchas/web/read-helpers-drop-withread-error/).
+
+DOES NOT MEAN: that a write to a store-less repo usually reaches the 503. On a machine-backed repo that is closed or populating, the eligibility check answers 403 "Read-only branch" FIRST: the lifecycle exits Identify before it detaches the store, Identify's Exit stores errNotIdentified, so WritableBranch is false (kb/invariants/repos/experiment-eligibility/2e6138b8.md: the ontology gate refuses every branch, experiments included). The 503 is reached by a store-less instance that still has an identity, and by a write whose eligibility check passed before teardown or swap began (a race). Nor does it mean the 503 is the answer everywhere WithRead fails.
+
+PR-REPORTED (not re-run): tests TestFactWrite_NoStore_Answers503 (POST plain, fact ref and system-file ref; PUT; DELETE: status, problem+json, title, detail), TestFactWriteHelpers_ReturnAcquireRefusal, TestFactWrite_ClosedRepo_RefusedAndWritesNothing (403 first; helpers return ErrRepoClosed; writeStoreError gives 503; database reopened shows the seed unchanged and no commit added), TestStoreUnavailable_MatchesEveryAcquireRefusal and TestRepoPatch_NoStore_Answers503 exist in handlers_fact_write_unavailable_test.go; the PR's sabotage run killed all 14 mutants.
