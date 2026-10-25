@@ -5,7 +5,7 @@ confidence: 0.9
 sources: 1
 entities: [cosEmbedder, distinctQueries, searchRepoServer, observeMountSearch, index.Overrides.Search, SearchDiag, min_similarity, motif_match]
 motifs: [path-reached-assertion, controlled-input-real-pipeline]
-refs: ['kb://3ec012f5b4d2/kb/decisions/store/pr-e/e8-test-doubles/0272840a.md', 'kb://3ec012f5b4d2/kb/conventions/testing/web/9407c9da.md', 'kb://3ec012f5b4d2/kb/gotchas/lens/search/per-mount-embedding/9c1592d5.md', 'kb://3ec012f5b4d2/kb/decisions/store/web-provider-removal/c501f55f.md', 'src://7b4887ce51d9/internal/edge/web/search_realstore_test.go@eeab486fd8fe87449b76b3b53fa57b53a9470743:1b4de0cc52390baceaafe48c593f48d1215ebb0e', 'src://7b4887ce51d9/internal/edge/web/handlers_search_hal.go@eeab486fd8fe87449b76b3b53fa57b53a9470743:be4104cadc5b4c7f267b9488ef2f1779f92b82bb', 'https://github.com/knomit/knomit/pull/605']
+refs: ['kb://3ec012f5b4d2/kb/decisions/store/pr-e/e8-test-doubles/0272840a.md', 'kb://3ec012f5b4d2/kb/conventions/testing/web/9407c9da.md', 'kb://3ec012f5b4d2/kb/gotchas/lens/search/per-mount-embedding/9c1592d5.md', 'kb://3ec012f5b4d2/kb/decisions/store/web-provider-removal/c501f55f.md', 'src://7b4887ce51d9/internal/edge/web/search_realstore_test.go@eeab486fd8fe87449b76b3b53fa57b53a9470743:1b4de0cc52390baceaafe48c593f48d1215ebb0e', 'src://7b4887ce51d9/internal/edge/web/api/kb/handlers_search_hal.go@33eb030738eeefc277e8744f5f8c71e39336251f:686438e86c78b2a232be69a5e840a839b1f133b4', 'https://github.com/knomit/knomit/pull/605']
 ---
 # Web search tests run the real vector step with cosEmbedder: a document's cosine with every query is the number in its cos=<c> marker (title or body), so the served score is exactly c*100 and nothing stubs a store read
 
