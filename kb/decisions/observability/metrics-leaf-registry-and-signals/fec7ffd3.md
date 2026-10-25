@@ -3,7 +3,7 @@ type: observation
 domain: []
 confidence: 0.95
 sources: 0
-entities: [internal/platform/metrics, internal/metrics, metrics.Default, metricsMiddleware, knomit_http_requests_total, knomit_embed_inference_seconds, Embedder.embedBatch, observeEmbedInference]
+entities: [Embedder.embedBatch, internal/platform/metrics, knomit_embed_inference_seconds, knomit_http_requests_total, metrics.Default, metricsMiddleware, observeEmbedInference]
 refs: ['src://7b4887ce51d9/internal/platform/metrics/metrics.go@b060359288d83a16c12708ebd290a8e78754f746:95db976a8f1ec50c0bb02e899f10b706404421e9', 'src://7b4887ce51d9/internal/edge/web/observability.go@0610c20083fcef9e84f42ab0311a14708bcb6193:5f255cfcfc6c3e5903cfca4d03ada3f11b9006cd', 'src://7b4887ce51d9/internal/engine/embeddings/inference_metrics.go@0610c20083fcef9e84f42ab0311a14708bcb6193:b55f2da468dde33ad25a0ab690482c718bd39bb8', 'src://7b4887ce51d9/internal/obs/metrics/metrics.go@4baae4ed3043cbcb37a797b625f5e8a1a071f912:95db976a8f1ec50c0bb02e899f10b706404421e9', 'https://github.com/knomit/knomit/pull/107', 'https://github.com/knomit/knomit/pull/28', 'https://github.com/knomit/knomit/pull/191']
 ---
 # Metrics live in a leaf internal/platform/metrics with a process-global Default; there is currently NO SQLite contention signal
