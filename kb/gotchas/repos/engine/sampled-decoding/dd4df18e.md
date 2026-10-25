@@ -16,3 +16,5 @@ Measured in the Phase 2 re-run on the validation slice (68 questions, mode H, LF
 Consequence: at n=68, run-to-run variance is of the same order as the differences between arms that a gating bar is meant to read. A bar fixed on one run inherits it. Before fixing a bar, either pass temperature 0 (or a fixed seed) through judge() for eval runs, or run each arm more than once and report the spread. Comparisons between two builds of the same arm need the same treatment.
 
 What this does NOT mean: the difference between the two builds is not evidence that the bound improved the 2.6B. Most of it is sampling noise, because the bound changed only 3 chains.
+
+SCOPE: EXPERT-SPIKE ONLY, NOT DEV (checked against dev ee850fd6, 2026-10-25). The code this fact describes exists only on the expert-spike line of branches and was never merged into dev, so a search of dev finds none of it and its src refs point at spike commits that dev does not contain. Its absence on dev is not drift, and the fact is deliberately kept, not retracted. Path names in it are the spike branch's pre-layer-move names. If the spike merges to dev, re-read the claim and every path at that merge.
