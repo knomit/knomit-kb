@@ -4,9 +4,9 @@ type: heuristic
 domain: [go, events, sse, memory, repos, web]
 confidence: 0.95
 sources: 2
-entities: [goob.Observable, goob.NewPipe, Observable.Publish, Observable.Subscribe, TaskHub, internal/corpus/repos/hub.go, logging.Tap, Subscription.deliver, subscriberBuffer, github.com/ysmood/goob]
+entities: [goob.Observable, goob.NewPipe, Observable.Publish, Observable.Subscribe, TaskHub, internal/corpus/repos/events/hub.go, logging.Tap, Subscription.deliver, subscriberBuffer, github.com/ysmood/goob]
 motifs: [nonblocking-hides-unbounded-buffer, safety-depends-on-rate]
-refs: ['kb://3ec012f5b4d2/kb/architecture/repos/taskhub-four-event-types/205b9763.md', 'kb://3ec012f5b4d2/kb/decisions/web/manage/logs-tab-sse-ring/ddceb81b.md', 'src://7b4887ce51d9/internal/platform/logging/tap.go@19b63d81310c3a2502db559bd47f0abf4285038d:ab1243f4c55f4b92492187c60a71c54f3c5e045f', 'src://7b4887ce51d9/internal/corpus/repos/hub.go@0610c20083fcef9e84f42ab0311a14708bcb6193:8111f912381db3b6fc1dfb81bd9cba4d9e60241c', 'https://github.com/knomit/knomit/pull/199']
+refs: ['kb://3ec012f5b4d2/kb/architecture/repos/taskhub-four-event-types/205b9763.md', 'kb://3ec012f5b4d2/kb/decisions/web/manage/logs-tab-sse-ring/ddceb81b.md', 'src://7b4887ce51d9/internal/platform/logging/tap.go@37dc65d5d05925959a3f8c138b10b771d3984d44:4d93a0f61b9100bacda2658e890a74ac99be864d', 'src://7b4887ce51d9/internal/corpus/repos/events/hub.go@37dc65d5d05925959a3f8c138b10b771d3984d44:5b0f8e49aa47e731867b1def6f919c20d03aeba0', 'https://github.com/knomit/knomit/pull/199', 'https://github.com/knomit/knomit/pull/631']
 ---
 # goob.Observable never blocks Publish because each subscriber's pipe buffers into an UNBOUNDED slice — so it is safe only for LOW-RATE events, and a high-rate publisher with one stalled subscriber grows the heap with no ceiling and no signal
 
@@ -21,3 +21,5 @@ logging.Tap is the worked example of the bounded alternative: a per-subscriber `
 WHAT THIS DOES NOT MEAN: this is not "goob is unsafe, replace the existing hubs". Both current goob users are low-rate by construction and are fine; ripping them out would trade a real non-issue for churn. The property to carry forward is that goob's non-blocking guarantee is purchased with unbounded memory, so the safety of any given use is a fact about ITS PUBLISH RATE, not about goob.
 
 Also note the guarantee is genuinely useful where it applies: because Publish cannot block, a hub in a write path (a store method, a logging chain) cannot be stalled by a slow reader. The hazard is only ever the retention, never latency.
+
+MOVED (14b, PR #631, merge 37dc65d5): the TaskHub source named above as internal/corpus/repos/hub.go is now internal/corpus/repos/events/hub.go; its goob-backed Subscribe/publish behaviour is unchanged.
