@@ -20,3 +20,5 @@ Consequence: a new engine host function goes in engineHost.functions() and TestE
 Re-pinned to merge commit 3462f5a4 after PR #498 merged into expert-spike; claim re-read there and holds.
 
 MOVED (PR #632, 14c, merged as ee850fd6): the trigger code cited here now lives in internal/corpus/repos/trigger; file and identifier names in the text above are the pre-move ones (triggerDispatcher is trigger.Dispatcher, ri.triggerKick is ri.triggers.Kick()). The refs are re-pinned to ee850fd6; behaviour is unchanged (kb/architecture/repos/triggers/dispatcher/a01f40fc.md).
+
+SCOPE: EXPERT-SPIKE ONLY, NOT DEV (checked against dev ee850fd6, 2026-10-25). The code this fact describes exists only on the expert-spike line of branches and was never merged into dev, so a search of dev finds none of it and its src refs point at spike commits that dev does not contain. Its absence on dev is not drift, and the fact is deliberately kept, not retracted. Path names in it are the spike branch's pre-layer-move names. If the spike merges to dev, re-read the claim and every path at that merge.
