@@ -5,7 +5,7 @@ confidence: 0.9
 sources: 1
 entities: [pendingFlush, settle, flushOnStop, triggerFlushGrace, RecordTriggerRuns, AdvanceTriggerWatermarks, internal/corpus/repos/triggers.go, internal/store/triggers.go]
 motifs: [write-behind-buffer, busy-handler-backoff]
-refs: ['src://7b4887ce51d9/internal/corpus/repos/triggers.go@0610c20083fcef9e84f42ab0311a14708bcb6193:657d206eae98b57da7342bff00b702fe6ecdb601', 'src://7b4887ce51d9/internal/store/triggers.go@0ef7edeecbf5863c6c9091f39a65be1aceb96d66:62bda301a444689511798e53d94622221b5d37a2', 'https://github.com/knomit/knomit/pull/335', 'kb://3ec012f5b4d2/kb/decisions/repos/triggers/fire-log-write-behind/db7bd869.md', 'kb://3ec012f5b4d2/kb/invariants/store/sqlite/write-serialization/9caa7895.md']
+refs: ['src://7b4887ce51d9/internal/corpus/repos/trigger/triggers.go@ee850fd6cef7c936fc81af311371e34a6971350a:8b055e220ddc6a6925559e47d353fbfde05e5365', 'src://7b4887ce51d9/internal/store/triggers.go@0ef7edeecbf5863c6c9091f39a65be1aceb96d66:62bda301a444689511798e53d94622221b5d37a2', 'https://github.com/knomit/knomit/pull/335', 'kb://3ec012f5b4d2/kb/decisions/repos/triggers/fire-log-write-behind/db7bd869.md', 'kb://3ec012f5b4d2/kb/invariants/store/sqlite/write-serialization/9caa7895.md']
 ---
 # Phase C of a dispatcher run is WRITE-BEHIND (flushed after 20 ms of writer silence, at a size bound, or at shutdown) rather than two transactions per run: a worker deviation, measured (per-run flushing cost the writer 5–7 ms per write through SQLite's busy-handler backoff), accepted by the master with the user informed and not vetoing
 
@@ -16,3 +16,5 @@ RATIONALE (measured on the worker's laptop, alternating A/B blocks): the repo DB
 CHOICE: option (2), in #335 (`pendingFlush`, `settle`, `flush`, `flushOnStop`, `triggerFlushGrace`). Accepted by the master as within the user's asynchrony requirement ("Last thing I want is knomit to become super slow and unresponsive because we have triggers defined"); told to the user, not vetoed.
 
 NON-SCOPE: only the TABLES lag a burst by ~20 ms plus the flush; nothing about emit timing, at-least-once or the run-row shape changed. A follow-up for PR 2: the lag under a sustained write stream.
+
+MOVED (PR #632, 14c, merged as ee850fd6): the trigger code cited here now lives in internal/corpus/repos/trigger; file and identifier names in the text above are the pre-move ones (triggerDispatcher is trigger.Dispatcher, ri.triggerKick is ri.triggers.Kick()). The refs are re-pinned to ee850fd6; behaviour is unchanged (kb/architecture/repos/triggers/dispatcher/a01f40fc.md).
