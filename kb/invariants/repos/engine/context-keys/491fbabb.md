@@ -14,3 +14,5 @@ fact.ValidateContext refuses every key a topic's ontology walk does not declare,
 Consequence: a KB that wants engine facts queryable by context declares reason_run (type string) under the relevant topic. Misreading to avoid: an answer fact with no context is not a failed write or an unidentified fact.
 
 Re-pinned to merge commit 3462f5a4 after PR #498 merged into expert-spike; claim re-read there and holds.
+
+SCOPE: EXPERT-SPIKE ONLY, NOT DEV (checked against dev ee850fd6, 2026-10-25). The code this fact describes exists only on the expert-spike line of branches and was never merged into dev, so a search of dev finds none of it and its src refs point at spike commits that dev does not contain. Its absence on dev is not drift, and the fact is deliberately kept, not retracted. Path names in it are the spike branch's pre-layer-move names. If the spike merges to dev, re-read the claim and every path at that merge.

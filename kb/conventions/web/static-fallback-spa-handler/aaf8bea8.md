@@ -4,7 +4,7 @@ type: policy
 domain: [web, routing, spa]
 confidence: 0.95
 sources: 2
-entities: [Server.Handler, newSPAHandler, newAssetHandler, staticHandlerFor, embeddedStaticFS, Server.staticFS, serveIndex, identityForRangeRequests, compressor, assetsPrefix, docsRoute, handleSwaggerUI, APIBase, r.Method, http.MethodHead, internal/web/server.go, internal/web/static.go, internal/web/docs_head_test.go]
+entities: [APIBase, assetsPrefix, compressor, docsRoute, embeddedStaticFS, handleSwaggerUI, http.MethodHead, identityForRangeRequests, internal/edge/web/docs_head_test.go, internal/edge/web/server.go, internal/edge/web/static.go, newAssetHandler, newSPAHandler, r.Method, serveIndex, Server.Handler, Server.staticFS, staticHandlerFor]
 refs: ['src://7b4887ce51d9/internal/web/server.go@86ddf78df8aebdcc88bde839e3f54591c1337fe4:ef7f91cc9153cd231db43d172324470592608e61#L110-L180', 'src://7b4887ce51d9/internal/web/static.go@86ddf78df8aebdcc88bde839e3f54591c1337fe4:28071b2077d04db332d635f32121907e2fd8e79b', 'src://7b4887ce51d9/internal/web/docs_head_test.go@86ddf78df8aebdcc88bde839e3f54591c1337fe4:ce48fbdaaccd8707de561505ded8b1388906b7ae', 'src://7b4887ce51d9/internal/web/embed.go@aa37eb350e74282d02100adaed4c25a5037e4cd2:a351ef3308708a7709fb21e864a35eeb2bc4c34b', 'src://7b4887ce51d9/internal/web/embed_noembed.go@aa37eb350e74282d02100adaed4c25a5037e4cd2:7b370b62fba73edf65a11b95735be93f9786390e', 'kb://3ec012f5b4d2/kb/decisions/web/static/compress-and-cache/d98cfbc9.md', 'kb://3ec012f5b4d2/kb/gotchas/web/spa/fileserver-index-redirect-loop/68987070.md', 'https://github.com/knomit/knomit/pull/223', 'https://github.com/knomit/knomit/pull/225']
 ---
 # Handler mount order: /git → /docs → /api/v1 → /assets/* → /* SPA fallback
