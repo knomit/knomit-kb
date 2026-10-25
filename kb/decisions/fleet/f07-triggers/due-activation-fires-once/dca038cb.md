@@ -5,7 +5,7 @@ confidence: 0.95
 sources: 1
 entities: [sweepDue, trigger_due_fires, TestDue_ActivationAlreadyOverdue, TestDue_RemovedTriggerForgetsMarks, TestDue_SurvivesSwapStore, internal/corpus/repos/triggers.go]
 motifs: [state-not-event, loud-failure-over-silent]
-refs: ['src://7b4887ce51d9/internal/corpus/repos/triggers.go@0610c20083fcef9e84f42ab0311a14708bcb6193:657d206eae98b57da7342bff00b702fe6ecdb601', 'src://7b4887ce51d9/internal/corpus/repos/triggers_due_test.go@0610c20083fcef9e84f42ab0311a14708bcb6193:0e7a90cee4cd4a6f5696ff3b0a6e0900e0996f23', 'kb://3ec012f5b4d2/kb/decisions/fleet/f07-triggers/unsupported-state-no-backfill/f27fc8d8.md', 'kb://3ec012f5b4d2/kb/invariants/repos/triggers/due-marks/db770fa9.md', 'https://github.com/knomit/knomit/pull/337']
+refs: ['src://7b4887ce51d9/internal/corpus/repos/trigger/triggers.go@ee850fd6cef7c936fc81af311371e34a6971350a:8b055e220ddc6a6925559e47d353fbfde05e5365', 'src://7b4887ce51d9/internal/corpus/repos/triggers_due_test.go@ee850fd6cef7c936fc81af311371e34a6971350a:ca87bda2f1783c42ac77196747ceb2d8c64117b8', 'kb://3ec012f5b4d2/kb/decisions/fleet/f07-triggers/unsupported-state-no-backfill/f27fc8d8.md', 'kb://3ec012f5b4d2/kb/invariants/repos/triggers/due-marks/db770fa9.md', 'https://github.com/knomit/knomit/pull/337']
 ---
 # Facts already overdue when a `due` trigger first becomes active fire ONCE on the first sweep — and the same after a SwapStore, a rename or a remove-and-re-add — because 'the feature was never live - we're writing it now'; rejected 'never' (seeding marks at activation), whose silence would recur on every bookmark reset
 
@@ -16,3 +16,5 @@ RATIONALE: `due` is a LEVEL (the fact is overdue now), not an event that happene
 CHOICE (maintainer, verbatim): "Again, the feature was never live - we're writing it now." → (a), no seeding code; a fact fires at most once per due instant per trigger. Built in #337; the learn side of a mixed trigger still bookmarks W = H.
 
 NON-SCOPE: this says nothing about `do: script|push|run`, which stay `unsupported` with no bookmark until their PRs.
+
+MOVED (PR #632, 14c, merged as ee850fd6): the trigger code cited here now lives in internal/corpus/repos/trigger; file and identifier names in the text above are the pre-move ones (triggerDispatcher is trigger.Dispatcher, ri.triggerKick is ri.triggers.Kick()). The refs are re-pinned to ee850fd6; behaviour is unchanged (kb/architecture/repos/triggers/dispatcher/a01f40fc.md).
