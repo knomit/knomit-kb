@@ -5,7 +5,7 @@ confidence: 0.95
 sources: 1
 entities: [web/src/motifEndpoint.ts, MotifEndpoint, motifEndpointOf, canReadMotifs, canReadMotifCluster, readMotifs, readMotifCluster, web/src/MotifsBlock.tsx, web/src/useMotifClusters.ts, web/src/FilterBar.tsx, web/src/Library.tsx, web/src/RightPanel.tsx, factHistoryAnchor, api.lensMotifs, api.lensMotifCluster]
 motifs: [one-seam-many-consumers, same-question-drifting-guards]
-refs: ['src://7b4887ce51d9/web/src/motifEndpoint.ts@b261c400d248a92353308bda22dd506d72d975f3:22810e5b637146bd4e4bc749d262e612e3f5e725', 'src://7b4887ce51d9/internal/edge/web/handlers_lenses_motifs.go@b261c400d248a92353308bda22dd506d72d975f3:604dad163cfedba40b96cc94ba367d118578604d', 'src://7b4887ce51d9/internal/edge/web/handlers_motifs.go@b261c400d248a92353308bda22dd506d72d975f3:cc7cfffb49d188fa611e311be1d226376d2dd48e', 'kb://3ec012f5b4d2/kb/decisions/ui/motif/vocabulary-fourth-block/b5534397.md', 'kb://3ec012f5b4d2/kb/decisions/lens/read-endpoints-not-stopgap/ddd424f9.md']
+refs: ['src://7b4887ce51d9/web/src/motifEndpoint.ts@b261c400d248a92353308bda22dd506d72d975f3:22810e5b637146bd4e4bc749d262e612e3f5e725', 'src://7b4887ce51d9/internal/edge/web/api/kb/handlers_lenses_motifs.go@33eb030738eeefc277e8744f5f8c71e39336251f:3d8c5a30e12c441a6f6f27b3f5e29597e0cda8b8', 'src://7b4887ce51d9/internal/edge/web/api/kb/handlers_motifs.go@33eb030738eeefc277e8744f5f8c71e39336251f:773ff1ef7ee65740d5b539c0671bca1765e53e7f', 'kb://3ec012f5b4d2/kb/decisions/ui/motif/vocabulary-fourth-block/b5534397.md', 'kb://3ec012f5b4d2/kb/decisions/lens/read-endpoints-not-stopgap/ddd424f9.md']
 ---
 # The motif UI takes a MotifEndpoint, not an isLens flag — one derivation, and no component below it knows a lens exists
 

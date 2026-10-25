@@ -6,7 +6,7 @@ confidence: 0.95
 sources: 1
 entities: [internal/edge/web/handlers_lenses_read.go, internal/edge/web/handlers_facts_collection.go, internal/engine/store/index/search_query.go, RecentFacts, maxLensRecencyDepth, maxLensSearchCandidates, lensFanoutDepth, TestLensFanoutDepth_OverflowingOffsetStillClamps]
 motifs: [measures-work-not-outcome]
-refs: ['src://7b4887ce51d9/internal/edge/web/handlers_lenses_read.go@0610c20083fcef9e84f42ab0311a14708bcb6193:ae5d1a0be5f1640583d34af9997534bc5740da29', 'src://7b4887ce51d9/internal/edge/web/handlers_lenses_read_test.go@0610c20083fcef9e84f42ab0311a14708bcb6193:12b8bd312e6d8b40ed2673ed544008f023aa8c89', 'src://7b4887ce51d9/internal/engine/store/index/search_query.go@0610c20083fcef9e84f42ab0311a14708bcb6193:5a20922f4876029a0b68e4df70d95485bde0b170', 'src://7b4887ce51d9/internal/edge/web/handlers_facts_collection.go@0610c20083fcef9e84f42ab0311a14708bcb6193:d4f341a2c8269a134afe0992d8a9279dd0842a37']
+refs: ['src://7b4887ce51d9/internal/edge/web/api/kb/handlers_lenses_read.go@33eb030738eeefc277e8744f5f8c71e39336251f:b58d9a7df86c19a3864c8935526458a97e0555ec', 'src://7b4887ce51d9/internal/edge/web/handlers_lenses_read_test.go@0610c20083fcef9e84f42ab0311a14708bcb6193:12b8bd312e6d8b40ed2673ed544008f023aa8c89', 'src://7b4887ce51d9/internal/engine/store/index/search_query.go@0610c20083fcef9e84f42ab0311a14708bcb6193:5a20922f4876029a0b68e4df70d95485bde0b170', 'src://7b4887ce51d9/internal/edge/web/api/kb/handlers_facts_collection.go@33eb030738eeefc277e8744f5f8c71e39336251f:1b9d81a69810a4ee86c45480e96d6a4c79e61694']
 ---
 # A collection's `total` answers how many rows MATCH, never how many were fetched — bounding transfer must never bound the count
 
