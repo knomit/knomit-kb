@@ -5,7 +5,7 @@ confidence: 0.55
 sources: 1
 entities: [Claude Haiku 5.5, OpenRouter, CometAPI, Requesty, AIMLAPI, AWS Bedrock, Google Vertex, Azure Foundry]
 motifs: [dated-snapshot]
-refs: ['kb://3ec012f5b4d2/kb/meta/research/materialize/haiku-cost/27c962bf.md', 'https://platform.claude.com/docs/en/about-claude/pricing.md', 'https://openrouter.ai/pricing', 'https://openrouter.ai/api/v1/models', 'https://www.cometapi.com/pricing/', 'https://www.requesty.ai/models/anthropic/claude-haiku-5-5', 'https://www.anthropic.com/legal/commercial-terms']
+refs: ['kb://3ec012f5b4d2/kb/meta/research/materialize/haiku-cost/27c962bf.md', 'kb://3ec012f5b4d2/kb/gotchas/llm/claude-cli/cost/091c9eb0.md', 'https://platform.claude.com/docs/en/about-claude/pricing.md', 'https://openrouter.ai/pricing', 'https://openrouter.ai/api/v1/models', 'https://www.cometapi.com/pricing/', 'https://www.requesty.ai/models/anthropic/claude-haiku-5-5', 'https://www.anthropic.com/legal/commercial-terms']
 expires: "2026-12-01T00:00:00Z"
 ---
 # As of 2026-10-26: no legitimate gateway sells Claude Haiku 5.5 below Anthropic list ($0.10 in / $0.50 out per MTok up to 100k tokens); OpenRouter passes list plus a 5.5% credit fee; CometAPI lists 20% below list but was not confirmed as Anthropic-authorized
