@@ -5,7 +5,7 @@ confidence: 0.75
 sources: 1
 entities: [LFM2.5-2.6B, Claude Haiku 5.5, does-not-mean caveats, blind grading]
 motifs: [quote-true-claim-false, task-shape-fit]
-refs: ['kb://3ec012f5b4d2/kb/meta/research/ingestion/lfm-fit/e7e851aa.md']
+refs: ['kb://3ec012f5b4d2/kb/meta/research/ingestion/lfm-fit/e7e851aa.md', 'kb://3ec012f5b4d2/kb/meta/research/materialize/writer-prompt/73b87875.md']
 ---
 # LFM2.5-2.6B as an article WRITER from facts (even given an outline and per-fact claims) inverted 'does not mean' caveats, duplicated and truncated text, and ranked last in both blind-graded articles
 
