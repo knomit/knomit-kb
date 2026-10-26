@@ -1,0 +1,18 @@
+---
+type: observation
+domain: [materialize, evaluation, agents, article-writing]
+confidence: 0.7
+sources: 1
+entities: [Claude Haiku 5.5, Claude Sonnet, verbatim fact export, question answering, false not-in-material]
+motifs: [task-shape-fit]
+refs: ['kb://3ec012f5b4d2/kb/meta/research/materialize/lfm-prompted-tasks/e8cfd3e0.md']
+---
+# A fresh agent answered 20 questions better from a verbatim fact export (35/40 Haiku, 34/40 Sonnet) than from LLM-written articles (pipeline 33-34/40, single-call 18-20/40); unanswerable questions were never fabricated in any of 12 source-reader cells
+
+Measured 2026-10-26 (materialize research spike, round 4; evidence in the git-ignored round4/qa/RESULTS.md, repo-relative, not pinned). Two fact sets (art1: 25 facts, 7 theme groups; art2: 40 facts, 6 groups by date descending), 10 questions each: 4 direct, 2 caveat, 2 synthesis, 2 unanswerable, with gold answers written from the fact bodies only. A fresh reader (Claude Haiku, then Claude Sonnet, via the CLI, tools off, the whole document in the prompt, only question ids and text sent) answered from one of six SOURCES; answers were graded blind per question 2 / 1 / 0 / -1. 12 cells (6 sources x 2 readers), max 40.
+
+Sources: mech = a deterministic, no-LLM export (facts in full and unedited, headings shifted, out-of-set refs as one-line title stubs, in-set refs as 'Builds on'); pipeline = Haiku's extract-outline-write articles; direct = Haiku one-call articles; haikuv2, glm, deepseek = a second one-call prompt run on Haiku 5.5, glm-5.3-flash, deepseek-v4.1-flash.
+
+Totals (Haiku reader / Sonnet reader): mech 35 / 34; pipeline 33 / 34; haikuv2 29 / 29; glm 29 / 27; deepseek 25 / 26; direct 18 / 20. By type (both readers' range): direct questions /16: mech 14-16, pipeline 15, haikuv2 9, glm 10-11, deepseek 9, direct 2; unanswerable /8: 8 in every one of the 12 cells. False 'not in the material' answers to answerable questions: mech 0, pipeline 0, haikuv2 1, glm 2, deepseek 3, direct 7 (both readers). The only -1 scores were the deepseek source's, one per reader, on one synthesis question. Document size: mech 115,876 bytes (art1) and 32,141 (art2), 40.7k and 14.4k reader prompt tokens; the one-call articles were 10-19k bytes, 4.4-8.0k tokens. Reader cost for both articles, Haiku vs Sonnet: mech $0.0133 vs $0.2538, direct $0.0035 vs $0.0557.
+
+Consequence: for an agent consumer the shorter, LLM-written article is a lossy compression: it buys 4-20x lower reader cost and costs coverage (the reader says the answer is not in the document when it was dropped). A verbatim, well-ordered fact export scored highest and cost no writer tokens. Unanswerable-question behaviour was robust, so the risk measured here is omission, not invention. WHAT THIS DOES NOT MEAN: it does not say articles never help a human reader (round 3's blind graders preferred the short prose for human reading); and the question set was built partly to probe facts the best short article dropped (art2 q01-q04, art1 q04, q06, q08), which favours the export. Twenty questions, two readers of one model family, one grading pass: margins of a few points are noise; the 35-vs-18 gap is not.
