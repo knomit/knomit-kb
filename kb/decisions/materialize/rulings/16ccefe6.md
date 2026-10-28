@@ -30,6 +30,6 @@ FRAME-PARENT RULING (user, 2026-10-28, round 3 of the PR #675 review; it REPLACE
 - Under unpin, refs resolve to latest and path dedup still ends the walk.
 - Order: each ancestor before any frame that cites it, ties by refs (first-reached) order.
 
-As built: a parent edge f->t is kept only when t was first reached AFTER f (so the ones reached first are the children); parent edges therefore always point to later-reached frames, cannot cycle, and topoSort is plain Kahn with ties by discovery and no fallback.
+As built (after review B3): ancestors are ordered by a depth-first POST-ORDER from the starting frame over its frame refs in refs order (walk back to the top, write top-down); a ref to a frame already visited is a back-reference, which is how 'the frame you are at is the child' settles a mutual pair and why the walk cannot loop. A breadth-first pass only decides inclusion and the cap. An earlier discovery-number edge filter with a Kahn sort was removed: it wrote a child before a parent reached earlier (U; T->U; C->T; F->T,C must give U, T, C, F).
 
 WHAT THIS DOES NOT MEAN: not 'the older frame is the parent' and not 'the newer timestamp is the child': only the walk from the starting frame (pinned refs plus first-reached order) decides.
