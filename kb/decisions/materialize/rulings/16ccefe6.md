@@ -4,7 +4,7 @@ domain: [materialize, frames, refs, mcp]
 confidence: 0.95
 sources: 1
 entities: [knomit_materialize, internal/corpus/materialize, cross_kb, unpin, frame, Manager.ByRootID]
-refs: ['kb://3ec012f5b4d2/kb/decisions/fact-types/frame/type-only-scope/85d04f3b.md', 'kb://3ec012f5b4d2/kb/gotchas/corpus/refs/superseded-flag/a4f230f9.md', 'kb://3ec012f5b4d2/kb/gotchas/repos/identity/uid-vs-root-commit-id/ae7a7d41.md', 'kb://3ec012f5b4d2/kb/principles/philosophy/historical-not-current/6c745bf4.md']
+refs: ['kb://3ec012f5b4d2/kb/decisions/fact-types/frame/type-only-scope/85d04f3b.md', 'kb://3ec012f5b4d2/kb/gotchas/corpus/refs/superseded-flag/a4f230f9.md', 'kb://3ec012f5b4d2/kb/gotchas/repos/identity/uid-vs-root-commit-id/ae7a7d41.md', 'kb://3ec012f5b4d2/kb/principles/philosophy/historical-not-current/6c745bf4.md', 'src://7b4887ce51d9/internal/corpus/materialize/frames.go@040bc5f7fed53861cda872f6789cf1c5e3b0090d:52c692a4251f323bd7061c43266eacee80f93710']
 ---
 # materialize rulings (2026-10-28): pinned by default, unpin silently drops gone targets, cross-KB follows ANY registered repo at its latest version, frame ancestors always included with their own data only, depth 4/200 facts, MCP+REST only
 
