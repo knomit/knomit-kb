@@ -6,7 +6,7 @@ confidence: 0.9
 sources: 1
 entities: [FacetColumns, indexMaxWidth, SettingsPage, SETTINGS_INDEX_MAX_PX, knomit.leftPanelWidth, leftPanelWidth, Library, BrowseFacet]
 motifs: [opt-in-exception]
-refs: ['kb://3ec012f5b4d2/kb/decisions/web/shell/facets/index-column-width/60dbb4f4.md', 'src://7b4887ce51d9/web/src/FacetColumns.tsx@0dfc51c502e6b3b705debf75635393e0b1031992:25353a6e259cd8fa41a89fdfc8847140958c7461', 'src://7b4887ce51d9/web/src/SettingsPage.tsx@0dfc51c502e6b3b705debf75635393e0b1031992:b14f19002e4c2c057d927c8d480356780258d833', 'https://github.com/knomit/knomit/pull/678']
+refs: ['kb://3ec012f5b4d2/kb/decisions/web/shell/facets/index-column-width/60dbb4f4.md', 'src://7b4887ce51d9/web/src/FacetColumns.tsx@6e98835813f6f77638b58b9dd786597513da3c09:25353a6e259cd8fa41a89fdfc8847140958c7461', 'src://7b4887ce51d9/web/src/SettingsPage.tsx@6e98835813f6f77638b58b9dd786597513da3c09:b14f19002e4c2c057d927c8d480356780258d833', 'https://github.com/knomit/knomit/pull/678']
 ---
 # The Settings section nav is capped at 240px (FacetColumns indexMaxWidth), chosen over the shared draggable Library width; Settings has no drag handle and its divider sits at a different x than Browse
 
