@@ -1,0 +1,29 @@
+---
+kind: pragmatic
+type: policy
+domain: [mcp, sessions, store, invariant]
+confidence: 0.95
+sources: 1
+entities: [MintBindingHandleOnMount, resolveHandle, scopedBindTarget, mintEndpointHandle, binding_handles, handle_mounts, TestScopedHandle_PinIsItsMountOnEveryPath, TestMintBindingHandleOnMount_PinIsTheMount, LensRegistry.Update]
+motifs: [unrepresentable-beats-ranked, unreachable-guard-deleted]
+refs: ['kb://3ec012f5b4d2/kb/invariants/mcp/session-binding/handle-is-the-only-router/5dd2cf17.md', 'kb://3ec012f5b4d2/kb/architecture/mcp/session-binding/handle-mounts/38ae5cef.md', 'kb://3ec012f5b4d2/kb/decisions/mcp/session-binding/scoped-endpoint-bind/3408dd94.md', 'kb://3ec012f5b4d2/kb/incidents/mcp/session-binding/cross-binding-overwrite/17935f4f.md', 'src://7b4887ce51d9/internal/foundation/clientsessions/bindings.go@cb6b27fc32cf6f9078f5877db6e432be812d8962:c43cec784c8da26e152a6a4e88c1fa3c80718374', 'src://7b4887ce51d9/internal/edge/mcp/binding_gate.go@cb6b27fc32cf6f9078f5877db6e432be812d8962:3a1d913fab88e3d98863675dcb81c8b50a5dbe7f', 'src://7b4887ce51d9/internal/edge/mcp/bind.go@cb6b27fc32cf6f9078f5877db6e432be812d8962:ad1d26dd9ea9473b6bf429f990e68f9c3fd69c4f', 'src://7b4887ce51d9/internal/edge/mcp/experiment.go@cb6b27fc32cf6f9078f5877db6e432be812d8962:e54f4bd26a56d333fa1b6fed841549343e5bf446', 'src://7b4887ce51d9/internal/edge/web/scoped_handle_pin_e2e_test.go@cb6b27fc32cf6f9078f5877db6e432be812d8962:e292600f5ebcf525721b4b2491b7ba12396415b5', 'src://7b4887ce51d9/internal/foundation/clientsessions/bindings_test.go@cb6b27fc32cf6f9078f5877db6e432be812d8962:caeb3dbb7c0193b9348aa590ee64734e759951b7']
+---
+# A URL-scoped binding handle's pin IS its mount: MintBindingHandleOnMount takes the mount alone and writes it as both binding_handles.binding and handle_mounts.mount_uid, so resolveHandle checks only the mount and has no pin != mount check
+
+RULE. On a URL-scoped (`kb --repo` / `kb --lens`) endpoint, the value a handle ROUTES by (binding_handles.binding, the pin) and the value that says WHICH ENDPOINT it works on (handle_mounts.mount_uid) are ONE value, repo:<uid> or lens:<uid>. Store.MintBindingHandleOnMount(ctx, handle, mountUID, now) has no separate pin parameter and writes mountUID into both rows in one transaction. resolveHandle (internal/edge/mcp/binding_gate.go) compares the stored mount with the request's mount (MountSessionFromContext's uid) and then routes by the pin; it does NOT re-compare pin with mount.
+
+HISTORY. PR #664 added a `pin != mount` check in resolveHandle labelled "Unreachable ... Checked anyway". Settled 2026-10-29 (branch fix/resolvehandle-pin-guard): it WAS unreachable on dev after PR #686, so under the standing rule it was deleted, and the store API was narrowed so the handle it looked for cannot be recorded.
+
+WHY IT HOLDS ON EVERY PATH (enumerated at the fix):
+- knomit_bind on a scoped endpoint and knomit_experiment open without a handle (mintEndpointHandle, #686) both mint through scopedBindTarget (internal/edge/mcp/bind.go), which resolves the URL's repo/lens BY NAME and refuses pin != mount (a rename racing the bind), then call MintBindingHandleOnMount with the mount.
+- bind with `experiment:` resume, open/sync/commit/rollback through a handle, and commit/rollback by name write only handle_experiments, never the pin or mount.
+- Nothing ever UPDATEs binding_handles.binding or handle_mounts.mount_uid (the only UPDATE is last_used_at); Purge only deletes, and deletes mount rows only for handles already gone.
+- Both values are UIDs: a repo or lens RENAME changes neither; a lens WRITE-REPO change (LensRegistry.Update keeps the lens uid) changes neither, and the handle follows the lens to its new write repo exactly like a handle-less call; a SERVER RESTART reopens the same control.db rows unchanged.
+- A lens or repo DELETED AND RECREATED under the same name gets a new uid: the old handle's mount no longer equals the URL's, so the MOUNT check refuses it (errHandleFromOtherEndpoint) before any pin is read. That is the case a pin check would have had to catch, and the mount check already does.
+- The unscoped endpoint has no mount row and no mount to compare; a scoped handle there is refused (errHandleFromScopedEndpoint).
+
+CONSEQUENCE. Never reintroduce a mint that takes a pin and a mount separately, and never add a code path that rewrites a scoped handle's pin: resolveHandle would route such a handle to whatever its pin names, the 2026-09-17 cross-binding incident on a scoped endpoint, and no check stands in the way any more. Tests that need a mismatched row must build it with raw SQL in a _test.go file.
+
+ENFORCED BY: the single-value MintBindingHandleOnMount (internal/foundation/clientsessions/bindings.go); TestMintBindingHandleOnMount_PinIsTheMount; TestScopedHandle_PinIsItsMountOnEveryPath (internal/edge/web/scoped_handle_pin_e2e_test.go), which drives every path above through the real router, including a real lens write-repo Update, a lens rename and a control-DB reopen, and after each sweeps the WHOLE store (handle_mounts JOIN binding_handles) for binding <> mount_uid, with a count so an empty sweep cannot pass. Sabotage (an open-minted lens handle pinned to its write repo) turned only that test red; every other test in internal/edge/web, internal/edge/mcp and clientsessions stayed green.
+
+WHAT THIS DOES NOT MEAN. Not that scoped handles cannot be refused: they still are, for another endpoint's mount, a fixed-branch URL, an unknown handle, or a deleted repo/lens. Not that the handle's WRITE REPO is fixed: on a lens it is resolved live from the lens at each call. Not that scopedBindTarget's own pin != mount refusal is dead: that one is reachable (a rename racing the bind) and stays.
