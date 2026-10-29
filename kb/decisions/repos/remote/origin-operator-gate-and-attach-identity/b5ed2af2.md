@@ -28,3 +28,9 @@ ACCEPTED RESIDUAL RISKS (reviewed, not closed by this PR):
 - N3, first-attach size: an unrelated origin (a new repo's first) is fetched whole; at the 64 MiB default that is roughly 5,000 commits of a typical knowledge base (measured: ~1,000 commits inflate to ~11 MiB). A larger one is refused "Origin not inspected" until [git].max_probe_bytes is raised (documented on config.GitConfig.MaxProbeBytes and in the PUT /origin spec). The wizard's disjoint path (SwapStore) is unaffected.
 
 MISREADINGS: 'replace_main overrides every check': no, only (b). 'Operators can now import any knowledge base': not another ACTIVE repo's on this instance; a foreign unregistered one, yes, deliberately. 'The check makes the later sync safe': it is a point-in-time check; the remote can change before the first round (residual, accepted).
+
+CLOSED LATER (PR #682, branch fix/origin-attach-followups):
+- N2 is CLOSED. Both probe stores bound the raw pack before parsing (storer.PackfileWriter via remotesync.NewBudgetedPackWriter), as well as the inflated objects. This is still not a hard memory cap: one object is inflated whole before it is counted. See kb/invariants/store/remote-sync/probe-budget/2002b7ed.md.
+- The replace_main identity gap (review round 1, found-not-fixed item 1) is CLOSED for the replace case: the round that force-updated main records the read branch's new root at once (kb/decisions/repos/identity/reidentify-after-rewind/20b0d973.md). An empty repo attached to an unrelated origin is NOT covered (#541).
+- The PATCH /origin/upstream fall-through and compare-and-set (review round 3, item 2) are CLOSED: it answers 409 "No origin", 503 or 500 when the origin cannot be read, and 409 "Origin changed" when the vetted URL is no longer stored (kb/invariants/repos/remote/upstream-change/6a1447e1.md).
+- Still open: N1 (the merge-carried history; the all-roots check is issue #677), and the UI control for replace_main.
