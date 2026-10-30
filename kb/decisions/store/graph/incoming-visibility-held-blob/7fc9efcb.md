@@ -1,0 +1,35 @@
+---
+type: observation
+domain: [store, graph, edges]
+confidence: 0.9
+sources: 1
+entities: [IncomingAtCommit, blobHoldings, graphDerivedFromNeighbourRows, branch_facts, path_changes, OutgoingAtCommit, readNode, superseded]
+motifs: [proxy-not-the-thing]
+refs: ['src://7b4887ce51d9/internal/engine/store/index/search_graph_query.go@131b2636e66a8eddae8cc229c3c29fad78aa3667:ce56ad75cd2b29d13aacfeda73bd8f6a3f8f6f9e', 'src://7b4887ce51d9/internal/engine/store/index/graph_sql.go@131b2636e66a8eddae8cc229c3c29fad78aa3667:d9ef7d0da681c3913f2f1f6738cbf00f54b27981', 'src://7b4887ce51d9/internal/edge/mcp/explain.go@131b2636e66a8eddae8cc229c3c29fad78aa3667:d114ca9461284321daaa6a791fb9ad5b7263f298', 'src://7b4887ce51d9/internal/edge/web/api/kb/handlers_fact_sub.go@131b2636e66a8eddae8cc229c3c29fad78aa3667:d2eeca72516a6d62ea7f071557415f6b62f9c8dc', 'src://7b4887ce51d9/internal/engine/store/index/blast_radius.go@131b2636e66a8eddae8cc229c3c29fad78aa3667:8d084774aa5d944c78e5ba36443e38082b6db917', 'src://7b4887ce51d9/internal/engine/store/index/highlights.go@131b2636e66a8eddae8cc229c3c29fad78aa3667:f1fd50d540b8be98f3caae53149eace21a1d07e8', 'src://7b4887ce51d9/internal/corpus/materialize/reader.go@131b2636e66a8eddae8cc229c3c29fad78aa3667:dd9368678a0830ae38d9a344a9967fc5ab01a911', 'src://7b4887ce51d9/internal/engine/store/blob_edges_test.go@131b2636e66a8eddae8cc229c3c29fad78aa3667:b7c5dc963dbaf3652b4985ded2499cef24507719', 'kb://3ec012f5b4d2/kb/decisions/store/derived-from-time-aware-edges/a5222e48.md', 'kb://3ec012f5b4d2/kb/decisions/store/temporal/retracted-fact-semantics/85c1bb26.md']
+---
+# Incoming refs are visible on a branch iff the CITING BLOB is held there (now or in its history), not iff the edge's source_commit is on it; a blob's refs stay resolved once at its earliest introduction even across unrelated branches (option 1), so a branch may show another branch's resolution, flagged as changed since cited
+
+USER RULING (2026-10-30, PR #693 round 4, B4). Scenario: the same bytes X (citing R) are written on brA, then on brC, and the branches never merge. The blob's single claim is pinned at cA on brA. The old incoming filter (source_commit in the reading branch's branch_commits) dropped the edge on brC, so R's incoming there was empty (dev listed it).
+
+INCOMING (IncomingAtCommit, index/search_graph_query.go):
+- An edge is visible on branch B iff the citing blob is held on B.
+- The source is listed as one row per node of the citing blob whose path holds it on B, now (branch_facts JOIN facts on blob) or in B's history (path_changes rows on B's branch_commits). History keeps retracted citers, which render deleted=true per kb/decisions/store/temporal/retracted-fact-semantics, and a rename's old path. A path only another branch has is not listed.
+- blobHoldings answers it for all candidate rows in one statement.
+- Each row carries a commit OF B at which that path holds the blob: the edge's own source_commit when the row is the edge's own node and that commit is on B (unchanged behaviour); else B's recorded commit (branch_facts); else the latest commit of B's history. A hop to (path, commit) on B therefore lands.
+- Order: edge id, then node id.
+
+OPTION 1 (accepted): no per-branch edge sets and no schema change. A blob's refs stay resolved ONCE, at its earliest introduction. On brC, X's outgoing shows R as resolved on brA (R_A at its commit), even when that commit is not on brC:
+- OutgoingAtCommit filters target_commit only against the global commit_log;
+- the REST gate FactLiveAtCommit and ReadFact AtCommit ignore the branch;
+- materialize pins come from OutgoingAtCommit and are read AtCommit.
+When brC's own R differs, MCP explain flags the node superseded (readNode: the branch's latest commit of R != the pinned commit), which is "changed since cited".
+
+OTHER READERS (checked):
+- blast radius widens by blob and counts dependents live on the branch through branch_facts paths;
+- highlights keys outdegree by blob over the branch's live nodes;
+- verify (reference-blobs) is branch-independent.
+None filters by source_commit reachability.
+
+OPERATIONAL CONSEQUENCE: never decide a citer's visibility on a branch by where its blob's edges were resolved. Decide it by whether the branch holds the citing blob.
+
+WHAT THIS DOES NOT MEAN: it does not re-resolve refs per branch. A branch can legitimately show a target version that only another branch ever had; that is the accepted cost of option 1, surfaced as changed since cited, not a bug to 'fix' by re-pinning.
