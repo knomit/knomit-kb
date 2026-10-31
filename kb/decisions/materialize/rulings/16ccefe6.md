@@ -4,7 +4,7 @@ domain: [materialize, frames, refs, mcp]
 confidence: 0.95
 sources: 1
 entities: [knomit_materialize, internal/corpus/materialize, cross_kb, unpin, frame, Manager.ByRootID]
-refs: ['kb://3ec012f5b4d2/kb/decisions/fact-types/frame/type-only-scope/85d04f3b.md', 'kb://3ec012f5b4d2/kb/gotchas/corpus/refs/superseded-flag/a4f230f9.md', 'kb://3ec012f5b4d2/kb/gotchas/repos/identity/uid-vs-root-commit-id/ae7a7d41.md', 'kb://3ec012f5b4d2/kb/principles/philosophy/historical-not-current/6c745bf4.md', 'src://7b4887ce51d9/internal/corpus/materialize/frames.go@040bc5f7fed53861cda872f6789cf1c5e3b0090d:52c692a4251f323bd7061c43266eacee80f93710']
+refs: ['kb://3ec012f5b4d2/kb/decisions/fact-types/frame/type-only-scope/85d04f3b.md', 'kb://3ec012f5b4d2/kb/gotchas/corpus/refs/superseded-flag/a4f230f9.md', 'kb://3ec012f5b4d2/kb/gotchas/repos/identity/uid-vs-root-commit-id/ae7a7d41.md', 'kb://3ec012f5b4d2/kb/principles/philosophy/historical-not-current/6c745bf4.md', 'kb://3ec012f5b4d2/kb/decisions/mcp/explain-retracted-fallback/98a23499.md', 'src://7b4887ce51d9/internal/corpus/materialize/frames.go@040bc5f7fed53861cda872f6789cf1c5e3b0090d:52c692a4251f323bd7061c43266eacee80f93710', 'src://7b4887ce51d9/internal/corpus/materialize/walk.go@866eb303e6fafff234b7b4a4994f3ef7142f33eb:5a17556749c93ae553194ce624dd282b49629018']
 ---
 # materialize rulings (2026-10-28): pinned by default, unpin silently drops gone targets, cross-KB follows ANY registered repo at its latest version, frame ancestors always included with their own data only, depth 4/200 facts, MCP+REST only
 
@@ -17,7 +17,9 @@ The user's final rulings for `materialize` (knomit_materialize over MCP, `/mater
 5. No CLI command.
 6. No preamble or skill: the human formatting instructions are a server constant on page 1 with a version on every page.
 7. materialize ignores `context.status` entirely; a retracted frame is the abandoned one.
-8. "Changed since cited" is decided by comparing BODIES, never commit inequality.
+8. Inside a materialized document, a link is marked `different_version` (Link.DifferentVersion, pinned mode only) when the version the citing fact cited has a BODY different from the version written in the document; a commit difference alone is not a change. This compares two versions inside the FactSet.
+
+   It is NOT the "changed since cited" signal of knomit_explain (`superseded`) or FactQuery.CitedVersionState. That signal is computed against what the READING BRANCH holds now, by BLOB, never relative to a viewed commit (kb://3ec012f5b4d2/kb/decisions/mcp/explain-retracted-fallback/98a23499.md, user ruling 2026-10-31). Do not read this item as the rule for explain, and do not reuse `different_version` as a branch-relative flag.
 
 CONSEQUENCE: the default output is a pure function of (root, anchor, options) — historical, never HEAD-relative; only `unpin` and cross-KB nodes read latest versions, and the output says so.
 
