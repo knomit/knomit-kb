@@ -37,3 +37,7 @@ WHAT THIS DOES NOT MEAN: it does not re-resolve refs per branch. A branch can le
 TEMPORAL GRAPH (user ruling 2026-10-30, PR #693 round 5, F2): incoming keeps EVERY reference across all time, and the branch/commit view disambiguates. A citer whose newer version drops the ref is still listed, with each old version that cited the target at its own commit, not marked deleted (F is live). This is intended, not a bug; do not 'fix' it by hiding replaced versions. Two rules each keep those rows: the edge's own node with its source_commit on the branch, and the path's history on the branch. TestBlobEdges_IncomingKeepsEveryVersionThatCited pins it.
 
 COST: blobHoldings binds two variables per citing (path, blob) node, so it runs in chunks of blobHoldingsChunk (4000) under SQLite's 32766-variable limit, with the same result.
+
+CHANGED SINCE CITED IS RELATIVE TO THE READING BRANCH (user ruling, PR #693; verified at 866eb303): the comparison is always against what the READING BRANCH holds now (branch_facts via FactQuery.CitedVersionState), never against the commit being viewed. Example: F cites R; R is unchanged on main but changed on an agent branch. Read on main, F's reference to R shows NOT changed; read on the agent branch, it shows changed. This is the option 1 consequence above seen from the reader's side. Time-travelling to an old commit does not change the comparison.
+
+MISREADING: "changed is relative to the viewed commit." It is not.
