@@ -16,7 +16,8 @@ INCOMING (IncomingAtCommit, index/search_graph_query.go):
 - The source is listed as one row per node of the citing blob whose path holds it on B, now (branch_facts JOIN facts on blob) or in B's history (path_changes rows on B's branch_commits). History keeps retracted citers, which render deleted=true per kb/decisions/store/temporal/retracted-fact-semantics, and a rename's old path. A path only another branch has is not listed.
 - blobHoldings answers it for all candidate rows in one statement.
 - Each row carries a commit OF B at which that path holds the blob: the edge's own source_commit when the row is the edge's own node and that commit is on B (unchanged behaviour); else B's recorded commit (branch_facts); else the latest commit of B's history. A hop to (path, commit) on B therefore lands.
-- Order: edge id, then node id.
+- Order (since PR #694, ref_edges): the citing version's source commit in commitEarlier's total order (committed_at, same-second ancestors, hash), then the citing blob, then the path (sortIncomingCandidates); chronological, and unchanged by a rebuild. Before PR #694 it was edge id, then node id, which a rebuild renumbered.
+- Since PR #694 the candidates come from ref_edges (idx_ref_edges_target; kb/decisions/store/graph/ref-edges-flat-table), not the DERIVED_FROM edges; the visibility rule above is unchanged.
 
 OPTION 1 (accepted): no per-branch edge sets and no schema change. A blob's refs stay resolved ONCE, at its earliest introduction. On brC, X's outgoing shows R as resolved on brA (R_A at its commit), even when that commit is not on brC:
 - OutgoingAtCommit filters target_commit only against the global commit_log;
