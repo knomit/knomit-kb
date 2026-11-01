@@ -21,3 +21,5 @@ The user's lens rulings (2026-11-01, factset-lens-design section 8) as implement
 CONSEQUENCE: these visible strings are new and were not ruled word for word: the reason token lens_repo, the export text "another repo of this lens; not followed", the cross_kb error, the repo-path refusal "repo narrows a lens factset to some of its repos; this binding is one repository", the search-line label "repo", and the MCP key description for search.repo. Treat them as the implementer's until the user confirms.
 
 WHAT THIS DOES NOT MEAN: MCP does not accept since_fork in factset mode (it never did); the engine behaviour is ready for the REST route (F4).
+
+FOR F4 (REST lens routes; review L5, no engine change): an unknown search.repo / repo= name reaches the edge as ErrInvalid wrapping federate.UnknownRepoError (text: no mount named "X" in lens "Y"). The REST lens FactSet route should map it to 422 "Unknown repo", as the lens list does (planLensRead's StageRepos), not to the generic 400 every other ErrInvalid gets; check errors.As for *federate.UnknownRepoError before the ErrInvalid branch.
