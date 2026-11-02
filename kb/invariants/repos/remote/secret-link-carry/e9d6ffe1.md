@@ -4,9 +4,9 @@ type: policy
 domain: [repos, remote, secrets]
 confidence: 0.85
 sources: 1
-entities: [OriginSpec.SecretID, applyAttach, applySwap, restoreFleetOrigin, setOriginUpstream, linkedOriginSpec, remotesync.Origin.SecretID]
+entities: [OriginSpec.SecretID, applyAttach, applySwap, applyDetach, restoreFleetOrigin, setOriginUpstream, linkedOriginSpec, remotesync.Origin.SecretID, DetachOriginUnlinking, Origins.DeleteAttached]
 motifs: [full-replace-drops-fields]
-refs: ['src://7b4887ce51d9/internal/corpus/repos/events.go@c3760df6719ae21c79c83e0732839aa6d4f9510e:88e53033e81f2b3690c7cae3bb67e5d074f25c13', 'src://7b4887ce51d9/internal/corpus/repos/secret_link_carry_test.go@c3760df6719ae21c79c83e0732839aa6d4f9510e:3f0d5fd0818d1e75602ebf767efeb9289dc0c181', 'src://7b4887ce51d9/internal/corpus/repos/control/origins.go@c3760df6719ae21c79c83e0732839aa6d4f9510e:766cafa3f7696a93d4bdc67edd9400088913230e', 'src://7b4887ce51d9/internal/edge/web/api/manage/handlers_origin_hal.go@c3760df6719ae21c79c83e0732839aa6d4f9510e:09535764106b49f416596dfeccca16e2756d981c', 'kb://3ec012f5b4d2/kb/invariants/repos/control-db/secret-link/845c96d6.md']
+refs: ['kb://3ec012f5b4d2/kb/invariants/repos/control-db/secret-link/845c96d6.md', 'kb://3ec012f5b4d2/kb/invariants/repos/control-db/secret-link/f7d454a9.md', 'src://7b4887ce51d9/internal/corpus/repos/events.go@9e1aaa79db96bebf384a54b49ddea466ebeced71:b32e7d1821965dd26cebaa7820e1cd82c58b8eac', 'src://7b4887ce51d9/internal/corpus/repos/secret_link_carry_test.go@9e1aaa79db96bebf384a54b49ddea466ebeced71:154ac08036cb42af02c32c647ef857f2a2dbebd2', 'src://7b4887ce51d9/internal/corpus/repos/control/origins.go@9e1aaa79db96bebf384a54b49ddea466ebeced71:0364f281b666fb3c29ae2e6e061946634dbfe31d', 'src://7b4887ce51d9/internal/edge/web/api/manage/handlers_origin_hal.go@9e1aaa79db96bebf384a54b49ddea466ebeced71:253de3ef75340cafa431d53f0a43523382a47f56']
 ---
 # OriginSpec.SecretID IS the link on attach, swap, create and fleet restore: a caller that rebuilds a spec from the stored origin must copy SecretID, or the attach silently unlinks the repo
 
@@ -15,3 +15,5 @@ applyAttach and applySwap (internal/corpus/repos/events.go) write control.Origin
 Rule for new code: any new AttachOrigin/SwapStore caller that builds its OriginSpec from Origins.Get or GetRemote must set SecretID (and leave AuthToken empty when it is set). Misreading to avoid: the light credential path (ChangeOriginCredential / SetCredential) is NOT a rebuild; it is the one place that changes the link on purpose.
 
 Backstop: a caller that forgets is no longer silent. applyAttach (Origins.SetAttached) and applySwap (Origins.Replace) refuse with control.ErrOriginLinked (409 "Linked to a stored secret") when the stored origin is linked and the spec carries no SecretID, checked in the write's own transaction, so a spec built from a read taken before a concurrent link (TestCarry_AttachRacingALinkIsRefused) never drops it. Only callers past a gate that may unlink set OriginSpec.ReplaceLink: the origin-session commit after the admin gate, followFleetHost and restoreFleetOrigin (local-only fleet routes).
+
+The detach path has the same backstop. DetachOrigin() runs Origins.DeleteAttached(uid, false), which refuses with control.ErrOriginLinked in the delete's own transaction when the repo is linked (TestCarry_DetachRacingALinkIsRefused). Only DetachOriginUnlinking() (replaceLink=true) drops a link: DELETE /origin after the admin gate on a linked repo, the fleet host takeover (hostFleetHere) and restoreFleetOrigin's detach back to the hub (local-only fleet routes).
