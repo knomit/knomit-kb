@@ -4,7 +4,7 @@ domain: [web, ui, onboarding, secrets]
 confidence: 0.85
 sources: 1
 entities: [authFor, credentialFor, SecretPicker, secretFits, SET_SECRET, FleetAuthMethod, StepAccess, RemoteConnectWizard, CredentialFields]
-refs: ['src://7b4887ce51d9/web/src/wizardState.ts@a20039dadd0429e64abbfc70373ca27836fb8cf4:8c1de1d31cb8345f361aaacc837616ffb1e50c54', 'src://7b4887ce51d9/web/src/fleetWizardState.ts@a20039dadd0429e64abbfc70373ca27836fb8cf4:a8987e376f8dc5c6f592d8c401095db719c8e41e', 'src://7b4887ce51d9/web/src/secrets.ts@a20039dadd0429e64abbfc70373ca27836fb8cf4:33625301a26847476b5381f070b7325b2a410c25', 'src://7b4887ce51d9/web/src/SecretPicker.tsx@a20039dadd0429e64abbfc70373ca27836fb8cf4:ee9d25ec7be2f7b764317d6b83909ae51a90d20c']
+refs: ['src://7b4887ce51d9/web/src/wizardState.ts@b421c6cb73226b64efba5f7f3a9541016292fc4a:8c1de1d31cb8345f361aaacc837616ffb1e50c54', 'src://7b4887ce51d9/web/src/fleetWizardState.ts@b421c6cb73226b64efba5f7f3a9541016292fc4a:a8987e376f8dc5c6f592d8c401095db719c8e41e', 'src://7b4887ce51d9/web/src/secrets.ts@b421c6cb73226b64efba5f7f3a9541016292fc4a:33625301a26847476b5381f070b7325b2a410c25', 'src://7b4887ce51d9/web/src/SecretPicker.tsx@b421c6cb73226b64efba5f7f3a9541016292fc4a:ee9d25ec7be2f7b764317d6b83909ae51a90d20c']
 ---
 # In the create, connect and fleet wizards a stored secret is the UI-only auth method 'secret' plus a secretId; authFor / credentialFor turn it into secret_id with NO pasted fields, and SecretPicker offers only secrets whose type fits the URL scheme and whose hosts allow its host
 
