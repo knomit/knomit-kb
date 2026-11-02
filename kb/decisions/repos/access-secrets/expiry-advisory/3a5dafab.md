@@ -4,11 +4,11 @@ domain: []
 confidence: 0.95
 sources: 1
 entities: [secrets, expiry, status]
-refs: ['file:///home/pba/data/knomit/knomit/.claude/plans/2026-11-02-access-secrets-design.md']
+refs: ['https://github.com/knomit/knomit/pull/714', 'https://github.com/knomit/knomit/pull/729']
 ---
 # Secret expiry is advisory: sync keeps using an expired secret and only the UI flags it
 
-Describes the agreed design for feat/access-secrets, not shipped behaviour.
+Shipped: the status is computed server-side (control.ExpiringWithin, 14 days; #714) and the UI flags it (#729).
 
 Options considered: stop using a secret once its expiry date passes; keep using it and only warn.
 
