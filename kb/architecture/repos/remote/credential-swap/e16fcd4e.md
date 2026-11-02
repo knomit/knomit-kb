@@ -1,0 +1,32 @@
+---
+type: observation
+domain: [repos, remote, credentials, web]
+confidence: 0.9
+sources: 1
+entities: [Manager.ChangeOriginCredential, CredentialChange, ErrNoOrigin, ErrLinkedRepo, ErrInvalidCredential, Origins.SetCredential, handleSetOriginCredential, 'PUT /repos/{repo}/origin/credential']
+motifs: [compare-and-set-write]
+refs: ['kb://3ec012f5b4d2/kb/invariants/repos/control-db/secret-link/845c96d6.md', 'kb://3ec012f5b4d2/kb/invariants/repos/remote/attach-identity/545ae852.md', 'kb://3ec012f5b4d2/kb/invariants/repos/control-db/secret-link/13c41ec2.md', 'src://7b4887ce51d9/internal/corpus/repos/credential.go@c3760df6719ae21c79c83e0732839aa6d4f9510e:703b442cc1debfe9eecaf4cc4080ac234d52e380', 'src://7b4887ce51d9/internal/engine/store/remotesync/remote.go@c3760df6719ae21c79c83e0732839aa6d4f9510e:047965366967829b82c489adfc01d0d16b6364c8', 'src://7b4887ce51d9/internal/corpus/repos/control/origins.go@b421c6cb73226b64efba5f7f3a9541016292fc4a:0364f281b666fb3c29ae2e6e061946634dbfe31d', 'src://7b4887ce51d9/internal/corpus/repos/events.go@b421c6cb73226b64efba5f7f3a9541016292fc4a:b32e7d1821965dd26cebaa7820e1cd82c58b8eac', 'src://7b4887ce51d9/internal/edge/web/api/manage/handlers_origin_credential.go@c3760df6719ae21c79c83e0732839aa6d4f9510e:af04bb39002433832c5fe4a8811f4e5f3a041110', 'src://7b4887ce51d9/internal/corpus/repos/secret_link_test.go@c3760df6719ae21c79c83e0732839aa6d4f9510e:bcc0abc2a3c5569809a9810daf33df5428c89f8d']
+---
+# PUT /repos/{repo}/origin/credential (Manager.ChangeOriginCredential) changes only the credential: a compare-and-set on the stored URL in control.db, then a compare-and-set on the WHOLE injected origin in memory (SetOriginIf); a lost race to an attach, re-attach or detach changes nothing in memory and answers ErrOriginChanged
+
+Manager.ChangeOriginCredential(ctx, ri, CredentialChange{AuthMethod, AuthToken, SecretID}, unlink) is the light credential path. It reads the stored origin (control.Origins.Get) and refuses: no origin (ErrNoOrigin, 409 "No origin"), a fleet peer origin with auth_method cert (ErrPeerCredential, 400), a pasted credential on a linked repo unless unlink is set (ErrLinkedRepo, 409, naming the unlink command), and a malformed credential or one whose method does not fit the URL scheme (ErrInvalidCredential, 400; wraps MethodMismatch, token needs a token, basic needs a non-empty user AND a non-empty password, ssh and none take no token, cert is never an input).
+
+TWO compare-and-sets, one per copy of the origin:
+1. Durable: Origins.SetCredential(uid, stored.URL, ...) writes only WHERE url = stored.URL. An attach that re-pointed the origin BEFORE this write wins: control.ErrOriginChanged (409 "Origin changed") and nothing is written anywhere.
+2. In memory: BEFORE the durable write it captures the injected origin (svc.Remote().InjectedOrigin(); with the store not open, the stored row as an open would inject it). After re-reading the row (cur), it injects with svc.Remote().SetOriginIf(expect, ...) (remotesync.Index, under originMu), which applies only while an origin is injected AND it equals the captured one field by field (URL, branch, method, token, SecretID). So an attach, a same-URL re-attach with another credential or link, or a detach that lands after the durable write keeps memory; the swap answers control.ErrOriginChanged without signalling a credential change. When that attach or detach lands AFTER the swap's durable write, it also overwrote (or deleted) the row, so control.db and memory agree on its state.
+
+Residual window, not closed: a same-URL re-attach that lands between the capture and the durable write passes the URL compare-and-set, so control.db ends with the swap's credential while memory keeps the attach's (both for the same URL; the next open re-injects control.db). A URL change in that window is refused by step 1.
+
+Why the in-memory step must be conditional: makeRemoteAuthFn builds auth from the in-memory origin while go-git dials the URL in .git/config. An unconditional SetOrigin(cur) after an attach would send the OLD origin's new token to the attached host, and after a detach would resurrect the removed origin in memory.
+
+Only when the in-memory step applies (or the store is not open, which needs no write since opening injects the control.db row) does it call ri.credentialChanged().
+
+Related: applySwap writes the new origin with Origins.Replace (returns the row it replaced, read in the same transaction) and, on a copy failure, undoes with Origins.Restore. Restore puts the replaced row back WHOLE, except when the swap kept the SAME URL and the credential changed after the write: then the newer credential is kept. Across URLs it never keeps it: a credential set after the write was vetted against the incoming URL and would otherwise be sent to the previous host. So a light swap that answered 200 before the swap's write is not reverted (Replace returns its row), and one that targeted the incoming origin is dropped with it.
+
+LINK AND UNLINK go through this same path. A change with SecretID links: the secret must fit the stored URL (Manager.CheckSecretForURL: ErrSecretHostNotAllowed or ErrSecretTypeMismatch, 422), the stored method becomes the secret's transport and the token is cleared; control.setLink re-checks the hosts list inside the SetCredential transaction. unlink with a pasted credential replaces the link with it; unlink with no credential is the explicit none (method "none", anonymous). Every link, unlink and pasted change signals credentialChanged.
+
+The endpoint is behind operator (like PUT /origin) and takes {auth_method, token?, user?, password?} (assembled with httpx.AssembleAuthToken) and/or secret_id: a string links, JSON null unlinks (parseSecretIDField), and either one ALSO passes the admin gate in the handler (httpx.Admits); secret_id with a pasted credential when linking is 400. Its concurrent-change 409 says the origin changed concurrently and tells the caller to read it (GET /repos/{repo}/origin) and retry; it does not claim nothing changed, because in the residual window below control.db did change.
+
+Never replace SetOriginIf with SetOrigin (or with a URL-only compare) in this path, and never hold a per-repo mutex shared with applySwap to serialise it (applySwap drains the store under WithRead; a shared lock risks deadlock).
+
+What this does NOT mean: it is not a way to change the URL or branch (those must go through AttachOrigin/SwapStore), and it does not configure the git remote (only a cert origin changes the git URL, and cert is refused).
