@@ -4,7 +4,7 @@ domain: [web, ui, shell, server]
 confidence: 0.85
 sources: 1
 entities: [serverPagesFor, accessTabsFor, AccessPage, AccessTab, useOAuthAvailability, ServerPages, SecretsTab, AuthPage]
-refs: ['src://7b4887ce51d9/web/src/facets.ts@a20039dadd0429e64abbfc70373ca27836fb8cf4:78675fee1deb328ae76192dbf163e88f5aae8dcd', 'src://7b4887ce51d9/web/src/AccessPage.tsx@a20039dadd0429e64abbfc70373ca27836fb8cf4:4080584a65ab8da74636d6d479f34dd51c8bc32b', 'src://7b4887ce51d9/web/src/App.tsx@a20039dadd0429e64abbfc70373ca27836fb8cf4:2b783b361930bac04665160e6ec7bda513684692', 'kb://3ec012f5b4d2/kb/decisions/web/shell/facets/server-pages-behind-gear/911dd19a.md']
+refs: ['src://7b4887ce51d9/web/src/facets.ts@b421c6cb73226b64efba5f7f3a9541016292fc4a:78675fee1deb328ae76192dbf163e88f5aae8dcd', 'src://7b4887ce51d9/web/src/AccessPage.tsx@b421c6cb73226b64efba5f7f3a9541016292fc4a:fe31eac3607c6710faacbd7dc9c5a9b40c9bc878', 'src://7b4887ce51d9/web/src/App.tsx@b421c6cb73226b64efba5f7f3a9541016292fc4a:34c23ae627eadacba4a8ce06ddffef92eefc0fe2', 'kb://3ec012f5b4d2/kb/decisions/web/shell/facets/server-pages-behind-gear/911dd19a.md']
 ---
 # The gear's server pages are Logs and Access (serverPagesFor); Access has tabs Secrets (always) and Authorizations (only with an OAuth issuer, accessTabsFor in facets.ts), and App owns the Access tab so useOAuthAvailability knows when Authorizations polls for itself
 
