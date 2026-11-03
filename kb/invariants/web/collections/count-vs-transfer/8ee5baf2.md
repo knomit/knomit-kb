@@ -30,3 +30,5 @@ Generalised: **a computed depth must be checked for non-positive as well as over
 It also does not mean relevance endpoints owe a corpus count: a text query retrieves a bounded candidate set by rank, so the size of that set is the honest answer there and no COUNT(*) applies.
 
 SCOPE NOTE (PR #735): GET /lenses/{lens}/search is a RELEVANCE list. No COUNT(*) of "rows that match" exists for it: per-mount depth (federate.MaxSearchCandidates) already bounds what can match. Its `total` is therefore defined as the length of the ranked list that offset pages through: the fused, deduped union cut to materialize.MaxFactSetFacts. Every offset below it has a row, and the lens FactSet of the same search has exactly that many units. Before #735 it was the uncut union size. This rule still governs the /facts collections, whose total is a real match count.
+
+The repo route GET /repos/{repo}/branches/{branch}/search carries the same `total` since the #735 review: index.SearchPage.Total, the depth-500 ranked list's length. The web shows it, and the lens total, as the relevance list's count (library-count / data-count). Neither is a COUNT(*) of matches.
