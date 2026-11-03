@@ -1,0 +1,24 @@
+---
+type: observation
+domain: [web, origin-sessions, sse, desktop]
+confidence: 0.9
+sources: 1
+entities: [runRegistry, runLog, sessionManager.startRun, sessionManager.beginRun, handleRunEvents, originSession.setCancelRun, runRetention, OriginSessionRunEvents, handleApply, handleCommit, streamLifecycle]
+motifs: [start-then-follow-link, replayable-event-log, refusal-before-first-event]
+refs: ['src://7b4887ce51d9/internal/edge/web/api/origins/runs.go@91d72b34a3c33ddee13377665bb16ef5bd27940c:af0884703b923344ad880334e54037028dd5424c', 'src://7b4887ce51d9/internal/edge/web/api/origins/handlers.go@91d72b34a3c33ddee13377665bb16ef5bd27940c:4bf0387097e33dd803ac5e05b3df91100bcefb29', 'src://7b4887ce51d9/internal/edge/web/api/origins/session_manager.go@91d72b34a3c33ddee13377665bb16ef5bd27940c:400cf08ffba2193372bce8c5db94e8215ede42f0', 'src://7b4887ce51d9/internal/edge/web/api/origins/runs_test.go@91d72b34a3c33ddee13377665bb16ef5bd27940c:662f14735f5b4eeceadd40457e8de3c0d8c9927b', 'src://7b4887ce51d9/web/src/api.ts@91d72b34a3c33ddee13377665bb16ef5bd27940c:ca279884dc22e8d4668b38fcb62fac900c8ed0ce', 'kb://3ec012f5b4d2/kb/decisions/web/origin-sessions/apply-commit-events-link/d8e11bf4.md', 'kb://3ec012f5b4d2/kb/invariants/web/origin-sessions/ad44382e.md', 'kb://3ec012f5b4d2/kb/gotchas/desktop/transport/06f9a76c.md', 'https://github.com/knomit/knomit/issues/509', 'https://github.com/knomit/knomit/pull/754']
+---
+# Origin-session apply/commit are RUNS: the POST waits for the run's first event, then answers 202 + events link (or the refusal the run recorded); one run per session (409 Session busy); a per-run event log replays from the start, resumes on Last-Event-ID, ends with 204, and outlives the session for 10 min
+
+Since #509 (PR #754), internal/edge/web/api/origins/runs.go.
+
+POST /apply and /commit: beginRun first checks the session exists, RESERVES a run in the manager's runRegistry (409 problem 'Session busy' with `_links.events` of the running run when the session already has an unfinished apply OR commit), then takes the session's use with r.Context() (a request that ends while waiting answers 404 and drops the reservation). The handler's own validation still answers plain problems. Then startRun hands the use to a goroutine running the operation under context.WithoutCancel(r.Context()) (request VALUES kept, e.g. RepoFromContext; its cancellation is not), cancelled when the manager's lifetime (Mount's ctx) ends.
+
+THE POST WAITS FOR THE FIRST EVENT. It answers only when the run has logged an event (then 202, body {session_id, run, _links: {events, session}}, Location = events href) or has ended without one (then the refusal the run recorded with runLog.refuse, else a 500). This is how the commit machine's pre-change refusals (isCommitRefusal: Knowledge base already local, Different knowledge base, Origin not attached, ...) that arrive from rm.Send INSIDE the run still come back as HTTP problems on the POST, exactly as lazyStream did. A refused run is dropped from the registry (its link 404s, the POST can be retried).
+
+THE LOG. Every event is JSON-appended to a runLog. GET .../{apply,commit}/events (handleRunEvents) replays from the start, then follows live (wake channel), keepalive every 30 s, and RETURNS after the run's last event. Each event is `id: <n>` (1-based); Last-Event-ID n resumes after it (clamped). An ended run with nothing past the reader's id answers 204 (stops EventSource reconnecting). No run of that kind for the session: 404. A run that ends without a done/error event gets a synthetic error event (finish), and a panic is recovered into one, so a reader never waits forever. Finished runs are kept runRetention (= sessionExpiry, 10 min) in the registry, independent of the session: commit deletes its own session at its end, and its outcome must stay readable.
+
+CANCELLATION. Dropping the session (Delete, replace, idle expiry, lifetime end) calls retire, which calls the session's cancelRun: set only for APPLY (cancelOnDrop), so an apply is cancelled; a COMMIT is not (a store swap must not stop half-way) and runs to its end. Both are cancelled at manager lifetime end. Before #509 a client disconnect cancelled both via r.Context(); now a disconnect cancels nothing.
+
+CONSEQUENCE: a test or client that POSTs apply and then immediately POSTs commit gets 409 Session busy unless it first follows the apply's events to the end (the internal/edge/web test helpers followRunEvents / serveRun do). A test that needs to stall the run's reader hooks sessionManager.runEventHook (called on the run goroutine after each append), not the response writer.
+
+WHAT THIS DOES NOT MEAN: /test and /preview are NOT runs; they still stream on their own GET response (beginSSE). The registry is not a job system: no ids beyond (session, kind), no listing, nothing persisted, gone at shutdown.
