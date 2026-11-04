@@ -1,0 +1,12 @@
+---
+type: reference
+domain: [llm, ollama, versions]
+confidence: 0.85
+sources: 1
+entities: [truncate, tool_call_id, ToolCall.id, prompt_eval_count, prompt_eval_cached_count, OllamaChat]
+motifs: [version-dependent-behaviour]
+refs: ['src://7b4887ce51d9/internal/engine/llm/ollama_v2.go@160009c0d7421db240b1265ca077301b030a2a5f:21b78b5cbd8c188dd83993aa2f23286733976f17', 'https://github.com/ollama/ollama/blob/v0.40.14/api/types.go', 'https://github.com/ollama/ollama/blob/v0.35.0/api/types.go', 'https://github.com/ollama/ollama/blob/v0.30.0/api/types.go', 'kb://3ec012f5b4d2/kb/gotchas/llm/ollama-v2/90ddda99.md', 'kb://3ec012f5b4d2/kb/architecture/llm/ollama-v2/291a1a09.md', 'kb://3ec012f5b4d2/kb/invariants/llm/ollama-v2/e8bc578a.md']
+---
+# Ollama API fields the v2 adapter depends on and the Ollama version each was checked at: truncate and tool_call_id from v0.30.0, prompt_eval_cached_count from v0.35.0
+
+Claims about Ollama in the v2 adapter facts are pinned to these checks of ollama/ollama api/types.go and the server source. ChatRequest.Truncate (json truncate): present at v0.30.0, v0.35.0 and v0.40.14; unset or true means the server drops the oldest messages to fit num_ctx. Message.ToolCallID (json tool_call_id) and ToolCall.ID (json id): present at v0.30.0, v0.35.0 and v0.40.14; the server assigns 'call_<8 chars>' ids to calls it parses (server/routes.go, v0.40.14). Metrics.PromptEvalCachedCount (json prompt_eval_cached_count, a pointer): ABSENT at v0.30.0, present at v0.35.0, v0.40.0 and v0.40.14; from there prompt_eval_count is cache_n + prompt_n, the whole prompt (llm/llama_server.go). Tool arguments that are not valid JSON fail the request server-side (llm/llama_server.go, v0.40.14). The prompt-over-context 400 text 'the prompt is longer than the context length currently available to the model' is promptTooLongMessage at v0.40.14. The oldest version checked for each field is the lowest tag named here; v0.30.0 was the oldest tag read, so 'present at v0.30.0' does not say when it first appeared. Consequence: when behaviour on a different Ollama matters, re-read these fields at that tag; do not extend a claim to an untested version. The adapter handles a server without prompt_eval_cached_count by an estimate flagged per field (Usage.EstimatedFields). Does NOT mean the pre-v0.35.0 behaviour of prompt_eval_count was observed: it is the documented older meaning, not re-measured.
