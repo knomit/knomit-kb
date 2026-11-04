@@ -5,7 +5,7 @@ confidence: 0.9
 sources: 1
 entities: [ToolUse, ToolUse.ID, ProviderID, tool_call_id, OllamaChat]
 motifs: [identifier-translation-boundary]
-refs: ['src://7b4887ce51d9/internal/engine/llm/ollama_v2.go@613b3a10a9ec3b4c82bcd2d880822f2389cf1134:ea27e2161da7b044cc2c35655feb77f47f17eda3', 'src://7b4887ce51d9/internal/engine/llm/history.go@613b3a10a9ec3b4c82bcd2d880822f2389cf1134:5a1ffc61f2bd50cee5884dda5e10e1a6b98076bb', 'src://7b4887ce51d9/internal/engine/llm/ollama_v2_stream_test.go@613b3a10a9ec3b4c82bcd2d880822f2389cf1134:ca4460d7afa0ad84a79855d6cb820f714751883a', 'kb://3ec012f5b4d2/kb/architecture/llm/ollama-v2/291a1a09.md']
+refs: ['src://7b4887ce51d9/internal/engine/llm/ollama_v2.go@014ca530e9b7451794c3521421dbb14b846200aa:ea27e2161da7b044cc2c35655feb77f47f17eda3', 'src://7b4887ce51d9/internal/engine/llm/history.go@014ca530e9b7451794c3521421dbb14b846200aa:5a1ffc61f2bd50cee5884dda5e10e1a6b98076bb', 'src://7b4887ce51d9/internal/engine/llm/ollama_v2_stream_test.go@014ca530e9b7451794c3521421dbb14b846200aa:ca4460d7afa0ad84a79855d6cb820f714751883a', 'kb://3ec012f5b4d2/kb/architecture/llm/ollama-v2/291a1a09.md']
 ---
 # Ollama v2 always sends knomit's own tool id as tool_calls[].id and tool_call_id; there is no ToolUse.ProviderID
 
