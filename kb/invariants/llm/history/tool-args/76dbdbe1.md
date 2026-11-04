@@ -6,7 +6,7 @@ confidence: 0.85
 sources: 1
 entities: [llm.ToolUse, ToolUse.RawArgs, ToolUse.ArgsErr, InvalidToolArgsError, ErrInvalidToolArgs, finishBlock, Snapshot.CanonicalPrefix, TestAnthropicChat_InvalidToolArgsAreTyped]
 motifs: [validate-at-the-boundary]
-refs: ['src://7b4887ce51d9/internal/engine/llm/history.go@ee04e6549cd64f95cd230e0dfb18af89309a4c74:98d583a45cbc8b622668112f98a8f0900ce76b30#L60-L95', 'src://7b4887ce51d9/internal/engine/llm/anthropic_v2.go@ee04e6549cd64f95cd230e0dfb18af89309a4c74:7376a13ab678f0d7f63ac68860e0ca7cea6a5278', 'src://7b4887ce51d9/internal/engine/llm/anthropic_v2_test.go@ee04e6549cd64f95cd230e0dfb18af89309a4c74:e40894e3a4c27e74b78763b5cd9881db491828e9', 'https://github.com/knomit/knomit/pull/757']
+refs: ['src://7b4887ce51d9/internal/engine/llm/history.go@2e1e4dbcbb7604c4e9e1285c8953fbca4a8ebaa0:98d583a45cbc8b622668112f98a8f0900ce76b30#L60-L95', 'src://7b4887ce51d9/internal/engine/llm/anthropic_v2.go@2e1e4dbcbb7604c4e9e1285c8953fbca4a8ebaa0:42bbfc3ddf1f6d89a794f9a58e895de2b0887e0c', 'src://7b4887ce51d9/internal/engine/llm/anthropic_v2_test.go@2e1e4dbcbb7604c4e9e1285c8953fbca4a8ebaa0:e40894e3a4c27e74b78763b5cd9881db491828e9', 'https://github.com/knomit/knomit/pull/757']
 ---
 # llm.ToolUse.Args is always valid JSON: arguments a model streams as invalid JSON are stored as Args {} with the received bytes in RawArgs, and ToolUse.ArgsErr() returns a typed *InvalidToolArgsError the loop must answer as a tool error
 
