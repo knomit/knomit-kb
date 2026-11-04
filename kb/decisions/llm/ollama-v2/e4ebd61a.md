@@ -1,0 +1,12 @@
+---
+type: observation
+domain: [llm, ollama, tools]
+confidence: 0.9
+sources: 1
+entities: [ToolUse, ToolUse.ID, ProviderID, tool_call_id, OllamaChat]
+motifs: [identifier-translation-boundary]
+refs: ['src://7b4887ce51d9/internal/engine/llm/ollama_v2.go@014ca530e9b7451794c3521421dbb14b846200aa:ea27e2161da7b044cc2c35655feb77f47f17eda3', 'src://7b4887ce51d9/internal/engine/llm/history.go@014ca530e9b7451794c3521421dbb14b846200aa:5a1ffc61f2bd50cee5884dda5e10e1a6b98076bb', 'src://7b4887ce51d9/internal/engine/llm/ollama_v2_stream_test.go@014ca530e9b7451794c3521421dbb14b846200aa:ca4460d7afa0ad84a79855d6cb820f714751883a', 'kb://3ec012f5b4d2/kb/architecture/llm/ollama-v2/291a1a09.md']
+---
+# Ollama v2 always sends knomit's own tool id as tool_calls[].id and tool_call_id; there is no ToolUse.ProviderID
+
+Decision (user ruling, 2026-11-04): the neutral ToolUse type has no ProviderID field, and the Ollama adapter sends ToolUse.ID (knomit-assigned, tu_<n>) as the id on a replayed tool call and as tool_call_id on its result, whatever id the Ollama server put on the call when it streamed it. Options considered: (a) keep a ProviderID that stores the server's call_<8 chars> id and send it back; (b) always send knomit's id. Chosen (b) because Ollama is stateless about ids: it accepts any string in a replayed id/tool_call_id and does not check it against ids it issued, so (a) added a field to a shared type for no behavioural gain; the Anthropic adapter already sends the knomit id as the provider id and stores nothing provider-side; and history.go's 'IDs are knomit-assigned' then holds without an exception. (a) also had a latent flaw: the render used ProviderID whoever produced the call, wrong once a second id-carrying provider exists. Consequence: parallel calls to the SAME tool are still told apart on the wire, by the distinct knomit ids (TestOllamaChat_ParallelSameNameCallsKeepTheirIDs, results answered in reverse order, asserts the server's own call_ ids are not sent); tool_name is still sent as the fallback for servers that ignore ids. Does NOT mean knomit ignores the server's id on the way in: it simply is not stored. Not verified live: whether any Ollama chat template validates the id format.
