@@ -6,7 +6,7 @@ confidence: 0.85
 sources: 1
 entities: [ToolRanker, ScoredTool, NewEmbeddingRanker, NewLexicalRanker, ToolWindow.Preload]
 motifs: [calibrated-on-wrong-population]
-refs: ['kb://3ec012f5b4d2/kb/invariants/embeddings/thresholds/9f110192.md', 'kb://3ec012f5b4d2/kb/gotchas/embeddings/short-strings/1d564e96.md', 'kb://3ec012f5b4d2/kb/principles/anti-patterns/corpus-property-constants/63e6ecca.md', 'src://7b4887ce51d9/internal/edge/mcp/chat_rank.go@3e19d72cc1f5aaf2383deb20b39b4dc50adca4c6:319c6163da03e2cc1051a6bae247076bcf5f9167', 'src://7b4887ce51d9/internal/engine/llm/toolwindow.go@3e19d72cc1f5aaf2383deb20b39b4dc50adca4c6:d2ce8b5172c3fb253fdf6faeef5f9f835993fc8b']
+refs: ['kb://3ec012f5b4d2/kb/invariants/embeddings/thresholds/9f110192.md', 'kb://3ec012f5b4d2/kb/gotchas/embeddings/short-strings/1d564e96.md', 'kb://3ec012f5b4d2/kb/principles/anti-patterns/corpus-property-constants/63e6ecca.md', 'src://7b4887ce51d9/internal/edge/mcp/chat_rank.go@7ec301702280cf207ef52db1b849d56bdc48ed0c:319c6163da03e2cc1051a6bae247076bcf5f9167', 'src://7b4887ce51d9/internal/engine/llm/toolwindow.go@7ec301702280cf207ef52db1b849d56bdc48ed0c:72cfbe4fcbfa3c2b9e5731f5cd397aab0cb4b284']
 ---
 # Tool preload ranks by position under a token budget and never by a similarity score: a cosine cutoff swept on fact bodies is not valid for tool descriptions, and the ranker's scores carry order only
 
