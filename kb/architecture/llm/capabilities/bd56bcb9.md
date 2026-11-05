@@ -5,7 +5,7 @@ confidence: 0.9
 sources: 1
 entities: [Caps.StablePrefix, Registry.Adaptive, AnthropicChat.Caps, OllamaChat.Caps, adaptive_tools, LLMProviderConfig.AdaptiveTools, TestLoop_StablePrefixRequestsAreByteIdentical, ErrWindowWithStablePrefix, TestLoop_RefusesWindowWithStablePrefix]
 motifs: [capability-over-kind]
-refs: ['kb://3ec012f5b4d2/kb/invariants/llm/history/append-only/80e22727.md', 'src://7b4887ce51d9/internal/engine/llm/chat.go@edcc54e27a182fd54ebcd8b345a958790d26a00f:302c8b27cb4ba006d5241541e5b6b6f9d47443e2', 'src://7b4887ce51d9/internal/engine/llm/stableprefix_test.go@edcc54e27a182fd54ebcd8b345a958790d26a00f:0c205a1d7d347a31c97ed6611784a913b44ece15']
+refs: ['kb://3ec012f5b4d2/kb/invariants/llm/history/append-only/80e22727.md', 'src://7b4887ce51d9/internal/engine/llm/chat.go@2199e0370f837652478a0e4f95596f37c04c3dcd:302c8b27cb4ba006d5241541e5b6b6f9d47443e2', 'src://7b4887ce51d9/internal/engine/llm/stableprefix_test.go@2199e0370f837652478a0e4f95596f37c04c3dcd:0c205a1d7d347a31c97ed6611784a913b44ece15']
 ---
 # Caps.StablePrefix means changing the tool list or editing earlier history between requests is costly or invalid for the provider; Anthropic sets it true, Ollama false, and a chat is adaptive only when it is false and adaptive_tools is not off
 
