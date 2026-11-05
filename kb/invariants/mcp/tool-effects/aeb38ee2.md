@@ -24,3 +24,5 @@ Consequence: an unknown tool or unknown action returns known=false; callers must
 COMPLETENESS LIMIT (do not drop): ReviewModes and HypothesizeModes are maintained BY HAND next to the dispatch switch. TestModes_ListsMatchDispatch only probes the session_id, response, page, takeover and current arguments, so a new mode gated on a NEW argument would escape the completeness test. Anyone adding such a mode must add it to the list AND extend the probe grid in that test.
 
 WHAT THIS DOES NOT MEAN: the table does not enforce anything. Enforcement is still gateBinding/gatePermission driven by the registration's `write` flag; the table classifies and annotates, and the test keeps the two in agreement.
+
+Replay column (added with the adaptive-tools stubs): every row also states Replay (ReplayYes/ReplayNo, plus ReplayNotWith argument names), and Replayable(tool, args) reads it. Replay is NOT ReadOnly: bind, review page/current and hypothesize current are read-only rows that are not replayable. See kb/invariants/mcp/tool-effects/d21549b8.md. TestToolEffects_EveryRowStatesReplay fails a row that does not state it.
