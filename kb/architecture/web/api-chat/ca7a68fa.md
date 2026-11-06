@@ -4,7 +4,7 @@ domain: []
 confidence: 0.85
 sources: 1
 entities: [titleOf, chatTitleMax, ChatRailRow, rowState]
-refs: ['src://7b4887ce51d9/internal/edge/web/api/chat/chat.go@2ae851d47625101c0c9805ed56fe41918f1533d4:21318500d2fdca3c8880d0fc5240f8691ad7be06']
+refs: ['src://7b4887ce51d9/internal/edge/web/api/chat/chat.go@aa98431a369f919af94c4e2184440814ea9f9d1c:6583fcab90e0cb46bc07edfb200297ce58fa82c1']
 ---
 # A chat's title is its first message with whitespace collapsed, cut to chatTitleMax = 300 runes (word boundary in the last 15, then an ellipsis); the UI cuts it with CSS and only the rail tooltip shows it whole
 
