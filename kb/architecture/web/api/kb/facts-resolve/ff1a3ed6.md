@@ -4,7 +4,7 @@ domain: [web, chat, api]
 confidence: 0.85
 sources: 1
 entities: [handleFactsResolve, FactsResolvePath, IDsIn, isMutatingRequest, kb.Mount, auth.ReachesRepo, POST /facts/resolve]
-refs: ['src://7b4887ce51d9/internal/edge/web/api/kb/handlers_facts_resolve.go@5a28d86031b6db78ab6e6fc4887245c203addf14:c458089ce1aa2d3d50ca5767e5a7c646fc7ee46a', 'src://7b4887ce51d9/internal/engine/store/index/search_history.go@5a28d86031b6db78ab6e6fc4887245c203addf14:d480e98255cc741a2d4d857ceb2c163914406696', 'src://7b4887ce51d9/internal/edge/web/readonly.go@1b67176bbb84fb46f44660d36c52045a80535349:1d04d90b0c6755b9a721d4ddcda462395c546dc5', 'src://7b4887ce51d9/internal/engine/store/index/search_query.go@1b67176bbb84fb46f44660d36c52045a80535349:d875436ddf287fcbf30af3e48a76ecdec1be24f3', 'kb://3ec012f5b4d2/kb/invariants/web/chat-write-gate/839ea93c.md']
+refs: ['src://7b4887ce51d9/internal/edge/web/api/kb/handlers_facts_resolve.go@5a28d86031b6db78ab6e6fc4887245c203addf14:c458089ce1aa2d3d50ca5767e5a7c646fc7ee46a', 'src://7b4887ce51d9/internal/engine/store/index/search_history.go@dc6ba3911552960d468d36dbc92fd2ed7938ebd1:a99791935fe2798cd0aea3344df3ef2566a0445e', 'src://7b4887ce51d9/internal/edge/web/readonly.go@1b67176bbb84fb46f44660d36c52045a80535349:1d04d90b0c6755b9a721d4ddcda462395c546dc5', 'src://7b4887ce51d9/internal/engine/store/index/search_query.go@1b67176bbb84fb46f44660d36c52045a80535349:d875436ddf287fcbf30af3e48a76ecdec1be24f3', 'kb://3ec012f5b4d2/kb/invariants/web/chat-write-gate/839ea93c.md']
 ---
 # POST /api/v1/facts/resolve turns cited fact handles into facts across the repos the caller REACHES, preferred repos first; a handle found in 2+ non-preferred repos is AMBIGUOUS and omitted; unknown, unreachable and dot-path handles are omitted, never errors
 
@@ -19,3 +19,5 @@ Consequence: the client must leave any handle missing from the answer as plain c
 kind, origin (fact.ResolvedOrigin) and sources are returned so the chat's hover card can draw Browse's own FactMetaLine; they are empty/0 when the fact did not parse.
 
 COMMIT HASHES: a handle of 7-40 lowercase hex that resolved to NO fact (an 8-hex handle is tried as a short id first, and a fact found in 2+ non-preferred repos is not retried as a commit) is looked up as a commit ONLY when prefer comes down to exactly ONE reachable repo (preferredRepos after dedup and reach): index.HistoryQuery.CommitsWithPrefix(readBranch, hash, 2) must return exactly one hash (two = ambiguous abbreviation) and svc.HasCommit must hold the object. The item then carries `commit` (full hash), handle, repo and branch, with empty fact fields. Does NOT mean any hex in an answer is linked: with no prefer, a lens (2+ repos), an ambiguous prefix or a hash not on that branch, it is omitted and stays code.
+
+CommitsWithPrefix is a public HistoryQuery read, so it begins with hq.probe("CommitsWithPrefix") and TestEveryQueryServiceReadProbes counts it (41 reads).
