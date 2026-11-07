@@ -23,3 +23,5 @@ COMMIT HASHES: a handle of 7-40 lowercase hex that resolved to NO fact (an 8-hex
 CommitsWithPrefix is a public HistoryQuery read, so it begins with hq.probe("CommitsWithPrefix") and TestEveryQueryServiceReadProbes counts it (41 reads).
 
 `confidence` is OMITTED (not 0) when the fact could not be read or parsed, and on a commit item: resolvedFact.Confidence is a *float64 with omitempty. The chat's card passes the absence to FactMetaLine as Browse's fact read does (undefined), so no 'conf 0.00' is ever shown. Does NOT mean a parsed fact with confidence 0 is omitted: it is sent as 0.
+
+UPDATE (archtest fix): the route constant FactsResolvePath is no longer exported by api/kb (TestWebAPI_ExportsOnlyMount allows an api package to export only Mount, and TestWeb_OnlyRouterAndServerImportAPI bars web's handlers_root.go and readonly.go from importing it). It is httpx.FactsResolvePath in internal/edge/web/httpx/api_base.go, used by kb.Mount, handlers_root.go and readonly.go.
