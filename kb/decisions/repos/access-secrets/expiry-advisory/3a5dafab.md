@@ -1,6 +1,6 @@
 ---
 type: observation
-domain: []
+domain: [repos, secrets, web, ui]
 confidence: 0.95
 sources: 1
 entities: [secrets, expiry, status]
