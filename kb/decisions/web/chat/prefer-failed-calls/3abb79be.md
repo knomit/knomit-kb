@@ -5,7 +5,7 @@ domain: [web, chat, fact-links]
 confidence: 0.9
 sources: 1
 entities: [turnPrefer, callTarget, boundAfter, POST /facts/resolve]
-refs: ['src://7b4887ce51d9/web/src/chatFactLinks.ts@be0c8d295b20de60625a673a9da73aff96f62ac3:cd23aa5ce0a925d8e8ff0fb128e933c043bfe0ac', 'src://7b4887ce51d9/web/src/chatState.ts@be0c8d295b20de60625a673a9da73aff96f62ac3:a6522b30b2f7aed189a705bb66ac1dba5b654eb4', 'src://7b4887ce51d9/web/src/ChatFactLinks.test.tsx@be0c8d295b20de60625a673a9da73aff96f62ac3:0bf199e2d33f7c74016e4a42b4a314603689a4d5', 'src://7b4887ce51d9/internal/edge/web/api/kb/handlers_facts_resolve.go@be0c8d295b20de60625a673a9da73aff96f62ac3:f05ef658bb34e32fd9fdc5e41c9454a953d3e9f6', 'kb://3ec012f5b4d2/kb/architecture/web/api/kb/facts-resolve/ff1a3ed6.md']
+refs: ['src://7b4887ce51d9/web/src/chatFactLinks.ts@70826ce63e0332b8e01918eb049772babeeb25db:478900e328b99a21372f77eda0277c291acc52bf', 'src://7b4887ce51d9/web/src/chatState.ts@70826ce63e0332b8e01918eb049772babeeb25db:a6522b30b2f7aed189a705bb66ac1dba5b654eb4', 'src://7b4887ce51d9/web/src/ChatFactLinks.test.tsx@70826ce63e0332b8e01918eb049772babeeb25db:d2a98e5cd8598a7637e159b6c59f61a8ee742806', 'src://7b4887ce51d9/internal/edge/web/api/kb/handlers_facts_resolve.go@70826ce63e0332b8e01918eb049772babeeb25db:f05ef658bb34e32fd9fdc5e41c9454a953d3e9f6', 'kb://3ec012f5b4d2/kb/architecture/web/api/kb/facts-resolve/ff1a3ed6.md']
 ---
 # A failed call adds nothing to the fact links' prefer list, whichever tool it was: turnPrefer skips it for both its target and a kb:// store, and keeps the binding in force; a short id two repos hold, where only a failed call named one, stays code
 
