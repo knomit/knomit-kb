@@ -5,7 +5,7 @@ confidence: 0.9
 sources: 1
 entities: [toolVectors, fakeEmb, rankEmbedder, WarmToolVectors, TestChat_OpenWarmsToolVectorsOffTheRequestPath, TestWarmToolVectors_EmbedsOnceAndRankEmbedsNone]
 motifs: [process-global-test-state]
-refs: ['kb://3ec012f5b4d2/kb/gotchas/web/chat/adaptive-tools/b8030ee3.md', 'src://7b4887ce51d9/internal/edge/mcp/chat_rank.go@ed58477ebb1387b890879338285cc251c796cc07:e1057ad305b024097be7fb995845d407782de39d', 'src://7b4887ce51d9/internal/edge/mcp/chat_rank_test.go@ed58477ebb1387b890879338285cc251c796cc07:a20675732ee894276a775622b1cfa30df512741d', 'src://7b4887ce51d9/internal/edge/web/api/chat/adaptive_test.go@ed58477ebb1387b890879338285cc251c796cc07:94eacb715050aadcf868214e4a83f8f8591ea1e9']
+refs: ['kb://3ec012f5b4d2/kb/gotchas/web/chat/adaptive-tools/b8030ee3.md', 'src://7b4887ce51d9/internal/edge/mcp/chat_rank.go@3305c0ce138fce4156c7c5bfd69bde24007bf19d:e1057ad305b024097be7fb995845d407782de39d#L14-L30', 'src://7b4887ce51d9/internal/edge/mcp/chat_rank_test.go@3305c0ce138fce4156c7c5bfd69bde24007bf19d:a20675732ee894276a775622b1cfa30df512741d#L42-L66', 'src://7b4887ce51d9/internal/edge/web/api/chat/adaptive_test.go@3305c0ce138fce4156c7c5bfd69bde24007bf19d:94eacb715050aadcf868214e4a83f8f8591ea1e9#L85-L92']
 ---
 # A fake embedder in a test must have an id unique per instance, not t.Name(): the tool-vector cache is process-global per embedder id, so under -count>1 a rerun finds every vector cached and its fake counts zero embeds
 
