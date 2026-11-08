@@ -3,8 +3,8 @@ type: observation
 domain: [web, ui, fact]
 confidence: 0.95
 sources: 1
-entities: [FactMetaLine, FactBody, RightPanel.renderFact, LensMeta, StatBox, RepoRows, repoHueBg, displayLensPath, web/src/FactMetaLine.tsx, web/src/FactBody.tsx, web/src/RightPanel.tsx]
-refs: ['src://7b4887ce51d9/web/src/FactMetaLine.tsx@aa4432b46e76bdc7fcfdc9c0d55b87bc03eefec2:b717cd91474a8928f41286858ad69b03dab69f5f', 'kb://3ec012f5b4d2/kb/decisions/ui/summary-panel/repos-ranked-rows-with-activity/fed2c140.md', 'https://github.com/knomit/knomit/pull/70']
+entities: [FactMetaLine, FactBody, FactBand, FactBandPath, FactPage, FactView, renderFact, ChatFactChip, LensMeta, StatBox, RepoRows, repoHue, web/src/FactMetaLine.tsx, web/src/FactBand.tsx, web/src/FactBody.tsx, web/src/FactView.tsx]
+refs: ['src://7b4887ce51d9/web/src/FactMetaLine.tsx@70826ce63e0332b8e01918eb049772babeeb25db:5144a214d7f3530164b4ea68defb7fa7067f400d', 'src://7b4887ce51d9/web/src/FactBand.tsx@70826ce63e0332b8e01918eb049772babeeb25db:e5837ce5709b8bc9d5f803a1d808d6be82da4079#L65-L87', 'src://7b4887ce51d9/web/src/FactChrome.tsx@70826ce63e0332b8e01918eb049772babeeb25db:64ef9fa62e0faa19d791f03de9ee9e5ce0c3e0c0#L295-L335', 'src://7b4887ce51d9/web/src/FactView.tsx@70826ce63e0332b8e01918eb049772babeeb25db:5c7171ed9d5d17f9e5d41bf914f4a9d0fe3c4ba5#L93-L122', 'src://7b4887ce51d9/web/src/FactBody.tsx@70826ce63e0332b8e01918eb049772babeeb25db:7935c0de5417be8f1a12090f6d0c44ba399bd73d#L326-L334', 'kb://3ec012f5b4d2/kb/decisions/ui/summary-panel/repos-ranked-rows-with-activity/fed2c140.md', 'kb://3ec012f5b4d2/kb/decisions/ui/factbody-shared-component/4cd05433.md', 'https://github.com/knomit/knomit/pull/70']
 ---
 # The fact header is ONE dot-separated meta line, and the lens mount is drawn the dashboard's way (hue dot + plain mono name) — lightening the badge is what let the mount stay on the line instead of moving elsewhere
 
@@ -26,4 +26,10 @@ The header drew a mount as a bordered, `repoHueBg`-filled pill. The dashboard's 
 - "1 source" / "4 sources", never a bare number: the StatBox had a SOURCES label above the digit; on one line the word has to travel with it or the number means nothing.
 - Parts are built as a LIST with separators interleaved, so a missing part never leaves a leading or trailing `·`. A stray dot is the tell that a header is printing a gap where a value should be.
 
-**Structural consequence**: the chips and the StatBoxes moved OUT of FactBody into a new FactMetaLine rendered by RightPanel.renderFact. They were never body — they describe the fact, so they belong with the title and the controls. FactBody is now content only: prose, tag clouds, refs. `LensMeta` and `StatBox` were deleted with them.
+**Structural consequence**: the chips and the StatBoxes moved OUT of FactBody into a new FactMetaLine (then rendered by RightPanel.renderFact). They were never body — they describe the fact, so they belong with the title and the controls. FactBody is now content only: prose, tags, refs. `LensMeta` was deleted.
+
+**State at 70826ce6 (re-read).**
+- FactMetaLine is row 1 of FactBand. FactBand is drawn by FactPage (FactChrome.tsx), which `renderFact` in FactView.tsx calls. RightPanel.renderFact no longer exists: Browse (RightPanel) and the chat's side panel both mount FactView. ChatFactChip also renders FactMetaLine, with `filterable={false}`.
+- The PATH is no longer on the meta line. It is row 2 of the band (FactBandPath), which the title replaces once the title scrolls away. The meta line is type · origin · conf · N sources · [mount · branch], built as a list with `·` interleaved.
+- The load-bearing details still hold: "1 source" / "N sources", the mount drawn as a hue dot plus the plain mono name at #b9c1cd, and the branch kept beside the mount.
+- `StatBox` was NOT deleted. It is still exported from FactBody.tsx, but nothing imports it, and the header uses none. LensMeta is gone.

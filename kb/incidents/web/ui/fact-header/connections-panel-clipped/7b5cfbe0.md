@@ -3,9 +3,9 @@ type: observation
 domain: [web, ui, fact-header, layout, incidents]
 confidence: 0.95
 sources: 1
-entities: [ConnectionsPanel, ConnectionsCell, RightPanel, edgesGroup, web/src/ConnectionsPanel.tsx, web/src/ConnectionsPanel.test.tsx]
+entities: [ConnectionsPanel, ConnectionsCell, FactEdgesGroup, FactView, edgesGroup, web/src/ConnectionsPanel.tsx, web/src/ConnectionsPanel.test.tsx, web/src/FactChrome.tsx]
 motifs: [anchor-outlives-its-layout, test-pins-the-bug]
-refs: ['src://7b4887ce51d9/web/src/ConnectionsPanel.tsx@2ed1de3515f70cd5bc58f480bec4fd226bc2bffe:d072a46af18277e3331fc9798271a8566a804dfc#L76-L90', 'src://7b4887ce51d9/web/src/ConnectionsPanel.test.tsx@2ed1de3515f70cd5bc58f480bec4fd226bc2bffe:225dc1b486c2a10bb6dfb2c3a7d1c93c21a26d86#L72-L84', 'src://7b4887ce51d9/web/src/MotifPanel.test.tsx@2ed1de3515f70cd5bc58f480bec4fd226bc2bffe:03dfbec7da8110c05eb99c854818fda062f7c5e9#L42-L52', 'kb://3ec012f5b4d2/kb/decisions/ui/motif/edges-row-header/28608045.md', 'https://github.com/knomit/knomit/pull/323', 'https://github.com/knomit/knomit/pull/177']
+refs: ['src://7b4887ce51d9/web/src/ConnectionsPanel.tsx@70826ce63e0332b8e01918eb049772babeeb25db:8002c88a47333bb20d90c7366b55323c606250f7#L83-L95', 'src://7b4887ce51d9/web/src/ConnectionsPanel.test.tsx@70826ce63e0332b8e01918eb049772babeeb25db:b61cc7c090c72f97304b1d69bdd92a792c1fc504#L85-L92', 'src://7b4887ce51d9/web/src/MotifPanel.test.tsx@70826ce63e0332b8e01918eb049772babeeb25db:03dfbec7da8110c05eb99c854818fda062f7c5e9#L45-L52', 'src://7b4887ce51d9/web/src/FactChrome.tsx@70826ce63e0332b8e01918eb049772babeeb25db:64ef9fa62e0faa19d791f03de9ee9e5ce0c3e0c0#L64-L160', 'src://7b4887ce51d9/web/src/FactView.tsx@70826ce63e0332b8e01918eb049772babeeb25db:5c7171ed9d5d17f9e5d41bf914f4a9d0fe3c4ba5#L632-L645', 'kb://3ec012f5b4d2/kb/decisions/ui/motif/edges-row-header/28608045.md', 'https://github.com/knomit/knomit/pull/323', 'https://github.com/knomit/knomit/pull/177']
 ---
 # The 'cites'/'cited by' panel was clipped at the fact pane's left edge because its right:0 anchor outlived the move of its cells from the header's right end to the start of the edges row
 
@@ -18,3 +18,5 @@ refs: ['src://7b4887ce51d9/web/src/ConnectionsPanel.tsx@2ed1de3515f70cd5bc58f480
 **Fix (PR #323):** `right:0` → `left:0`. That test now asserts left '0px' with right unset, and MotifPanel has the twin. Verified in the browser on the same fact at 1504×798: panel x=554–914, rail edge 526.
 
 **Lesson for a consumer:** when a trigger moves within a layout, re-check the anchor of whatever hangs from it. A style assertion in a jsdom test pins a value, not the reason for it.
+
+**Where the fix lives at 70826ce6.** The refs point at the FIXED code, not the bug. ConnectionsPanel is still `position:absolute; top:100%; left:0` (ConnectionsPanel.tsx). The 'hangs from the menu, left-aligned' tests in ConnectionsPanel.test.tsx and MotifPanel.test.tsx still assert left '0px' with right unset. The edgesGroup span the panel hangs from is now rendered by FactEdgesGroup in FactChrome.tsx, not RightPanel.tsx, because the fact view moved into FactView.tsx. The overflow:hidden ancestors that clipped it are FactView.tsx's `fact-view` root and its `[data-panel-bounds]` wrapper. The same FactView is mounted in the chat's side panel, so a regressed anchor would clip there too.
