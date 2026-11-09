@@ -17,4 +17,4 @@ FLOW. /oauth/authorize parks the request and shows only its id. An approval is a
 
 CONSEQUENCES. An operator holding the fleet root can approve OAuth requests on any instance that installed that root, without a session on it. Whoever holds the fleet root directory (the plain root.key) holds this power: there is no export-root/import-root any more, so it moves only if the operator copies the directory by hand (and LoadRoot refuses a copy that landed with a wider mode).
 
-MISREADING. 'An operator certificate can approve OAuth': no; approvals come only from local principals, the browser-proofed loopback admin, or a root-signed statement.
+MISREADING. 'A certificate can approve OAuth': no; approvals come only from local principals, the browser-proofed loopback admin, or a root-signed statement. Operator certificates no longer exist (auth P0, PR #814: the TLS listener authenticates enrolled instance certificates only), and the former GitHub identity-provider approval path was removed in the same PR; there are exactly these three ways left.
