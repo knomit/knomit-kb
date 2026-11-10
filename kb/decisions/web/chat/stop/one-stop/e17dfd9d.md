@@ -4,7 +4,7 @@ domain: [web, ui, chat]
 confidence: 0.9
 sources: 1
 entities: [ChatToolGroup, ChatPanel, chat-activity-stop, chat-stop, CHAT_STOP]
-refs: ['src://7b4887ce51d9/web/src/ChatToolGroup.tsx@8f0d71ca3aeb242ed373badbc47f58953b36d312:8650d67fd397806acb03f2eb2521d0abe4e96233', 'src://7b4887ce51d9/web/src/ChatPanel.tsx@8f0d71ca3aeb242ed373badbc47f58953b36d312:71d4c563c85ebbe598f67243895fd73f454b54ba', 'src://7b4887ce51d9/web/src/ChatTurns.test.tsx@8f0d71ca3aeb242ed373badbc47f58953b36d312:307d6a4872d45dbd13d3066481dd8033814f941d', 'kb://3ec012f5b4d2/kb/decisions/web/chat/side-panel/c12285c0.md']
+refs: ['src://7b4887ce51d9/web/src/ChatToolGroup.tsx@5a59937ad3c9764efb5056f64247585572d4e597:8650d67fd397806acb03f2eb2521d0abe4e96233', 'src://7b4887ce51d9/web/src/ChatPanel.tsx@5a59937ad3c9764efb5056f64247585572d4e597:71d4c563c85ebbe598f67243895fd73f454b54ba', 'src://7b4887ce51d9/web/src/ChatTurns.test.tsx@5a59937ad3c9764efb5056f64247585572d4e597:307d6a4872d45dbd13d3066481dd8033814f941d', 'kb://3ec012f5b4d2/kb/decisions/web/chat/side-panel/c12285c0.md', 'https://github.com/knomit/knomit/pull/815']
 ---
 # A chat has ONE Stop: the composer's (and Esc). The running activity line (ChatToolGroup) has no Stop pill and no onStop prop, because the pill called the same chat-level stop and only duplicated it
 
