@@ -6,7 +6,7 @@ confidence: 0.9
 sources: 1
 entities: [authz.Store.Bind, authz.ErrTokenBound, authz.TokenRoles, authz.RoleNode, authz.RoleGuest, checkBindable, admits, TestBind_RefusesOwner, TestBind_TokenOnlyOneRoleNeverAdmin, TestBind_AnonymousGuestOnly, TestBind_NodeRoleIsNeverBound, TestMaterialize_AnonymousNeverMoreThanGuest]
 motifs: [default-deny-on-error, defence-in-depth]
-refs: []
+refs: ['src://7b4887ce51d9/internal/foundation/authz/store.go@25f8e7ea384328b827564a12fbebb05773f2c7cb:c3ad4fac6234e1474807f3b8e18ab35245c0e46a', 'src://7b4887ce51d9/internal/foundation/authz/materialize.go@25f8e7ea384328b827564a12fbebb05773f2c7cb:2bd239f3df11394b4e1af51b1f6a50c1808c9e24', 'src://7b4887ce51d9/internal/foundation/authz/store_test.go@25f8e7ea384328b827564a12fbebb05773f2c7cb:b28422b84662b46e4fbd345e7a23b4098377e800', 'src://7b4887ce51d9/internal/foundation/authz/materialize_test.go@25f8e7ea384328b827564a12fbebb05773f2c7cb:4288022903833d43275e6a6b36ce233763dba5ee']
 ---
 # authz.Store.Bind refuses: the owner (implicit, total), ANY binding of a node principal and the node role for any principal (a node's only role comes from its instance certificate), anonymous to anything but guest, a token to anything but reader/contributor/operator, a token that already has a role (ErrTokenBound), and a non-canonical principal; an OS principal may hold several roles (union)
 
