@@ -4,7 +4,7 @@ domain: [web, ui, chat]
 confidence: 0.9
 sources: 1
 entities: [unpackJson, JsonView, resultText]
-refs: ['src://7b4887ce51d9/web/src/jsonViewText.ts@c094a1176b2c50ccbb46709f657232d79f96e197:26516ee843b69718a561a35cf1ffa6987b3bca29']
+refs: ['src://7b4887ce51d9/web/src/jsonViewText.ts@b2dc2edaa499ff10c68589b1c2c3963231e437cb:2e9388513af91d715ce1a10ea2ae07d9570cc000']
 ---
 # In a chat result's JSON view, every string that is itself a JSON object or array is ALWAYS shown unpacked, recursively; there is deliberately no toggle (user decision, 2026-11-09)
 
